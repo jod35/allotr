@@ -6,3 +6,4 @@ from .models import School
 class SchoolAdmin(admin.ModelAdmin):
     list_display = ['name','dean','contact_email']
     search_fields = ['name']
+    list_filter = ['created_at']
