@@ -10,4 +10,4 @@ class ProgramAdmin(admin.ModelAdmin):
 
 @admin.register(ProgramCourse)
 class ProgramCourseAdmin(admin.ModelAdmin):
-    list_display =['course','program']
+    list_display =['course','program']  
