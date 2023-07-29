@@ -4,8 +4,7 @@ from departments.models import Department
 
 class Course(models.Model):
     code = models.CharField(max_length=10 , unique = True)
-    title = models.CharField(max_length=225 , unique = True)
-    department = models.ForeignKey(Department, on_delete = models.CASCADE)
+    title = models.CharField(max_length=225 )
     course_description = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

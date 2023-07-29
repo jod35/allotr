@@ -18,15 +18,9 @@ class Program(models.Model):
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
     details = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    courses = models.ManyToManyField(Course,through="ProgramCourse")
+    courses = models.ManyToManyField(Course,null=True)
 
     def __str__(self) -> str:
         return self.name
     
 
-class ProgramCourse(models.Model):
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.program.program_name} - {self.course.course_title}"
