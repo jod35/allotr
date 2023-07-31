@@ -286,7 +286,7 @@ JAZZMIN_SETTINGS = {
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "simplex",
-    # "dark_mode_theme": "slate",
+    # "dark_mode_theme": "superhero",
 }
 
 USE_I18N = True
