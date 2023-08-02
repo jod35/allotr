@@ -26,19 +26,17 @@ def index(request):
     school_count = School.objects.count()
     programs = Program.objects.all()
 
-    page_number = request.GET.get('page')
-    paginator = Paginator(programs,5)
+    
+    departments = Department.objects.all()
 
-    programs = paginator.get_page(page_number)
-
-
+    print(departments)
 
     context = {
         'course_count':course_count,
         'school_count':school_count,
         'department_count':department_count,
         'program_count':program_count,
-        'programs':programs
+        'departments':departments
     }
 
     return render(request,'home/index.html',context)
