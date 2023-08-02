@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "courses.apps.CoursesConfig",
     "programs.apps.ProgramsConfig",
     "intakes.apps.IntakesConfig",
+    "allocations.apps.AllocationsConfig"
 
 
     #third party apps
@@ -70,7 +71,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -290,3 +291,17 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 USE_I18N = True
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+# Assets Management
+ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 

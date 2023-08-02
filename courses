@@ -21,14 +21,15 @@ CIT 1200 Information Security
 
 
 Year 1 recess term
-COE 100
-Year 2 semester 1(6 cores)
-BBA 2108
-CSC 2101
-CSC 2103
-CSF 2100
-CNW 2100
+COE 100 Community Engagement I
+
+BBA 2108 Entrepreneurship Theory and Principles 
+CSC 2101 Operating Systems
+CSC 2103 Artificial Intelligence
+CSF 2100 Computer Forensic Tools
+CNW 2100 Computer Networks & Data Communication
 CIS 2101
+
 Year 2 semester 2 (6 cores)
 CSF 2200
 CSC 2201
@@ -62,14 +63,9 @@ Computer Security and Forensics
 
 
 
-Community Engagement I
 
-Entrepreneurship Theory and Principles 
-Operating Systems
-Artificial Intelligence
-Computer Forensic Tools
-Computer Networks & Data Communication
-Database Management Systems 
+
+
 
 Operating Systems Forensics
 Cryptology & Coding Theory
