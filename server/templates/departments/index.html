@@ -47,9 +47,9 @@
                     <p class="text-xs text-secondary mb-0">{{department.school}}</p>
                   </td>
                   <td class="align-middle">
-                    <button type="button" @click="setCourseUpdate(`{{department.name}}`,`{{department.department_head}}`,`{{department.contact_email}}`,`{{department.description}}`)"
+                    <button type="button" @click="setCourseUpdate(`{{department.id}}`,`{{department.name}}`,`{{department.department_head}}`,`{{department.contact_email}}`,`{{department.description}}`)"
                       class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Edit
+                      Details
                     </button>
                   </td>
                 </tr>
@@ -68,7 +68,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="">
+                    <form>
                       {% csrf_token %}
 
 
@@ -83,7 +83,7 @@
                           Department head<span class="asteriskField">*</span> </label>
                         <div> 
                           <input type="text" name="department_head" maxlength="255" class="textinput form-control" required
-                            id="id_department_head" :value=[[department_head]]> 
+                            id="id_department_head" :value=[[department_head]] @input="event => department_head = event.target.value"> 
                         </div>
                       </div>
                       <div id="div_id_contact_email" class="form-group"> <label for="id_contact_email" class=" requiredField">
@@ -104,7 +104,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn bg-gradient-primary">Save changes</button>
+                    <button type="button" @click="updateCourse()" class="btn bg-gradient-primary">Update</button>
                   </div>
                 </div>
               </div>
@@ -138,14 +138,47 @@
         contact_email: '',
         description: ''
       }
-    },
+    },  
     delimiters:['[[',']]'],
     methods: {
-      setCourseUpdate(id,name,department_head,email,description) {
+      setCourseUpdate(id, name, department_head, email, description) {
         this.name = name
         this.department_head = department_head
         this.contact_email = email
         this.description = description
+        this.id = id
+      },
+      async updateCourse() {
+        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        
+        console.log
+
+        let csrfToken = tokenField.value;
+
+        const body ={
+            id: this.id,
+            name: document.querySelector('#id_name').value,
+            department_head: document.querySelector('#id_department_head').value,
+            contact_email: document.querySelector('#id_contact_email').value,
+            description: document.querySelector('#id_description').value
+        }
+
+        console.log(body)
+
+
+        const response = await fetch(`/departments/update/${this.id}/`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'Application/Json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+         const data = await response.json()
+
+         window.location.reload()
       }
     }
 
