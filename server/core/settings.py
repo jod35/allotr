@@ -51,10 +51,12 @@ INSTALLED_APPS = [
     "programs.apps.ProgramsConfig",
     "intakes.apps.IntakesConfig",
     "allocations.apps.AllocationsConfig",
-    "lecturers.apps.LecturersConfig"
+    "lecturers.apps.LecturersConfig",
 
 
     #third party apps
+    'crispy_forms',
+    'crispy_bootstrap4'
 ]
 
 MIDDLEWARE = [
@@ -307,7 +309,11 @@ STATICFILES_DIRS = (
 # Assets Management
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
 
-
+#Login settings
 LOGIN_URL ='/auth/login/'
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/auth/login/'
+
+
+#Crispy forms settings
+CRISPY_TEMPLATE_PACK='bootstrap4'
