@@ -50,7 +50,15 @@
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
     {% include "includes/navigation.html" %} 
-
+    
+    {% if messages %}
+      
+      {% for message in messages %}
+        <small class="mt-4 alert alert-{{message.tags}}">{{message}}</small>
+      {% endfor %}
+        
+    {% endif %}
+      
     {% block content %}{% endblock content %}
 
   </main>

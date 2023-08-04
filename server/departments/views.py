@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.views.generic import ListView,DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse,HttpRequest
+from django.contrib import messages
 from .forms import DepartmentUpdateForm
 from .models import Department
 import json
@@ -48,6 +48,8 @@ def update_department(request:HttpRequest,department_id):
                 department_head = data.get('department_head'),
                 contact_email = data.get('contact_email')
         )
+
+        messages.success(request,f"Department '{department_to_update.first().name}' has been updated successfully")
        
         return JsonResponse(data={"message":"Updated Successfully"})
 

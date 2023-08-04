@@ -7,7 +7,7 @@
 
 {% block content %}
 
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4" id="app">
 
       <div class="row">
         <div class="col-12">
@@ -43,15 +43,76 @@
                         <p class="text-xs font-weight-bold mb-0">{{ school.code }}</p>
                       </td>
                       <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
+                        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        @click="setSchoolData(`{{ school.id }}`, `{{ school.name }}`, `{{school.dean}}`, `{{school.contact_email}}`, `{{school.code}}`, `{{school.details}}`)"
+                        >
+                          Details
+                        </button>
                       </td>
                     </tr>
                     {% endfor %}
                       
                   </tbody>
                 </table>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update School Details</h5>
+                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          {% csrf_token %}
+    
+    
+                          <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
+                              Name<span class="asteriskField">*</span> </label>
+                            <div> 
+                              <input type="text" name="name" maxlength="500" class="textinput form-control" required id="id_name"
+                                :value=[[name]]> 
+                            </div>
+                          </div>
+                          <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
+                              Code<span class="asteriskField">*</span> </label>
+                            <div> 
+                              <input type="text" name="code" maxlength="255" class="textinput form-control" required
+                                id="id_code" :value=[[code]] @input="event => code = event.target.value"> 
+                            </div>
+                          </div>
+                          <div id="div_id_dean" class="form-group"> <label for="id_dean" class=" requiredField">
+                            Dean<span class="asteriskField">*</span> </label>
+                          <div> 
+                            <input type="text" name="dean" maxlength="255" class="textinput form-control" required
+                              id="id_dean" :value=[[dean]] @input="event => dean = event.target.value"> 
+                          </div>
+                        </div>
+                          <div id="div_id_contact_email" class="form-group"> <label for="id_contact_email" class=" requiredField">
+                              Contact email<span class="asteriskField">*</span> </label>
+                              <div> 
+                                <input type="email" name="contact_email" maxlength="80" class="emailinput form-control" required
+                                  id="id_contact_email" :value=[[contact_email]]> 
+                              </div>
+                          </div>
+                          <div id="div_id_details" class="form-group"> <label for="id_details" class=" requiredField">
+                              Details<span class="asteriskField">*</span> </label>
+                            <div> 
+                              <textarea name="details" cols="40" rows="5" class="textarea form-control" required id="id_details">[[details]]</textarea> 
+                              </div>
+                          </div>
+    
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-gradient-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -64,4 +125,44 @@
 {% endblock content %}
 
 <!-- Specific JS goes HERE --> 
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+  const app = Vue.createApp({
+    mounted() {
+console.log(this.name)
+console.log(this.contact_email)
+    },
+    data() {
+      return {
+        count: 0,
+        id: '',
+        name: '',
+        dean:'',
+        code: '',
+        contact_email: '',
+        details: ''
+      }
+    },
+    delimiters: ['[[', ']]'],
+    methods: {
+      setSchoolData(id, name, dean, email,code, details) {
+        this.id = id
+        this.name = name
+        this.dean = dean
+        this.contact_email = email
+        this.code = code
+        this.details = details
+
+
+        console.log(id,name,dean)
+        
+      },
+    }
+
+
+  }).mount('#app')
+
+
+</script>
+
+{% endblock javascripts %}
