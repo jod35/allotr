@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "courses.apps.CoursesConfig",
     "programs.apps.ProgramsConfig",
     "intakes.apps.IntakesConfig",
-    "allocations.apps.AllocationsConfig"
+    "allocations.apps.AllocationsConfig",
+    "lecturers.apps.LecturersConfig"
 
 
     #third party apps
