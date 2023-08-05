@@ -1,12 +1,12 @@
 from typing import Any, Dict
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,CreateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse,HttpRequest
+from django.http import HttpResponse, JsonResponse,HttpRequest
 from django.contrib import messages
-from .forms import DepartmentUpdateForm
+from .forms import DepartmentUpdateForm,DepartmentCreateForm
 from .models import Department
 import json
 
@@ -21,7 +21,7 @@ class DepartmentListView(LoginRequiredMixin,ListView):
 
         context =  super().get_context_data(**kwargs)
 
-        context['form'] = DepartmentUpdateForm()
+        context['form'] = DepartmentCreateForm()
 
         return context
  
@@ -29,6 +29,21 @@ class DepartmentDetailView(LoginRequiredMixin,DetailView):
     template_name = 'departments/detail.html'
     queryset = Department.objects.all()
 
+@login_required
+def create_department(request):
+
+    if request.method == "POST":
+        data =  request.POST
+        form = DepartmentCreateForm(data=data)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request,"Department created successfully")
+
+            return redirect(reverse('department_list'))
+
+    return redirect(reverse('department_list'))
 
 @login_required
 def update_department(request:HttpRequest,department_id):
@@ -56,3 +71,13 @@ def update_department(request:HttpRequest,department_id):
     return JsonResponse(data={"message":"Hello from server"})
 
 
+
+@login_required
+def delete_department(request,pk):
+    department = get_object_or_404(Department,id=pk)
+
+    department.delete()
+
+    messages.success(request,f"Department {department.name} deleted successfully")
+
+    return redirect(reverse('department_list'))
