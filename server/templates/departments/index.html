@@ -89,16 +89,16 @@
                       <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
                           Name<span class="asteriskField">*</span> </label>
                         <div>
-                          <input required type="text" name="name" maxlength="500" class="textinput form-control" required
-                            id="id_name" :value=[[name]]>
+                          <input required type="text" name="name" maxlength="500" class="textinput form-control"
+                            required id="id_name" :value=[[name]]>
                         </div>
                       </div>
                       <div id="div_id_department_head" class="form-group"> <label for="id_department_head"
                           class=" requiredField">
                           Department head<span class="asteriskField">*</span> </label>
                         <div>
-                          <input required type="text" name="department_head" maxlength="255" class="textinput form-control"
-                            required id="id_department_head" :value=[[department_head]]
+                          <input required type="text" name="department_head" maxlength="255"
+                            class="textinput form-control" required id="id_department_head" :value=[[department_head]]
                             @input="event => department_head = event.target.value">
                         </div>
                       </div>
@@ -106,8 +106,8 @@
                           class=" requiredField">
                           Contact email<span class="asteriskField">*</span> </label>
                         <div>
-                          <input required type="email" name="contact_email" maxlength="80" class="emailinput form-control"
-                            required id="id_contact_email" :value=[[contact_email]]>
+                          <input required type="email" name="contact_email" maxlength="80"
+                            class="emailinput form-control" required id="id_contact_email" :value=[[contact_email]]>
                         </div>
                       </div>
                       <div id="div_id_description" class="form-group"> <label for="id_description"
@@ -126,7 +126,8 @@
                       @click="resetState">Close</button>
                     <button type="button" @click="updateCourse()" class="btn bg-gradient-primary">Update
                       Department</button>
-                    <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Department</a>
+                    <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal">Delete Department</a>
                   </div>
                 </div>
               </div>
@@ -141,7 +142,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Create Department</h5>
-                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" @click="resetState()">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -150,24 +151,26 @@
                       {% csrf_token %}
                       {{form|crispy}}
                       <div class="modal-footer">
-                        <button type="button" @click="resetState()" class="btn bg-gradient-dark" data-bs-dismiss="modal">Close</button>
-                        <button type="submit"  class="btn bg-gradient-primary">Save</button>
+                        <button type="button" @click="resetState()" class="btn bg-gradient-dark"
+                          data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn bg-gradient-primary">Save</button>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {% comment %}
-              Modal for deleting department
+            Modal for deleting department
             {% endcomment %}
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+              aria-hidden="true">
               <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h6 class="modal-title" id="modal-title-notification">Delete Department</h6>
-                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" @click="resetState()">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
@@ -180,7 +183,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-danger" @click="deleteDepartment()">Ok, Delete</button>
-                    <button type="button" class="btn bg-gradient-dark text-white ml-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-gradient-dark text-white ml-auto"
+                      data-bs-dismiss="modal">Close</button>
                   </div>
                 </div>
               </div>
@@ -258,7 +262,7 @@
         });
 
 
-      
+
         const data = await response.json()
 
 
@@ -269,7 +273,7 @@
 
         window.location.reload()
       },
-      async deleteDepartment(){
+      async deleteDepartment() {
         const response = await fetch(`/departments/delete/${this.id}/`);
 
 
