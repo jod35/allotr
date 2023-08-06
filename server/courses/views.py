@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
 from django.http import JsonResponse
+from django.contrib import messages
 from .forms import CourseUpdateForm
 import json
 
@@ -38,6 +39,10 @@ def update_course(request:HttpRequest ,course_id):
             title = data.get('title'),
             course_description = data.get('course_description')
         )
+
+
+        messages.success(request,f"Course '{course_to_update}' has been updated successfully!")
+
 
         return JsonResponse(data={
             "message":"Course Updated successfully"

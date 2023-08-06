@@ -56,27 +56,31 @@
                 <div class="col-md-12">
                   <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
-                      <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-                      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                    <li class="page-item"><a class="page-link"
+                        href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
                     {% endif %}
-            
+
                     {% for num in page_obj.paginator.page_range %}
-                      {% if num == page_obj.number %}
-                        <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(current)</span></span></li>
-                      {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                      {% endif %}
+                    {% if num == page_obj.number %}
+                    <li class="page-item active"><span class="page-link">{{ num }} <span
+                          class="sr-only">(current)</span></span></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
                     {% endfor %}
-            
+
                     {% if page_obj.has_next %}
-                      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-                      <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
                     {% endif %}
                   </ul>
                 </div>
               </div>
             </div>
-            
+
             <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
               aria-hidden="true">
               <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
@@ -171,11 +175,11 @@
             'X-CSRFToken': csrfToken,
             'X-Requested-With': 'XMLHttpRequest'
           },
-          method : "POST",
-          body:JSON.stringify({
-            code : this.code,
-            title : this.title,
-            course_description : this.course_description
+          method: "POST",
+          body: JSON.stringify({
+            code: this.code,
+            title: this.title,
+            course_description: this.course_description
           })
         });
 
