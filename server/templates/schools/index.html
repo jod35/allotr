@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Tables {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
@@ -7,137 +8,171 @@
 
 {% block content %}
 
-    <div class="container-fluid py-4" id="app">
+<div class="container-fluid py-4" id="app">
 
-      <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Schools</h6>
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">School Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Code</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for school in schools %}
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="{% static 'assets/img/grad.png' %}" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm"><a href="{% url 'school_detail' pk=school.id%}">{{ school.name }}</a></h6>
-                            <p class="text-xs text-secondary mb-0">{{school.contact_email}}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">{{ school.code }}</p>
-                      </td>
-                      <td class="align-middle">
-                        <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        @click="setSchoolData(`{{ school.id }}`, `{{ school.name }}`, `{{school.dean}}`, `{{school.contact_email}}`, `{{school.code}}`, `{{school.details}}`)"
-                        >
-                          Details
-                        </button>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                      
-                  </tbody>
-                </table>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update School Details</h5>
-                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Schools</h6>
+        </div>
+        <div class="card-header pb-0">
+          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+            data-bs-target="#createSchoolModal">
+            Add School
+          </button>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">School Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Code</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for school in schools %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div>
+                        <img src="{% static 'assets/img/grad.png' %}" class="avatar avatar-sm me-3" alt="user1">
                       </div>
-                      <div class="modal-body">
-                        <form>
-                          {% csrf_token %}
-    
-    
-                          <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
-                              Name<span class="asteriskField">*</span> </label>
-                            <div> 
-                              <input type="text" name="name" maxlength="500" class="textinput form-control" required id="id_name"
-                                :value=[[name]]> 
-                            </div>
-                          </div>
-                          <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
-                              Code<span class="asteriskField">*</span> </label>
-                            <div> 
-                              <input type="text" name="code" maxlength="255" class="textinput form-control" required
-                                id="id_code" :value=[[code]] @input="event => code = event.target.value"> 
-                            </div>
-                          </div>
-                          <div id="div_id_dean" class="form-group"> <label for="id_dean" class=" requiredField">
-                            Dean<span class="asteriskField">*</span> </label>
-                          <div> 
-                            <input type="text" name="dean" maxlength="255" class="textinput form-control" required
-                              id="id_dean" :value=[[dean]] @input="event => dean = event.target.value"> 
-                          </div>
-                        </div>
-                          <div id="div_id_contact_email" class="form-group"> <label for="id_contact_email" class=" requiredField">
-                              Contact email<span class="asteriskField">*</span> </label>
-                              <div> 
-                                <input type="email" name="contact_email" maxlength="80" class="emailinput form-control" required
-                                  id="id_contact_email" :value=[[contact_email]]> 
-                              </div>
-                          </div>
-                          <div id="div_id_details" class="form-group"> <label for="id_details" class=" requiredField">
-                              Details<span class="asteriskField">*</span> </label>
-                            <div> 
-                              <textarea name="details" cols="40" rows="5" class="textarea form-control" required id="id_details">[[details]]</textarea> 
-                              </div>
-                          </div>
-    
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn bg-gradient-primary">Save changes</button>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm"><a href="{% url 'school_detail' pk=school.id%}">{{ school.name }}</a>
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">{{school.contact_email}}</p>
                       </div>
                     </div>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">{{ school.code }}</p>
+                  </td>
+                  <td class="align-middle">
+                    <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      @click="setSchoolData(`{{ school.id }}`, `{{ school.name }}`, `{{school.dean}}`, `{{school.contact_email}}`, `{{school.code}}`, `{{school.details}}`)">
+                      Details
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update School Details</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
                   </div>
+                  <div class="modal-body">
+                    <form>
+                      {% csrf_token %}
+
+
+                      <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
+                          Name<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input type="text" name="name" maxlength="500" class="textinput form-control" required
+                            id="id_name" :value=[[name]]>
+                        </div>
+                      </div>
+                      <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
+                          Code<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input type="text" name="code" maxlength="255" class="textinput form-control" required
+                            id="id_code" :value=[[code]] @input="event => code = event.target.value">
+                        </div>
+                      </div>
+                      <div id="div_id_dean" class="form-group"> <label for="id_dean" class=" requiredField">
+                          Dean<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input type="text" name="dean" maxlength="255" class="textinput form-control" required
+                            id="id_dean" :value=[[dean]] @input="event => dean = event.target.value">
+                        </div>
+                      </div>
+                      <div id="div_id_contact_email" class="form-group"> <label for="id_contact_email"
+                          class=" requiredField">
+                          Contact email<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input type="email" name="contact_email" maxlength="80" class="emailinput form-control"
+                            required id="id_contact_email" :value=[[contact_email]]>
+                        </div>
+                      </div>
+                      <div id="div_id_details" class="form-group"> <label for="id_details" class=" requiredField">
+                          Details<span class="asteriskField">*</span> </label>
+                        <div>
+                          <textarea name="details" cols="40" rows="5" class="textarea form-control" required
+                            id="id_details">[[details]]</textarea>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Delete</button>
+                    <button type="button" class="btn bg-gradient-dark">Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="createSchoolModal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add School</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="post" id="create-form">
+                      {% csrf_token %}
+                      {{form |crispy}}
+                      <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-gradient-dark" @click="createSchool()">Save</button>
+                      </div>
+                    </form>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {% include "includes/footer.html" %}
-
     </div>
-    
+  </div>
+  {% include "includes/footer.html" %}
+
+</div>
+
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}
 <script>
   const app = Vue.createApp({
     mounted() {
-console.log(this.name)
-console.log(this.contact_email)
+      console.log(this.name)
+      console.log(this.contact_email)
     },
     data() {
       return {
         count: 0,
         id: '',
         name: '',
-        dean:'',
+        dean: '',
         code: '',
         contact_email: '',
         details: ''
@@ -145,7 +180,7 @@ console.log(this.contact_email)
     },
     delimiters: ['[[', ']]'],
     methods: {
-      setSchoolData(id, name, dean, email,code, details) {
+      setSchoolData(id, name, dean, email, code, details) {
         this.id = id
         this.name = name
         this.dean = dean
@@ -154,9 +189,43 @@ console.log(this.contact_email)
         this.details = details
 
 
-        console.log(id,name,dean)
-        
+        console.log(id, name, dean)
+
       },
+    
+      async createSchool(){
+        // create a new school
+        const createForm = document.getElementById('create-form');
+
+        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+        let csrfToken = tokenField.value;
+
+        const formData = new FormData(createForm);
+
+        let name = formData.get('name')
+        let code = formData.get('code')
+        let dean = formData.get('dean')
+        let contact_email = formData.get('contact_email')
+        let details = formData.get('details')
+
+        const response  = await fetch('/schools/create/',{
+          headers:{
+            'Content-Type': 'Application/Json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          method: "POST",
+          body : JSON.stringify({name,code,dean,contact_email,details})
+        })
+
+        console.log(await response.json())
+
+        createForm.reset()
+
+        window.location.reload()
+      }
+    
     }
 
 
