@@ -1,6 +1,7 @@
-from django.db import models
 from datetime import datetime
+
 from courses.models import Course
+from django.db import models
 
 # Create your models here.
 

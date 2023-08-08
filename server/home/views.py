@@ -3,17 +3,17 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from courses.models import Course
+from departments.models import Department
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
-from courses.models import Course
 from programs.models import Program
-from departments.models import Department
 from schools.models import School
-from django.core.paginator import Paginator
 
 
 @login_required(login_url="/auth/login/")

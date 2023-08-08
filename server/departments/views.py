@@ -1,14 +1,16 @@
-from typing import Any, Dict
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse, HttpRequest
-from django.contrib import messages
-from .forms import DepartmentUpdateForm, DepartmentCreateForm
-from .models import Department
 import json
+from typing import Any, Dict
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
+
+from .forms import DepartmentCreateForm, DepartmentUpdateForm
+from .models import Department
 
 # Create your views here.
 

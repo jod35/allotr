@@ -1,14 +1,15 @@
+import json
 from typing import Any, Dict
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+
 from courses.models import Course
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest
-from django.http import JsonResponse
-from django.contrib import messages
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
+
 from .forms import CourseUpdateForm
-import json
 
 # Create your views here.
 

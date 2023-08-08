@@ -1,5 +1,6 @@
-from .models import Department
 from rest_framework import serializers
+
+from .models import Department
 
 
 class DepartmentCreateSerializer(serializers.ModelSerializer):

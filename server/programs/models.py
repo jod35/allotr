@@ -1,6 +1,6 @@
-from django.db import models
 from courses.models import Course
 from departments.models import Department
+from django.db import models
 
 
 # Create your models here.
