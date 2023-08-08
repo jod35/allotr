@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 from .forms import SchoolCreateForm
@@ -46,7 +46,22 @@ def create_school(request:HttpRequest):
     return JsonResponse({"message":"School created successfuly"})
 
 
-def updated_school(request:HttpRequest):
+def updated_school(request:HttpRequest,school_id):
     data = json.loads(request.body)
 
-    return JsonResponse({"message":"School updated successfully"})
+    school = School.objects.filter(id =school_id).update(**data)
+
+    messages.success(request,"School updated successfully")
+
+    return JsonResponse({"message":f"School `{school}` updated successfully"})
+
+
+def delete_school(request:HttpRequest,school_id):
+
+    school = get_object_or_404(School,id = school_id)
+
+    school.delete()
+
+    messages.success(request,"School updated successfully")
+
+    return JsonResponse({"message":"School deleted"})
