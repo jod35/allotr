@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.AllocationView.as_view(), name='allocation_list'),
+    path("", views.AllocationView.as_view(), name="allocation_list"),
 ]

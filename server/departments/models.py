@@ -6,7 +6,7 @@ from schools.models import School
 
 class Department(models.Model):
     name = models.CharField(max_length=500)
-    school = models.ForeignKey(School,on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     department_head = models.CharField(max_length=255)
     contact_email = models.EmailField(max_length=80)
     description = models.TextField()
