@@ -1,0 +1,117 @@
+{% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
+{% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="container-fluid py-4" id="app">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h3>{{program.name}} ({{program.code}})</h3>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+           <div class="container container-fluid">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Details</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Courses</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h5 class="mb-3">Program Details</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Degree Level</h6>
+                            <p>
+                                {{program.get_degree_level_display}}
+                            </p>
+                            <h6>Details</h6>
+                            <p>
+                                {{ program.details }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Years of study</h6>
+                            <p>{{program.years_of_study}}</p>
+                            <h6>Department</h6>
+                            <p>{{program.department}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h6>Courses Offered under this program</h6>
+                      <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                          <table class="table align-items-center mb-0">
+                            <thead>
+                              <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Course</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Function</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for course in program.courses.all %}
+                                <tr>
+                                <td>
+                                  <div class="d-flex px-2 py-1">
+                                    <div>
+                                      <img src="{% static 'assets/img/courses.png' %}" class="avatar avatar-sm me-3" alt="user1">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                      <h6 class="mb-0 text-sm  text-primary">{{course.code}}</h6>
+                                      <p class="text-xs text-secondary mb-0">{{course.title}}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="align-middle">
+                                  
+                                  {% for program in course.programs.all %}
+                                    {{program.code}}
+                                  {% endfor %}
+                                    
+                                </td>
+                              </tr>
+                                {% endfor %}
+                                    
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include "includes/footer.html" %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+<script>
+  const app = Vue.createApp({
+    mounted() {},
+    data() {
+      return {
+      };
+    },
+    delimiters: ["[[", "]]"],
+    methods: {
+    },
+  }).mount("#app");
+</script>
+{% endblock javascripts %}

@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from django.http import JsonResponse,HttpRequest
 from django.http import HttpRequest
 from .models import Program
@@ -45,6 +45,13 @@ def create_program(request:HttpRequest):
 
     messages.success(request,"Program created successfully")
     return JsonResponse({"message":"Program created successfuly"})
+
+
+
+class ProgramDetailView(LoginRequiredMixin,DetailView):
+    model = Program
+    template_name = "programs/details.html"
+
 
 @login_required
 def updated_program(request:HttpRequest,program_id):
