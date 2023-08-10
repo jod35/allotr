@@ -8,7 +8,7 @@ from django.http import JsonResponse,HttpRequest
 from django.http import HttpRequest
 from .models import Program
 from departments.models import Department
-from .forms import ProgramCreateForm
+from .forms import ProgramCreateForm, ProgramCourseUpdateForm
 import json
 
 # Create your views here.
@@ -51,6 +51,13 @@ def create_program(request:HttpRequest):
 class ProgramDetailView(LoginRequiredMixin,DetailView):
     model = Program
     template_name = "programs/details.html"
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+
+        context['form'] = ProgramCourseUpdateForm()
+
+        return context
 
 
 @login_required
