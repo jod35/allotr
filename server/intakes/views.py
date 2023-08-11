@@ -9,3 +9,4 @@ from .models import Intake
 class IntakeListView(ListView):
     template_name = "intakes/index.html"
     queryset = Intake.objects.all()
+    context_object_name = 'intakes'
