@@ -10,4 +10,4 @@ class ProgramAdmin(admin.ModelAdmin):
     list_display = ["name", "code", "department", "years_of_study", "degree_level"]
     list_filter = ["created_at", "years_of_study"]
     search_fields = ["name"]
-    filter_horizontal = ['courses']
+    # filter_horizontal = ['courses']
