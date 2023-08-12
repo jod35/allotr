@@ -11,6 +11,11 @@
         <div class="card-header pb-0">
           <h6>Intakes</h6>
         </div>
+        <div class="card-header pb-0">
+          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal" data-bs-target="#createModal">
+            Add Intake
+          </button>
+        </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -75,6 +80,7 @@
                       class="btn btn-sm bg-dark"
                       data-bs-toggle="modal"
                       data-bs-target="#intakeUpdateForm"
+                      @click="setIntake(`{{intake.name}}`,`{{intake.start_date}}`,`{{intake.end_date}}`,`{{program.academic_year}}`,`{{intake.term}}`,`{{intake.is_active}}`)"
                     >
                       <i class="fas fa-eye fa-2x"></i>
                     </button>
@@ -122,6 +128,7 @@
                               class="textinput form-control"
                               required
                               id="id_name"
+                              :value=[[name]]
                             />
                           </div>
                         </div>
@@ -136,6 +143,7 @@
                               class="datetimeinput form-control"
                               required
                               id="id_start_date"
+                              :value=[[start_date]]
                             />
                           </div>
                         </div>
@@ -150,6 +158,7 @@
                               class="dateinput form-control"
                               required
                               id="id_end_date"
+                              :value=[[end_date]]
                             />
                           </div>
                         </div>
@@ -165,6 +174,7 @@
                               class="numberinput form-control"
                               required
                               id="id_academic_year"
+                              :value=[[academic_year]]
                             />
                           </div>
                         </div>
@@ -191,6 +201,7 @@
                               name="is_active"
                               class="checkboxinput form-check-input"
                               id="id_is_active"
+                              :value=[[is_active]]
                             />
                             <label for="id_is_active" class="form-check-label">
                               Is active
@@ -212,21 +223,31 @@
                       </form>
                     </form>
                   </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn bg-gradient-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button type="button" class="btn bg-gradient-primary">
-                      Save changes
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add Intake</h5>
+                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form |crispy }}
+                        <div class="modal-footer">
+                          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn bg-gradient-dark">Save changes</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -251,6 +272,7 @@
         is_active:''
       }
     },
+    delimiters:["[[","]]"],
     methods:{
       setIntake(name, start_date,end_date,academic_year,term,is_active){
         this.name = name;
@@ -259,6 +281,8 @@
         this.academic_year = academic_year;
         this.term = term;
         this.is_active = is_active;
+
+        console.log({name,start_date,end_date,academic_year,term})
       }
     }
 
