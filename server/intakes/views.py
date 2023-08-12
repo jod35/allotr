@@ -1,7 +1,9 @@
 from typing import Any, Dict
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import ListView
 from .forms import IntakeCreateUpdateForm
+from django.urls import reverse
+from django.contrib import messages
 
 from .models import Intake
 
@@ -22,3 +24,11 @@ class IntakeListView(ListView):
         
 
         return context
+
+    def post(self,request,*args,**kwargs):
+        form = IntakeCreateUpdateForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Intake Createx successfully")
+            return redirect(reverse('intake_list'))
