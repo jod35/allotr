@@ -1,74 +1,267 @@
-{% extends 'layouts/base.html' %}
-{% load static %}
+{% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Tables {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
-{% block content %}
-
-    <div class="container-fluid py-4">
-
-      <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Intakes</h6>
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Year</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Term</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Active</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for intake in intakes %}
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
+<div class="container-fluid py-4" id="app">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Intakes</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Name
+                  </th>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                  >
+                    Year
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Term
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Active
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for intake in intakes %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div>
+                        <img
+                          src="{% static 'assets/img/calendar.png' %}"
+                          class="avatar avatar-sm me-3"
+                          alt="user1"
+                        />
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{intake.name}}</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{intake.academic_year}}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    {{ intake.get_term_display }}
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold"
+                      >{{intake.is_active}}</span
+                    >
+                  </td>
+                  <td class="align-middle">
+                    <!-- Button trigger modal -->
+                    <button
+                      type="button"
+                      class="btn btn-sm bg-dark"
+                      data-bs-toggle="modal"
+                      data-bs-target="#intakeUpdateForm"
+                    >
+                      <i class="fas fa-eye fa-2x"></i>
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div
+              class="modal fade"
+              id="intakeUpdateForm"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Intake Details
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="post">
+                      {% csrf_token %}
+                      <form action="" method="post">
+                        <div id="div_id_name" class="form-group">
+                          <label for="id_name" class="requiredField">
+                            Name<span class="asteriskField">*</span>
+                          </label>
                           <div>
-                            <img src="{% static 'assets/img/calendar.png' %}" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{intake.name}}</h6>
+                            <input
+                              type="text"
+                              name="name"
+                              maxlength="50"
+                              class="textinput form-control"
+                              required
+                              id="id_name"
+                            />
                           </div>
                         </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">{{intake.academic_year}}</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                       {{ intake.get_term_display }}
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">{{intake.is_active}}</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                      
-                  </tbody>
-                </table>
+                        <div id="div_id_start_date" class="form-group">
+                          <label for="id_start_date" class="requiredField">
+                            Start date<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <input
+                              type="text"
+                              name="start_date"
+                              class="datetimeinput form-control"
+                              required
+                              id="id_start_date"
+                            />
+                          </div>
+                        </div>
+                        <div id="div_id_end_date" class="form-group">
+                          <label for="id_end_date" class="requiredField">
+                            End date<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <input
+                              type="text"
+                              name="end_date"
+                              class="dateinput form-control"
+                              required
+                              id="id_end_date"
+                            />
+                          </div>
+                        </div>
+                        <div id="div_id_academic_year" class="form-group">
+                          <label for="id_academic_year" class="requiredField">
+                            Academic year<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <input
+                              type="number"
+                              name="academic_year"
+                              value="2023"
+                              class="numberinput form-control"
+                              required
+                              id="id_academic_year"
+                            />
+                          </div>
+                        </div>
+                        <div id="div_id_term" class="form-group">
+                          <label for="id_term" class="requiredField">
+                            Term<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <select
+                              name="term"
+                              class="select form-control"
+                              id="id_term"
+                            >
+                              <option value="Jan" selected>January</option>
+                              <option value="May">May</option>
+                              <option value="Sep">September</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div id="div_id_is_active" class="form-check">
+                            <input
+                              type="checkbox"
+                              name="is_active"
+                              class="checkboxinput form-check-input"
+                              id="id_is_active"
+                            />
+                            <label for="id_is_active" class="form-check-label">
+                              Is active
+                            </label>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn bg-gradient-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="button" class="btn bg-gradient-primary">
+                            Save changes
+                          </button>
+                        </div>
+                      </form>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn bg-gradient-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn bg-gradient-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {% include "includes/footer.html" %}
-
     </div>
-    
+  </div>
+  {% include "includes/footer.html" %}
+</div>
+
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
-{% block javascripts %}{% endblock javascripts %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+<script>
+  const app = Vue.createApp({
+    data(){
+      return {
+        name :'',
+        start_date:'',
+        end_date:'',
+        academic_year:'',
+        term:'',
+        is_active:''
+      }
+    },
+    methods:{
+      setIntake(name, start_date,end_date,academic_year,term,is_active){
+        this.name = name;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.academic_year = academic_year;
+        this.term = term;
+        this.is_active = is_active;
+      }
+    }
+
+  }).mount('#app');
+</script>
+{% endblock javascripts %}
