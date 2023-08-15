@@ -12,7 +12,12 @@
           <h6>Intakes</h6>
         </div>
         <div class="card-header pb-0">
-          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal" data-bs-target="#createModal">
+          <button
+            type="button"
+            class="btn btn-sm bg-gradient-dark"
+            data-bs-toggle="modal"
+            data-bs-target="#createModal"
+          >
             Add Intake
           </button>
         </div>
@@ -80,7 +85,7 @@
                       class="btn btn-sm bg-dark"
                       data-bs-toggle="modal"
                       data-bs-target="#intakeUpdateForm"
-                      @click="setIntake(`{{intake.name}}`,`{{intake.start_date}}`,`{{intake.end_date}}`,`{{program.academic_year}}`,`{{intake.term}}`,`{{intake.is_active}}`)"
+                      @click="setIntake(`{{intake.id}}`,`{{intake.name}}`,`{{intake.start_date}}`,`{{intake.end_date}}`,`{{intake.academic_year}}`,`{{intake.term}}`,`{{intake.is_active}}`)"
                     >
                       <i class="fas fa-eye fa-2x"></i>
                     </button>
@@ -127,8 +132,8 @@
                               maxlength="50"
                               class="textinput form-control"
                               required
-                              id="id_name"
-                              :value=[[name]]
+                              id="id_update_name"
+                              :value="[[name]]"
                             />
                           </div>
                         </div>
@@ -142,8 +147,8 @@
                               name="start_date"
                               class="datetimeinput form-control"
                               required
-                              id="id_start_date"
-                              :value=[[start_date]]
+                              id="id_update_start_date"
+                              :value="[[start_date]]"
                             />
                           </div>
                         </div>
@@ -157,8 +162,8 @@
                               name="end_date"
                               class="dateinput form-control"
                               required
-                              id="id_end_date"
-                              :value=[[end_date]]
+                              id="id_update_end_date"
+                              :value="[[end_date]]"
                             />
                           </div>
                         </div>
@@ -173,8 +178,8 @@
                               value="2023"
                               class="numberinput form-control"
                               required
-                              id="id_academic_year"
-                              :value=[[academic_year]]
+                              id="id_update_academic_year"
+                              :value="[[academic_year]]"
                             />
                           </div>
                         </div>
@@ -186,7 +191,8 @@
                             <select
                               name="term"
                               class="select form-control"
-                              id="id_term"
+                              id="id_update_term"
+                              v-model ="term"
                             >
                               <option value="Jan" selected>January</option>
                               <option value="May">May</option>
@@ -200,8 +206,8 @@
                               type="checkbox"
                               name="is_active"
                               class="checkboxinput form-check-input"
-                              id="id_is_active"
-                              :value=[[is_active]]
+                              id="id_update_is_active"
+                              :value="[[is_active]]"
                             />
                             <label for="id_is_active" class="form-check-label">
                               Is active
@@ -216,7 +222,11 @@
                           >
                             Close
                           </button>
-                          <button type="button" class="btn bg-gradient-primary">
+                          <button
+                            type="button"
+                            class="btn bg-gradient-dark"
+                            @click="updateIntake()"
+                          >
                             Save changes
                           </button>
                         </div>
@@ -226,28 +236,49 @@
                 </div>
               </div>
             </div>
-            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Add Intake</h5>
-                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form |crispy }}
-                        <div class="modal-footer">
-                          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn bg-gradient-dark">Save changes</button>
-                        </div>
-                      </form>
-                    </div>
+            <div
+              class="modal fade"
+              id="createModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Add Intake
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="post">
+                      {% csrf_token %} {{ form |crispy }}
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn bg-gradient-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn bg-gradient-dark">
+                          Save changes
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
       </div>
@@ -262,30 +293,138 @@
 {% block javascripts %}
 <script>
   const app = Vue.createApp({
-    data(){
+    data() {
       return {
-        name :'',
-        start_date:'',
-        end_date:'',
-        academic_year:'',
-        term:'',
-        is_active:''
-      }
+        id :"",
+        name: "",
+        start_date: "",
+        end_date: "",
+        academic_year: "",
+        term: "",
+        is_active: "",
+      };
     },
-    delimiters:["[[","]]"],
-    methods:{
-      setIntake(name, start_date,end_date,academic_year,term,is_active){
+    delimiters: ["[[", "]]"],
+    methods: {
+      setIntake(id,name, start_date, end_date, academic_year, term, is_active) {
+        this.id = id;
         this.name = name;
-        this.start_date = start_date;
-        this.end_date = end_date;
+        this.start_date = this.parseCustomDateTime(start_date);
+        this.end_date = this.parseDate(end_date);
         this.academic_year = academic_year;
         this.term = term;
         this.is_active = is_active;
+      },
+      parseCustomDateTime(customDateString) {
+        const parts = customDateString.split(/[\s,]+/);
 
-        console.log({name,start_date,end_date,academic_year,term})
-      }
-    }
+        // Map abbreviated month to its numerical value
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          May: 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
 
-  }).mount('#app');
+        // Extract components from the parsed string
+        const month = monthMap[parts[0]];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        let hour = 0;
+        let minute = 0;
+
+        // Check if time components are present
+        if (parts.length >= 4) {
+          const timeParts = parts[3].split(":");
+          hour = parseInt(timeParts[0], 10);
+          minute = parseInt(timeParts[1], 10);
+
+          const ampm = parts[4];
+
+          // Adjust hour for AM/PM
+          if (ampm === "p.m." && hour !== 12) {
+            hour += 12;
+          } else if (ampm === "a.m." && hour === 12) {
+            hour = 0;
+          }
+        }
+
+        // Create a JavaScript Date object
+        const date = new Date(year, month, day, hour, minute);
+
+        let formattedDate = date.toISOString().slice(0, 16);
+
+        const value = Vue.ref(formattedDate);
+
+        return value;
+      },
+      parseDate(date) {
+        const parts = date.split(/[\s,]+/);
+        const month = parts[0];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          "May": 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
+
+        const date_ = new Date(Date.UTC(year, monthMap[month], day));
+
+        const value = Vue.ref(date_.toISOString().slice(0, 10));
+
+        return value;
+      },
+      async updateIntake() {
+        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+        let csrfToken = tokenField.value;
+        const body = {
+          name: document.getElementById('id_update_name').value,
+          start_date: document.getElementById('id_update_start_date').value,
+          end_date: document.getElementById('id_update_end_date').value,
+          term:document.getElementById('id_update_term').value,
+          academic_year: document.getElementById('id_update_academic_year').value,
+          is_active: document.getElementById('id_update_is_active').value
+        };
+
+        const response = await fetch(`/intakes/update/${this.id}/`,{
+          method : 'POST',
+          headers :{
+            'Content-Type': 'Application/Json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify(body)
+        })
+
+
+        const data = await response.json()
+
+        console.log(data)
+
+        window.location.reload()
+      },
+    },
+  }).mount("#app");
 </script>
 {% endblock javascripts %}
