@@ -56,7 +56,27 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "rest_framework",
+    # "django_select2",
+    'django_select2',
+    
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+    },
+    "select2": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# Tell select2 which cache configuration to use:
+SELECT2_CACHE_BACKEND = "select2"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

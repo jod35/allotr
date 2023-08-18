@@ -2,7 +2,10 @@
 {% block title %} Tables {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+{% block stylesheets %}
+{{ form.media.css }}
+<style></style>
+{% endblock stylesheets %} {% block content %}
 
 <div class="container-fluid py-4" id="app">
   <div class="row">
@@ -164,14 +167,5 @@
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
-<script>
-  const app = Vue.createApp({
-    mounted() {},
-    data() {
-      return {};
-    },
-    delimiters: ["[[", "]]"],
-    methods: {},
-  }).mount("#app");
-</script>
+{{ form.media.js }}
 {% endblock javascripts %}

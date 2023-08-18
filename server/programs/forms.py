@@ -6,9 +6,16 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.files.base import File
 from django.db.models.base import Model
 from django.forms.utils import ErrorList
+from django_select2 import forms as s2forms
 
 from .models import Program
 
+
+class ProgramCourseWidget(s2forms.ModelSelect2MultipleWidget):
+    search_fields =[
+        "title__icontains",
+        "code__icontains"
+    ]
 
 class ProgramCreateForm(forms.ModelForm):
     class Meta:
@@ -24,12 +31,11 @@ class ProgramCreateForm(forms.ModelForm):
 
 
 class ProgramCourseUpdateForm(forms.ModelForm):
+    
     class Meta:
         model = Program
         fields = ["courses"]
 
-    courses = forms.ModelMultipleChoiceField(
-        queryset=Course.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
+        widgets={
+            'courses':ProgramCourseWidget
+        }
