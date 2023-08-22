@@ -12,6 +12,9 @@ from .models import Program
 
 
 class ProgramCourseWidget(s2forms.ModelSelect2MultipleWidget):
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.attrs = {"style": "width: 100%"}
     search_fields =[
         "title__icontains",
         "code__icontains"

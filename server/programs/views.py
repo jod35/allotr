@@ -12,6 +12,7 @@ from django.views.generic import DetailView, ListView
 
 from .forms import ProgramCourseUpdateForm, ProgramCreateForm
 from .models import Program
+from courses.models import Course
 
 # Create your views here.
 
@@ -68,13 +69,18 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
         form = ProgramCourseUpdateForm(data=request.POST, instance=program)
 
         if form.is_valid():
-            form.save()
+            #program instance has to be saved first
+            program = form.save(commit=False)
+
+            courses = form.cleaned_data.get('courses')
+
+
 
             messages.success(request, "Courses updated successfully!")
 
             return redirect(reverse("program_detail", kwargs={"pk": program.id}))
 
-
+        
 @login_required
 def updated_program(request: HttpRequest, program_id):
     data = json.loads(request.body)

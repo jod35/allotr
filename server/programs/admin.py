@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib import admin
 
 from .models import Program
@@ -11,3 +12,4 @@ class ProgramAdmin(admin.ModelAdmin):
     list_filter = ["created_at", "years_of_study"]
     search_fields = ["name"]
     # filter_horizontal = ['courses']
+
