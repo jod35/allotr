@@ -21,6 +21,11 @@ class ProgramCourseWidget(s2forms.ModelSelect2MultipleWidget):
     ]
 
 class ProgramCreateForm(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        
+
+        self.fields['details'].widget.attrs['rows'] = 5
     class Meta:
         model = Program
         fields = [
@@ -31,6 +36,8 @@ class ProgramCreateForm(forms.ModelForm):
             "department",
             "details",
         ]
+
+    
 
 
 class ProgramCourseUpdateForm(forms.ModelForm):
