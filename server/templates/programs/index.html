@@ -45,7 +45,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for program in programs %}
+                {% for program in page_obj %}
                 <tr>
                   <td>
                     <div class="d-flex px-2 py-1">
@@ -106,6 +106,7 @@
                 {% endfor %}
               </tbody>
             </table>
+            {% include 'includes/pagination.html' %}
 
             {% comment %} A Program update and detail form {% endcomment %}
 

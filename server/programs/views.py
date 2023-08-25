@@ -22,12 +22,13 @@ class ProgramListView(ListView):
     template_name = "programs/index.html"
     queryset = Program.objects.all()
     context_object_name = "programs"
-    paginate_by = 10
+    paginate_by = 6
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
         context["form"] = ProgramCreateForm()
+        
 
         return context
 
