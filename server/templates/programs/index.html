@@ -12,12 +12,8 @@
           <h6>Programs</h6>
         </div>
         <div class="card-header pb-0">
-          <button
-            type="button"
-            class="btn btn-sm bg-gradient-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#ProgramCreateModal"
-          >
+          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+            data-bs-target="#ProgramCreateModal">
             Add Program
           </button>
         </div>
@@ -27,40 +23,28 @@
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                     Program Name
                   </th>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                     Department
                   </th>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                     Degree Level
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {% for program in page_obj %}
+                {% for program in programs %}
                 <tr>
                   <td>
                     <div class="d-flex px-2 py-1">
                       <div>
-                        <img
-                          src="{% static 'assets/img/grad.png' %}"
-                          class="avatar avatar-sm me-3"
-                          alt="user1"
-                        />
+                        <img src="{% static 'assets/img/grad.png' %}" class="avatar avatar-sm me-3" alt="user1" />
                       </div>
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm">
-                          <a href="{% url 'program_detail' pk=program.id%}" class="text-secondary"
-                            >{{ program.name|truncatechars:35 }}</a
-                          >
+                          <a href="{% url 'program_detail' pk=program.id%}" class="text-secondary">{{program.name}}</a>
                         </h6>
                         <p class="text-xs text-secondary mb-0">
                           {{program.code}}
@@ -87,13 +71,9 @@
                     {% endif %}
                   </td>
                   <td class="align-middle">
-                    <button
-                      type="button"
-                      class="btn btn-sm bg-gradient-dark"
-                      data-bs-toggle="modal"
+                    <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
-                      @click="setProgramData(`{{program.id}}`, `{{program.name}}`, `{{program.code}}`, `{{program.years_of_study}}`,`{{program.get_degree_level_display}}`,`{{program.department_id}}`, `{{program.details}}`)"
-                    >
+                      @click="setProgramData(`{{program.id}}`, `{{program.name}}`, `{{program.code}}`, `{{program.years_of_study}}`,`{{program.get_degree_level_display}}`,`{{program.department_id}}`, `{{program.details}}`)">
                       <i class="fas fa-pen fa-2x"></i>
                     </button>
                   </td>
@@ -107,65 +87,41 @@
               </tbody>
             </table>
             {% include 'includes/pagination.html' %}
-
             {% comment %} A Program update and detail form {% endcomment %}
 
-            <div
-              class="modal fade"
-              id="exampleModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                      Program Info
+                     Update Program Info
                     </h5>
-                    <button
-                      type="button"
-                      class="btn-close text-dark"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
                     <form method="post" action="" id="update-form">
                       {% csrf_token %}
-                      <div id="div_id_name" class="form-group">
-                        <label for="id_name" class="requiredField">
-                          Name<span class="asteriskField">*</span>
-                        </label>
-                        <div>
-                          <input
-                            type="text"
-                            name="name"
-                            maxlength="255"
-                            class="textinput form-control"
-                            required
-                            id="id_name"
-                            :value="[[name]]"
-                          />
+                      <div class="row">
+                        <div id="div_id_name" class="col">
+                          <label for="id_name" class="requiredField">
+                            Name<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <input type="text" name="name" maxlength="255" class="textinput form-control" required
+                              id="id_name" :value="[[name]]" />
+                          </div>
                         </div>
-                      </div>
-                      <div id="div_id_code" class="form-group">
-                        <label for="id_code" class="requiredField">
-                          Code<span class="asteriskField">*</span>
-                        </label>
-                        <div>
-                          <input
-                            type="text"
-                            name="code"
-                            maxlength="10"
-                            class="textinput form-control"
-                            required
-                            id="id_code"
-                            :value="[[code]]"
-                          />
+                        <div id="div_id_code" class="col">
+                          <label for="id_code" class="requiredField">
+                            Code<span class="asteriskField">*</span>
+                          </label>
+                          <div>
+                            <input type="text" name="code" maxlength="10" class="textinput form-control" required
+                              id="id_code" :value="[[code]]" />
+                          </div>
                         </div>
                       </div>
                       <div id="div_id_years_of_study" class="form-group">
@@ -173,14 +129,8 @@
                           Years of study<span class="asteriskField">*</span>
                         </label>
                         <div>
-                          <input
-                            type="number"
-                            name="years_of_study"
-                            :value="[[years_of_study]]"
-                            class="numberinput form-control"
-                            required
-                            id="id_years_of_study"
-                          />
+                          <input type="number" name="years_of_study" :value="[[years_of_study]]"
+                            class="numberinput form-control" required id="id_years_of_study" />
                         </div>
                       </div>
                       <div id="div_id_degree_level" class="form-group">
@@ -188,12 +138,7 @@
                           Degree level<span class="asteriskField">*</span>
                         </label>
                         <div>
-                          <select
-                            name="degree_level"
-                            class="select form-control"
-                            required
-                            id="id_degree_level"
-                          >
+                          <select name="degree_level" class="select form-control" required id="id_degree_level">
                             <option value="[[degree_level]]" selected>
                               [[degree_level]]
                             </option>
@@ -210,41 +155,20 @@
                           Details<span class="asteriskField">*</span>
                         </label>
                         <div>
-                          <textarea
-                            name="details"
-                            cols="40"
-                            rows="10"
-                            class="textarea form-control"
-                            required
-                            id="id_details"
-                          >
-                          [[details]]</textarea>
+                          <textarea name="details" cols="40" rows="5" class="textarea form-control" required
+                            id="id_details">[[details]]</textarea>
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn bg-gradient-secondary"
-                          data-bs-dismiss="modal"
-                          @click="resetState"
-                        >
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal"
+                          @click="resetState">
                           Close
                         </button>
-                        <button
-                          type="button"
-                          @click="updateProgram()"
-                          class="btn bg-gradient-primary"
-                        >
+                        <button type="button" @click="updateProgram()" class="btn bg-gradient-primary">
                           Update Program
                         </button>
-                        <a
-                          href="#"
-                          class="btn bg-gradient-danger"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteModal"
-                          @click="deleteProgram()"
-                          >Delete Program</a
-                        >
+                        <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                          @click="deleteProgram()">Delete Program</a>
                       </div>
                     </form>
                   </div>
@@ -253,27 +177,16 @@
             </div>
 
             {% comment %} Program Create form {% endcomment %}
-            <div
-              class="modal fade"
-              id="ProgramCreateModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal fade" id="ProgramCreateModal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                       Create Program
                     </h5>
-                    <button
-                      type="button"
-                      class="btn-close text-dark"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      @click="resetState()"
-                    >
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                      @click="resetState()">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -281,19 +194,11 @@
                     <form method="post" action="" id="create-form">
                       {% csrf_token %} {{form|crispy}}
                       <div class="modal-footer">
-                        <button
-                          type="button"
-                          @click="resetState()"
-                          class="btn bg-gradient-dark"
-                          data-bs-dismiss="modal"
-                        >
+                        <button type="button" @click="resetState()" class="btn bg-gradient-dark"
+                          data-bs-dismiss="modal">
                           Close
                         </button>
-                        <button
-                          type="button"
-                          class="btn bg-gradient-primary"
-                          @click="createProgram()"
-                        >
+                        <button type="button" class="btn bg-gradient-primary" @click="createProgram()">
                           Save
                         </button>
                       </div>
@@ -304,30 +209,16 @@
             </div>
 
             {% comment %} Modal for deleting Program {% endcomment %}
-            <div
-              class="modal fade"
-              id="deleteModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="modal-notification"
-              aria-hidden="true"
-            >
-              <div
-                class="modal-dialog modal-danger modal-dialog-centered modal-"
-                role="document"
-              >
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+              aria-hidden="true">
+              <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h6 class="modal-title" id="modal-title-notification">
                       Delete Program
                     </h6>
-                    <button
-                      type="button"
-                      class="btn-close text-dark"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      @click="resetState()"
-                    >
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                      @click="resetState()">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
@@ -341,18 +232,10 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn bg-gradient-danger"
-                      @click="deleteProgram()"
-                    >
+                    <button type="button" class="btn bg-gradient-danger" @click="deleteProgram()">
                       Ok, Delete
                     </button>
-                    <button
-                      type="button"
-                      class="btn bg-gradient-dark text-white ml-auto"
-                      data-bs-dismiss="modal"
-                    >
+                    <button type="button" class="btn bg-gradient-dark text-white ml-auto" data-bs-dismiss="modal">
                       Close
                     </button>
                   </div>
@@ -374,7 +257,7 @@
 {% block javascripts %}
 <script>
   const app = Vue.createApp({
-    mounted() {},
+    mounted() { },
     data() {
       return {
         count: 0,
