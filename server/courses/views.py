@@ -19,7 +19,6 @@ class CourseListView(LoginRequiredMixin, ListView):
     template_name = "courses/index.html"
     queryset = Course.objects.all()
     context_object_name = "courses"
-    paginate_by = 10
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
