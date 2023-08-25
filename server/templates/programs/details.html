@@ -97,7 +97,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {% for course in program.courses.all %}
+                        {% for course in page_obj %}
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">
@@ -127,8 +127,10 @@
                         </tr>
                         {% endfor %}
                       </tbody>
+                 
                     </table>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                    {% include 'includes/pagination.html' %}
+                    <div class="modal modal-lg fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">

@@ -59,7 +59,7 @@
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm">
                           <a href="{% url 'program_detail' pk=program.id%}" class="text-secondary"
-                            >{{ program.name }}</a
+                            >{{ program.name|truncatechars:35 }}</a
                           >
                         </h6>
                         <p class="text-xs text-secondary mb-0">
@@ -217,8 +217,7 @@
                             required
                             id="id_details"
                           >
-[[details]]</textarea
-                          >
+                          [[details]]</textarea>
                         </div>
                       </div>
                       <div class="modal-footer">

@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView,ListView
+from django.core.paginator import Paginator
 
 from .forms import ProgramCourseUpdateForm, ProgramCreateForm
 from .models import Program
@@ -21,6 +22,7 @@ class ProgramListView(ListView):
     template_name = "programs/index.html"
     queryset = Program.objects.all()
     context_object_name = "programs"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -61,6 +63,14 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
 
         context["form"] = ProgramCourseUpdateForm(instance=program)
 
+        courses = self.get_object().courses.all()
+
+        paginator = Paginator(courses,per_page=10)
+
+        page_number = self.request.GET.get('page',1)
+
+        context['page_obj'] = paginator.page(page_number)
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -72,9 +82,14 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
             #program instance has to be saved first
             program = form.save(commit=False)
 
+            program.save()
+
             courses = form.cleaned_data.get('courses')
 
-
+            program.courses.clear()
+            for course in courses:
+                
+                program.courses.add(course)
 
             messages.success(request, "Courses updated successfully!")
 
