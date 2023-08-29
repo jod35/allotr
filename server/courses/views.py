@@ -51,7 +51,7 @@ def update_course(request: HttpRequest, course_id):
         )
 
         messages.success(
-            request, f"Course '{course_to_update}' has been updated successfully!"
+            request, f"Course '{course_to_update.first().title}' has been updated successfully!"
         )
 
         return JsonResponse(data={"message": "Course Updated successfully"})
