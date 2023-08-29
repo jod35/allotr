@@ -10,13 +10,25 @@
 {% block content %}
 
 <div class="container-fluid py-4" id="app">
-  <div class="card-header pb-0">
-    <h3>Courses</h3>
-  </div>
+ 
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4">
-        <div class="card-body px-0 pt-0 pb-2 container mt-4">
+      <div class="card mb-4 container mt-4">
+        <div class="card-header pb-0">
+          <h3>Courses</h3>
+        </div>
+        <div class="card-header pb-0">
+          <button
+            type="button"
+            class="btn btn-sm bg-gradient-dark"
+            data-bs-toggle="modal"
+            data-bs-target="#ProgramCreateModal"
+          >
+            Add Course
+          </button>
+        </div>
+
+        <div class="card-body px-0 pt-0 pb-2 ">
           <div class="table-responsive p-0 ">
             <table
             id="dtBasicExample"
@@ -52,7 +64,69 @@
               </tr>
             </tfoot>
           </table>
-
+          <div
+          class="modal modal-lg fade"
+          id="ProgramCreateModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Create Program
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close text-dark"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  @click="resetState()"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form method="post" action="" id="create-form">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col">
+                      {{form.title|as_crispy_field}}
+                    </div>
+                    <div class="col">
+                      {{ form.code|as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    {{ form.course_description|as_crispy_field }}
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      @click="resetState()"
+                      class="btn bg-gradient-dark"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn bg-gradient-primary"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+            {% comment %}
+              form for updating a course
+            {% endcomment %}
+              
             <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
               aria-hidden="true">
               <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
