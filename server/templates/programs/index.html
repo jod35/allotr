@@ -7,7 +7,7 @@
 <div class="container-fluid py-4" id="app">
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4">
+      <div class="card mb-4 container">
         <div class="card-header pb-0">
           <h6>Programs</h6>
         </div>
@@ -24,10 +24,11 @@
 
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
+            <table id="dtBasicExample" class="display" style="width:100%">
               <thead>
-                <tr>
-                  <th
+                  <tr>
+                    
+                    <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                   >
                     Program Name
@@ -42,20 +43,18 @@
                   >
                     Degree Level
                   </th>
-                </tr>
+                  <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Action
+                </th>
+                  </tr>
               </thead>
               <tbody>
                 {% for program in programs %}
                 <tr>
                   <td>
                     <div class="d-flex px-2 py-1">
-                      <div>
-                        <img
-                          src="{% static 'assets/img/grad.png' %}"
-                          class="avatar avatar-sm me-3"
-                          alt="user1"
-                        />
-                      </div>
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm">
                           <a
@@ -99,20 +98,28 @@
                       <i class="fas fa-pen fa-2x"></i>
                     </button>
                   </td>
-                  <td class="align-middle">
-                    <a
-                      class="btn btn-sm bg-success"
-                      href="{% url 'program_detail' pk=program.id%}"
-                    >
-                      <i class="fas fa-eye fa-2x"></i>
-                    </a>
-                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
-            </table>
-            {% include 'includes/pagination.html' %} {% comment %} A Program
-            update and detail form {% endcomment %}
+              <tfoot>
+                <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Program Name
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Department
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Degree Level
+              </th>
+              </tfoot>
+          </table>
+            {% comment %} A Program update and detail form {% endcomment %}
 
             <div
               class="modal modal-lg fade"
