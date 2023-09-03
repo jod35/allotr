@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Intake, IntakeCourse
+from .models import Intake, IntakeCourse,IntakeProgram
 
 # Register your models here.
 
@@ -13,3 +13,4 @@ class IntakeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(IntakeCourse)
+admin.site.register(IntakeProgram)

@@ -2,6 +2,7 @@ from django.db import models
 from courses.models import Course
 from departments.models import Department
 from intakes.models import Intake
+from programs.models import Program
 
 # Create your models here.
 class Lecturer(models.Model):
@@ -18,7 +19,7 @@ class Lecturer(models.Model):
 
 class LecturerCourse(models.Model):
     lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(Course, related_name='lecturer')
+    program = models.ManyToManyField(Program, related_name='lecturer')
     intake =models.ForeignKey(Intake, on_delete=models.CASCADE,related_name='allocations')
 
     class Meta:

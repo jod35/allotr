@@ -24,11 +24,10 @@
 
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
-            <table id="dtBasicExample" class="display" style="width:100%">
+            <table id="dtBasicExample" class="display" style="width: 100%">
               <thead>
-                  <tr>
-                    
-                    <th
+                <tr>
+                  <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                   >
                     Program Name
@@ -44,11 +43,11 @@
                     Degree Level
                   </th>
                   <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
-                  Action
-                </th>
-                  </tr>
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Action
+                  </th>
+                </tr>
               </thead>
               <tbody>
                 {% for program in programs %}
@@ -103,22 +102,22 @@
               </tbody>
               <tfoot>
                 <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                Program Name
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                Department
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                Degree Level
-              </th>
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Program Name
+                </th>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Department
+                </th>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Degree Level
+                </th>
               </tfoot>
-          </table>
+            </table>
             {% comment %} A Program update and detail form {% endcomment %}
 
             <div
@@ -294,12 +293,8 @@
                   <div class="modal-body">
                     <form method="post" action="" id="create-form">
                       <div class="row">
-                        <div class="col">
-                          {{form.name|as_crispy_field}}
-                        </div>
-                        <div class="col">
-                          {{ form.code|as_crispy_field }}
-                        </div>
+                        <div class="col">{{form.name|as_crispy_field}}</div>
+                        <div class="col">{{ form.code|as_crispy_field }}</div>
                       </div>
                       <div class="form-group">
                         {{ form.years_of_study |as_crispy_field}}

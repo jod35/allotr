@@ -4,6 +4,7 @@ from django.views.generic import ListView, TemplateView
 
 from .models import Allocation
 from lecturers.models import LecturerCourse
+from programs.models import Program
 
 # Create your views here.
 
@@ -15,5 +16,6 @@ class AllocationView(TemplateView):
         context =  super().get_context_data(**kwargs)
 
         context['allocations'] = LecturerCourse.objects.all()
+        context['programs'] = Program.objects.all()
 
         return context
