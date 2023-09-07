@@ -19,7 +19,7 @@ class Lecturer(models.Model):
 
 class LecturerCourse(models.Model):
     lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
-    program = models.ManyToManyField(Program, related_name='lecturer')
+    courses = models.ManyToManyField(Course, related_name='lecturer')
     intake =models.ForeignKey(Intake, on_delete=models.CASCADE,related_name='allocations')
 
     class Meta:

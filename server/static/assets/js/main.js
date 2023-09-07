@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    $('#dtBasicExample').DataTable({
-      "paging":true,
-      "pagingType":"full_numberss"
-    });
+    $('#dtBasicExample').DataTable({});
     $('.dataTables_length').addClass('bs-select');
   });
