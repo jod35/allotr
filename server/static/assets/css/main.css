@@ -434,5 +434,17 @@ table.dataTable thead .sorting_desc_disabled:before {
 }
 
 .tab-content {
-    height: 60vh;
+    height: 70vh;
+}
+.tab-link{
+    padding: 5px;
+    margin-right: 5px;
+    border: 0.5px solid black;
+    border-radius: 7px;
+    font-size: 0.9em;
+}
+
+.active{
+    transform: scale(1.2);
+    border-width: 1.5px;
 }
