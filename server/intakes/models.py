@@ -2,7 +2,6 @@ from datetime import datetime
 
 from courses.models import Course
 from django.db import models
-from programs.models import Program
 
 # Create your models here.
 
@@ -37,14 +36,3 @@ class IntakeCourse(models.Model):
         return f"{self.intake.name} - {self.course.title}"
 
 
-class IntakeProgram(models.Model):
-    intake = models.ForeignKey(Intake, on_delete=models.CASCADE)
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
-    number_of_students = models.IntegerField(default=0)
-
-
-    def __str__(self):
-        return f"{self.program.code} {self.intake.term} {self.intake.academic_year}"
-    
-    class Meta:
-        verbose_name = "program_intake"
