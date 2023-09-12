@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "intakes.apps.IntakesConfig",
     "allocations.apps.AllocationsConfig",
     "lecturers.apps.LecturersConfig",
+    "enrollments.apps.EnrollmentsConfig", 
     # third party apps
     "crispy_forms",
     "crispy_bootstrap4",
