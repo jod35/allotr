@@ -10,7 +10,7 @@
 <div class="container-fluid py-4" id="app">
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4">
+      <div class=" mb-4">
         <div class="card-header pb-0">
           <h3>{{program.name}} ({{program.code}})</h3>
         </div>
@@ -88,8 +88,13 @@
                             <th
                               class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                             >
-                              Course
+                              Course Code
                             </th>
+                            <th
+                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                          >
+                            Course Name
+                          </th>
                             <th
                               class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                             >
@@ -101,25 +106,21 @@
                           {% for course in page_obj %}
                         <tr>
                           <td>
-                            <div class="d-flex px-2 py-1">
-                              <div>
+
+                              <div class="d-flex">
                                 <img
-                                  src="{% static 'assets/img/courses.png' %}"
-                                  class="avatar avatar-sm me-3"
-                                  alt="user1"
-                                />
+                                src="{% static 'assets/img/courses.png' %}"
+                                class="avatar avatar-sm me-3"
+                                alt="user1"
+                              />
+
+                                <p class="text-xs">{{course.code}}</p>
                               </div>
-                              <div
-                                class="d-flex flex-column justify-content-center"
-                              >
-                                <h6 class="mb-0 text-sm text-primary">
-                                  {{course.code}}
-                                </h6>
-                                <p class="text-xs text-secondary mb-0">
-                                  {{course.title}}
-                                </p>
-                              </div>
-                            </div>
+                          </td>
+                          <td>
+                            <p class="text-xs text-secondary mb-0">
+                              {{course.title}}
+                            </p>
                           </td>
                           <td class="align-middle">
                             {% for program in course.programs.all %}
@@ -136,6 +137,11 @@
                               >
                                 Course
                               </th>
+                              <th
+                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                            >
+                              Course Name
+                            </th>
                               <th
                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                               >

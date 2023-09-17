@@ -16,7 +16,7 @@ class Program(models.Model):
     code = models.CharField(max_length=10)
     years_of_study = models.IntegerField(default=3)
     degree_level = models.CharField(max_length=50, choices=DegreeLevel.choices)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department')
     details = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     courses = models.ManyToManyField(Course, related_name="programs")

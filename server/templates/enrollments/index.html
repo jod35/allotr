@@ -1,81 +1,29 @@
-{% extends 'layouts/base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
+{% block stylesheets %} {{ form.media.css }} {% endblock stylesheets %} 
 {% block content %}
 <div class="container-fluid py-4" id="app">
-    <div class="row">
-      <div class="col-12">
-        <div class="card mb-4 container">
-          <div class="card-header pb-0">
-            <h6>Programs</h6>
-          </div>
-          <div class="card-header pb-0">
-            <button
-              type="button"
-              class="btn btn-sm bg-gradient-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#ProgramCreateModal"
-            >
-              Create Enrollment
-            </button>
-          </div>
-  
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
-              <table id="dtBasicExample" class="display" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Program
-                    </th>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Intake
-                    </th>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Students Enrolled
-                    </th>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for enrollment in enrollments %}
-                  <tr>
-                    <td>
-                        <p class="text-xs font-weight-bold mb-0">{{enrollment.program}}</p>    
-                    </td>
-                    <td>
-                        <p class="text-xs font-weight-bold mb-0"> {{enrollment.intake}}</p>
-                    </td>
-                    <td>
-                      <p class="text-xs font-weight-bold mb-0">
-                        {{ enrollment.students_enrolled }}
-                      </p>
-                    </td>
-                    <td class="align-middle">
-                      <button
-                        type="button"
-                        class="btn btn-sm bg-gradient-dark"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        @click="setProgramData(`{{program.id}}`, `{{program.name}}`, `{{program.code}}`, `{{program.years_of_study}}`,`{{program.get_degree_level_display}}`,`{{program.department_id}}`, `{{program.details}}`)"
-                      >
-                        <i class="fas fa-pen fa-2x"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-                <tfoot>
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4 container">
+        <div class="card-header pb-0">
+          <h6>Enrollments</h6>
+        </div>
+        <div class="card-header pb-0">
+          <button
+            type="button"
+            class="btn btn-sm bg-gradient-dark"
+            data-bs-toggle="modal"
+            data-bs-target="#ProgramCreateModal"
+          >
+            Create Enrollment
+          </button>
+        </div>
+
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table id="dtBasicExample" class="display" style="width: 100%">
+              <thead>
+                <tr>
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                   >
@@ -92,269 +40,216 @@
                     Students Enrolled
                   </th>
                   <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for enrollment in enrollments %}
+                <tr>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{enrollment.program}}
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{enrollment.intake}}
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{ enrollment.students_enrolled }}
+                    </p>
+                  </td>
+                  <td class="align-middle">
+                    <button
+                      type="button"
+                      class="btn btn-sm bg-gradient-dark"
+                      data-bs-toggle="modal"
+                      data-bs-target="#programUpdateModal"
+                    >
+                      <i class="fas fa-pen fa-2x"></i>
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Program
+                </th>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Intake
+                </th>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Students Enrolled
+                </th>
+                <th
                   class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
                   Action
                 </th>
-                </tfoot>
-              </table>
-              {% comment %} A Program update and detail form {% endcomment %}
-  
-              <div
-                class="modal modal-lg fade"
-                id="exampleModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Update Program Info
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form method="post" action="" id="update-form">
-                        {% csrf_token %}
-                        <div class="row">
-                          <div id="div_id_name" class="col">
-                            <label for="id_name" class="requiredField">
-                              Name<span class="asteriskField">*</span>
-                            </label>
-                            <div>
-                              <input
-                                type="text"
-                                name="name"
-                                maxlength="255"
-                                class="textinput form-control"
-                                required
-                                id="id_name"
-                                :value="[[name]]"
-                              />
-                            </div>
-                          </div>
-                          <div id="div_id_code" class="col">
-                            <label for="id_code" class="requiredField">
-                              Code<span class="asteriskField">*</span>
-                            </label>
-                            <div>
-                              <input
-                                type="text"
-                                name="code"
-                                maxlength="10"
-                                class="textinput form-control"
-                                required
-                                id="id_code"
-                                :value="[[code]]"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div id="div_id_years_of_study" class="form-group">
-                          <label for="id_years_of_study" class="requiredField">
-                            Years of study<span class="asteriskField">*</span>
-                          </label>
-                          <div>
-                            <input
-                              type="number"
-                              name="years_of_study"
-                              :value="[[years_of_study]]"
-                              class="numberinput form-control"
-                              required
-                              id="id_years_of_study"
-                            />
-                          </div>
-                        </div>
-                        <div id="div_id_degree_level" class="form-group">
-                          <label for="id_degree_level" class="requiredField">
-                            Degree level<span class="asteriskField">*</span>
-                          </label>
-                          <div>
-                            <select
-                              name="degree_level"
-                              class="select form-control"
-                              required
-                              id="id_degree_level"
-                            >
-                              <option value="[[degree_level]]" selected>
-                                [[degree_level]]
-                              </option>
-                              <option value="D">Diploma</option>
-                              <option value="B">Bachelors</option>
-                              <option value="PGd">PostGraduateDiploma</option>
-                              <option value="M">Masters</option>
-                            </select>
-                          </div>
-                        </div>
-  
-                        <div id="div_id_details" class="form-group">
-                          <label for="id_details" class="requiredField">
-                            Details<span class="asteriskField">*</span>
-                          </label>
-                          <div>
-                            <textarea
-                              name="details"
-                              cols="40"
-                              rows="5"
-                              class="textarea form-control"
-                              required
-                              id="id_details"
-                            >
-                            [[details]]</textarea
-                            >
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            class="btn bg-gradient-secondary"
-                            data-bs-dismiss="modal"
-                            @click="resetState"
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="button"
-                            @click="updateProgram()"
-                            class="btn bg-gradient-primary"
-                          >
-                            Update Program
-                          </button>
-                          <a
-                            href="#"
-                            class="btn bg-gradient-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal"
-                            @click="deleteProgram()"
-                            >Delete Program</a
-                          >
-                        </div>
-                      </form>
-                    </div>
+              </tfoot>
+            </table>
+            {% comment %} Program Create form {% endcomment %}
+            <div
+              class="modal modal-lg fade"
+              id="ProgramCreateModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Create Enrollment
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      @click="resetState()"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
                   </div>
-                </div>
-              </div>
-  
-              {% comment %} Program Create form {% endcomment %}
-              <div
-                class="modal modal-lg fade"
-                id="ProgramCreateModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Create Enrollment
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        @click="resetState()"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form method="post" action="" id="create-form">
-                        <div class="row">
-                          <div class="col">{{form.program|as_crispy_field}}</div>
-                          <div class="col">{{ form.intake|as_crispy_field }}</div>
-                        </div>
-                        <div class="form-group">
-                          {{ form.students_enrolled |as_crispy_field}}
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            @click="resetState()"
-                            class="btn bg-gradient-dark"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="button"
-                            class="btn bg-gradient-primary"
-                            @click="createProgram()"
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-              {% comment %} Modal for deleting Program {% endcomment %}
-              <div
-                class="modal fade"
-                id="deleteModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="modal-notification"
-                aria-hidden="true"
-              >
-                <div
-                  class="modal-dialog modal-danger modal-dialog-centered modal-"
-                  role="document"
-                >
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h6 class="modal-title" id="modal-title-notification">
-                        Delete Program
-                      </h6>
-                      <button
-                        type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        @click="resetState()"
-                      >
-                        <span aria-hidden="true">×</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="py-3 text-center">
-                        <i class="ni ni-bell-55 ni-3x"></i>
-                        <h4 class="text-gradient text-danger mt-4">
-                          Are you sure you want to delete this Program?
-                        </h4>
-                        <p>[[name]]</p>
+                  <div class="modal-body">
+                    <form method="post" action="" id="create-form">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col">{{form.program|as_crispy_field}}</div>
+                        <div class="col">{{ form.intake|as_crispy_field }}</div>
                       </div>
+                      <div class="form-group">
+                        {{ form.students_enrolled |as_crispy_field}}
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          @click="resetState()"
+                          class="btn bg-gradient-dark"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn bg-gradient-primary">
+                          Save
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% comment %} modal for updating enrollment {% endcomment %}
+            <div
+              class="modal fade"
+              id="programUpdateModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Modal title
+                    </h5>
+                    <br>
+                    <div class="modal-body">
+                      {{update_form|crispy}}
                     </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn bg-gradient-danger"
-                        @click="deleteProgram()"
-                      >
-                        Ok, Delete
-                      </button>
-                      <button
-                        type="button"
-                        class="btn bg-gradient-dark text-white ml-auto"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
+                    <button
+                      type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn bg-gradient-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn bg-gradient-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% comment %} Modal for deleting Program {%endcomment %}
+            <div
+              class="modal fade"
+              id="deleteModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="modal-notification"
+              aria-hidden="true"
+            >
+              <div
+                class="modal-dialog modal-danger modal-dialog-centered modal-"
+                role="document"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-notification">
+                      Delete Program
+                    </h6>
+                    <button
+                      type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      @click="resetState()"
+                    >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="py-3 text-center">
+                      <i class="ni ni-bell-55 ni-3x"></i>
+                      <h4 class="text-gradient text-danger mt-4">
+                        Are you sure you want to delete this Program?
+                      </h4>
+                      <p>[[name]]</p>
                     </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn bg-gradient-danger"
+                      @click="deleteProgram()"
+                    >
+                      Ok, Delete
+                    </button>
+                    <button
+                      type="button"
+                      class="btn bg-gradient-dark text-white ml-auto"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
               </div>
@@ -363,8 +258,156 @@
         </div>
       </div>
     </div>
-  
-    {% include "includes/footer.html" %}
   </div>
-{% endblock content %}
-    
+
+  {% include "includes/footer.html" %}
+</div>
+{% endblock content %} 
+{% block javascripts %}
+<script>
+  const app = Vue.createApp({
+    data() {
+      return {
+        id: "",
+        name: "",
+        start_date: "",
+        end_date: "",
+        academic_year: "",
+        term: "",
+        is_active: "",
+      };
+    },
+    delimiters: ["[[", "]]"],
+    methods: {
+      setIntake(
+        id,
+        name,
+        start_date,
+        end_date,
+        academic_year,
+        term,
+        is_active
+      ) {
+        this.id = id;
+        this.name = name;
+        this.start_date = this.parseCustomDateTime(start_date);
+        this.end_date = this.parseDate(end_date);
+        this.academic_year = academic_year;
+        this.term = term;
+        this.is_active = is_active;
+      },
+      parseCustomDateTime(customDateString) {
+        const parts = customDateString.split(/[\s,]+/);
+
+        // Map abbreviated month to its numerical value
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          May: 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
+
+        // Extract components from the parsed string
+        const month = monthMap[parts[0]];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        let hour = 0;
+        let minute = 0;
+
+        // Check if time components are present
+        if (parts.length >= 4) {
+          const timeParts = parts[3].split(":");
+          hour = parseInt(timeParts[0], 10);
+          minute = parseInt(timeParts[1], 10);
+
+          const ampm = parts[4];
+
+          // Adjust hour for AM/PM
+          if (ampm === "p.m." && hour !== 12) {
+            hour += 12;
+          } else if (ampm === "a.m." && hour === 12) {
+            hour = 0;
+          }
+        }
+
+        // Create a JavaScript Date object
+        const date = new Date(year, month, day, hour, minute);
+
+        let formattedDate = date.toISOString().slice(0, 16);
+
+        const value = Vue.ref(formattedDate);
+
+        return value;
+      },
+      parseDate(date) {
+        const parts = date.split(/[\s,]+/);
+        const month = parts[0];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          May: 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
+
+        const date_ = new Date(Date.UTC(year, monthMap[month], day));
+
+        const value = Vue.ref(date_.toISOString().slice(0, 10));
+
+        return value;
+      },
+      async updateIntake() {
+        const tokenField = document.querySelector(
+          'input[name="csrfmiddlewaretoken"]'
+        );
+
+        let csrfToken = tokenField.value;
+        const body = {
+          name: document.getElementById("id_update_name").value,
+          start_date: document.getElementById("id_update_start_date").value,
+          end_date: document.getElementById("id_update_end_date").value,
+          term: document.getElementById("id_update_term").value,
+          academic_year: document.getElementById("id_update_academic_year")
+            .value,
+          is_active: document.getElementById("id_update_is_active").value,
+        };
+
+        const response = await fetch(`/intakes/update/${this.id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/Json",
+            "X-CSRFToken": csrfToken,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify(body),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        window.location.reload();
+      },
+    },
+  }).mount("#app");
+</script>
+{% endblock javascripts %}

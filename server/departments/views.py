@@ -11,6 +11,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from .forms import DepartmentCreateForm, DepartmentUpdateForm
 from .models import Department
+from programs.models import Program
 
 # Create your views here.
 
@@ -31,7 +32,16 @@ class DepartmentListView(LoginRequiredMixin, ListView):
 class DepartmentDetailView(LoginRequiredMixin, DetailView):
     template_name = "departments/detail.html"
     queryset = Department.objects.all()
+    context_object_name = 'department'
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+
+        context['departments'] = Department.objects.all()
+        context['programs'] = Program.objects.all().filter(
+            department = self.get_object()
+        )
+        return context
 
 @login_required
 def create_department(request):
