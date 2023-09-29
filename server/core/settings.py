@@ -53,12 +53,13 @@ INSTALLED_APPS = [
     "allocations.apps.AllocationsConfig",
     "lecturers.apps.LecturersConfig",
     "enrollments.apps.EnrollmentsConfig", 
+    "api.apps.ApiConfig",
     # third party apps
     "crispy_forms",
     "crispy_bootstrap4",
     "rest_framework",
-    # "django_select2",
     'django_select2',
+     "corsheaders"
     
 ]
 
@@ -82,11 +83,20 @@ SELECT2_CACHE_BACKEND = "select2"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+#CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:8000",
 ]
 
 ROOT_URLCONF = "core.urls"

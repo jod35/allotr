@@ -9,32 +9,38 @@
 
 {% block content %}
 
-<div class="container-fluid py-4" id="app">
+<div class="container-fluid card mb-4  py-4" id="app">
  
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4 container mt-4">
+      <div class="card-header pb-0">
+        <button
+          type="button"
+          class="btn btn-sm bg-gradient-dark"
+          data-bs-toggle="modal"
+          data-bs-target="#ProgramCreateModal"
+        >
+          Add Course
+        </button>
+      </div>
+      <div class="container mt-4">
         <div class="card-header pb-0">
           <h3>Courses</h3>
         </div>
-        <div class="card-header pb-0">
-          <button
-            type="button"
-            class="btn btn-sm bg-gradient-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#ProgramCreateModal"
-          >
-            Add Course
-          </button>
-        </div>
-
         <div class="card-body px-0 pt-0 pb-2 ">
           <div class="table-responsive p-0 ">
             
             {% comment %}
               course table
             {% endcomment %}
-              
+
+            <div class="table">
+              <div id="example-table"></div>
+            </div>
+
+            
+            
+            {% comment %}
             <table
             id="dtBasicExample"
             class="table table-striped table-bordered table-sm "
@@ -44,15 +50,17 @@
             <thead>
               <tr>
                 <th class="text-dark">Code</th>
+                <th class="text-dark">Title</th>
                 <th class="text-dark">Action</th>
               </tr>
             </thead>
             <tbody>
               {% for course in courses %}
               <tr>
-                <td class="mb-0 text-dark text-sm">
-                    <b >{{course.code}}</b> {{course.title}}
+                <td class="text-xs font-weight-bold mb-0">
+                    <b >{{course.code}}</b> 
                 </td>
+                <td class="text-xs font-weight-bold mb-0">{{course.title}}</td>
                 <td class="align-middle">
                   <button type="button" class="btn btn-sm bg-gradient-link mb-3" data-bs-toggle="modal"
                     data-bs-target="#modal-default"
@@ -65,10 +73,14 @@
             </tbody>
             <tfoot>
               <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Code</th>
+                <th class="text-dark">Code</th>
+                <th class="text-dark">Title</th>
+                <th class="text-dark">Action</th>
               </tr>
             </tfoot>
            </table>
+            {% endcomment %}
+              
           
           {% comment %}
             modal for creating a course
@@ -154,14 +166,16 @@
                       {% csrf_token %}
                       <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
                           Code<span class="asteriskField">*</span> </label>
-                        <div> <input type="text" name="code" maxlength="10" class="textinput form-control" required
+                        <div> 
+                          <input type="text" name="code" maxlength="10" class="textinput form-control" required
                             id="id_code" v-model="code"> </div>
-                      </div>
-                      <div id="div_id_title" class="form-group"> <label for="id_title" class=" requiredField">
+                        </div>
+                        <div id="div_id_title" class="form-group"> <label for="id_title" class=" requiredField">
                           Title<span class="asteriskField">*</span> </label>
-                        <div> <input type="text" name="title" maxlength="225" class="textinput form-control" required
+                        <div> 
+                          <input type="text" name="title" maxlength="225" class="textinput form-control" required
                             id="id_title" v-model="title"> </div>
-                      </div>
+                        </div>
                       <div id="div_id_course_description" class="form-group"> <label for="id_course_description"
                           class=" requiredField">
                           Course description<span class="asteriskField">*</span> </label>
@@ -198,51 +212,23 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 <script>
-  const app = Vue.createApp({
-    data() {
-      return {
-        title: '',
-        code: '',
-        course_description: ''
-      }
-    },
-    delimiters: ['[[', ']]'],
 
-    methods: {
-      resetState() {
-        this.title = ''
-        this.code = ''
-        this.course_description = ''
-      },
-      setCourse(id, title, code, course_description) {
-        this.id = id
-        this.title = title
-        this.code = code
-        this.course_description = course_description
-      },
-      async updateCourse() {
-
-        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
-
-        let csrfToken = tokenField.value;
-
-        const response = await fetch(`/courses/update/${this.id}`, {
-          headers: {
-            'Content-Type': 'Application/Json',
-            'X-CSRFToken': csrfToken,
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          method: "POST",
-          body: JSON.stringify({
-            code: this.code,
-            title: this.title,
-            course_description: this.course_description
-          })
-        });
-
-        window.location.reload()
-      }
-    }
-  }).mount('#app');
+    // Sample data
+    const data = [
+      { id: 1, name: "John Doe", age: 30 },
+      { id: 2, name: "Jane Smith", age: 25 }
+    ];
+  
+    // Create a Tabulator instance
+    var table = new Tabulator("#example-table", {
+      data: data, // Load data into the table
+      columns: [
+        { title: "ID", field: "id" },
+        { title: "Name", field: "name" },
+        { title: "Age", field: "age" }
+      ]
+    });
+            
 </script>
 {% endblock javascripts %}
+

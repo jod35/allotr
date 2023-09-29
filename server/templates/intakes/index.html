@@ -58,16 +58,16 @@
               <tbody>
                 {% for intake in intakes %}
                 <tr>
-                  <td class="text-dark text-bold">
+                  <td class="text-xs font-weight-bold mb-0">
                       {{intake.name}}
                   </td>
-                  <td class="text-sm text-dark">
+                  <td class="text-xs font-weight-bold mb-0">
                     {{ intake.get_term_display }}
                   </td>
-                  <td class="text-sm text-dark">
+                  <td class="text-xs font-weight-bold mb-0">
                       {{intake.is_active}}
                   </td>
-                  <td class="align-middle">
+                  <td class="text-xs font-weight-bold mb-0">
                     <!-- Button trigger modal -->
                     <button
                       type="button"
