@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from allocations.models import Allocation
 from lecturers.models import LecturerCourse
+from courses.models import Course
 
 class AllocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,3 +23,8 @@ class AllocationSerializer(serializers.ModelSerializer):
         data['courses'] = course_names
         
         return data
+    
+class CourseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['code','title','created_at']

@@ -97,6 +97,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://sub.example.com",
     "http://localhost:8080",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:5500"
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -130,6 +131,11 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
 
 AUTH_USER_MODEL = "users.User"
 
