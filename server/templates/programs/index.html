@@ -7,163 +7,161 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
 <style>
-  .jexcel {
-    /* Set a border for the entire jExcel table */
-    color: black;
-  }
+    .jexcel {
+        /* Set a border for the entire jExcel table */
+        color: black;
+    }
 
-  .jexcel thead th {
-    color: white;
-    background-color: #31385F;
-  }
+    .jexcel thead th {
+        color: white;
+        background-color: #31385F;
+    }
 </style>
 {% endblock stylesheets %}
 
 {% block content %}
 
 <div class="container card mb-4  py-4" id="app">
-  <div class="row">
-    <div class="col-12">
-      <div class="card-header pb-0">
-        <h3 class="mt-2">Programs</h3>
-        <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
-          data-bs-target="#ProgramCreateModal">
-          Add Program
-        </button>
-      </div>
-      <div class="">
-        <div class="card-body px-0 pt-0 pb-2 ">
-          {% comment %}
-          course table
-          {% endcomment %}
-          <p class="loading text-center" style="display: none;">Loading ...</p>
-          <div class="row">
-            <div class="col-md-3">
-              <select id="filter-field" class="form-select">
-                <option></option>
-                <option value="Name">Name</option>
-                <option value="Code">Code</option>
-                <option value="degree_level">Degree Level</option>
-              </select>
+    <div class="row">
+        <div class="col-12">
+            <div class="card-header pb-0">
+                <h3 class="mt-2">Programs</h3>
+                <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+                    data-bs-target="#ProgramCreateModal">
+                    Add Program
+                </button>
             </div>
-            <div class="col-md-4">
-              <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
-            </div>
-            <div class="col-md-3">
-              <button id="filter-clear" class="btn btn-dark">Clear Filter</button>
-            </div>
-          </div>
-          <div id="spreadsheet"></div>
-          {% comment %}
-          modal for creating a course
-          {% endcomment %}
-
-          <div class="modal modal-lg fade" id="ProgramCreateModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    Create Program
-                  </h5>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                    @click="resetState()">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="" id="create-form">
-                        <div class="row">
-                          <div class="col">{{form.name|as_crispy_field}}</div>
-                          <div class="col">{{ form.code|as_crispy_field }}</div>
+            <div class="">
+                <div class="card-body px-0 pt-0 pb-2 ">
+                    {% comment %}
+                    course table
+                    {% endcomment %}
+                    <p class="loading text-center" style="display: none;">Loading ...</p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select id="filter-field" class="form-select">
+                                <option></option>
+                                <option value="Name">Name</option>
+                                <option value="Code">Code</option>
+                                <option value="degree_level">Degree Level</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                          {{ form.years_of_study |as_crispy_field}}
+                        <div class="col-md-4">
+                            <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
                         </div>
-                        <div class="form-group">
-                          {{ form.degree_level|as_crispy_field }}
+                        <div class="col-md-3">
+                            <button id="filter-clear" class="btn btn-dark">Clear Filter</button>
                         </div>
-                        <div class="form-group">
-                          {{ form.details|as_crispy_field }}
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            @click="resetState()"
-                            class="btn bg-gradient-dark"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="button"
-                            class="btn bg-gradient-primary"
-                            @click="createProgram()"
-                          >
-                            Save
-                          </button>
-                        </div>
-                    </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% comment %}
-          form for updating a program
-          {% endcomment %}
-
-          <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-            aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h6 class="modal-title" id="modal-title-default">[[code]] [[title]]</h6>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                    @click="resetState()">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="">
-                    {% csrf_token %}
-                    <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
-                        Code<span class="asteriskField">*</span> </label>
-                      <div>
-                        <input type="text" name="code" maxlength="10" class="textinput form-control" required
-                          id="id_code" v-model="code">
-                      </div>
                     </div>
-                    <div id="div_id_title" class="form-group"> <label for="id_title" class=" requiredField">
-                        Title<span class="asteriskField">*</span> </label>
-                      <div>
-                        <input type="text" name="title" maxlength="225" class="textinput form-control" required
-                          id="id_title" v-model="title">
-                      </div>
+                    <div id="spreadsheet"></div>
+                    {% comment %}
+                    modal for creating a course
+                    {% endcomment %}
+
+                    <div class="modal modal-lg fade" id="ProgramCreateModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        Create Program
+                                    </h5>
+                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                        aria-label="Close" @click="resetState()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="" id="create-form">
+                                        <div class="row">
+                                            <div class="col">{{form.name|as_crispy_field}}</div>
+                                            <div class="col">{{ form.code|as_crispy_field }}</div>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.years_of_study |as_crispy_field}}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.degree_level|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.details|as_crispy_field }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" @click="resetState()" class="btn bg-gradient-dark"
+                                                data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button" class="btn bg-gradient-primary"
+                                                @click="createProgram()">
+                                                Save
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="div_id_program_description" class="form-group"> <label for="id_program_description"
-                        class=" requiredField">
-                        program description<span class="asteriskField">*</span> </label>
-                      <div>
-                        <textarea name="program_description" v-model="program_description" cols="40" rows="10"
-                          class="textarea form-control" required id="id_program_description"></textarea>
-                      </div>
+                    {% comment %}
+                    form for updating a program
+                    {% endcomment %}
+
+                    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog"
+                        aria-labelledby="modal-default" aria-hidden="true">
+                        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modal-title-default">[[code]] [[title]]</h6>
+                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                        aria-label="Close" @click="resetState()">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="">
+                                        {% csrf_token %}
+                                        <div id="div_id_code" class="form-group"> <label for="id_code"
+                                                class=" requiredField">
+                                                Code<span class="asteriskField">*</span> </label>
+                                            <div>
+                                                <input type="text" name="code" maxlength="10"
+                                                    class="textinput form-control" required id="id_code" v-model="code">
+                                            </div>
+                                        </div>
+                                        <div id="div_id_title" class="form-group"> <label for="id_title"
+                                                class=" requiredField">
+                                                Title<span class="asteriskField">*</span> </label>
+                                            <div>
+                                                <input type="text" name="title" maxlength="225"
+                                                    class="textinput form-control" required id="id_title"
+                                                    v-model="title">
+                                            </div>
+                                        </div>
+                                        <div id="div_id_program_description" class="form-group"> <label
+                                                for="id_program_description" class=" requiredField">
+                                                program description<span class="asteriskField">*</span> </label>
+                                            <div>
+                                                <textarea name="program_description" v-model="program_description"
+                                                    cols="40" rows="10" class="textarea form-control" required
+                                                    id="id_program_description"></textarea>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm bg-gradient-dark"
+                                        @click="updateCourse()">Update
+                                        Course</button>
+                                    <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
+                                        @click="resetState()">Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </form>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm bg-gradient-dark" @click="updateCourse()">Update
-                    Course</button>
-                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
-                    @click="resetState()">Close</button>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 
@@ -176,110 +174,119 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 <script>
-  // create a vue app inside this template
-  const app = Vue.createApp({
-    data() {
-      return {
-        message: 'Hello, Vue 3!'
-      };
-    },
-    mounted() {
-      const loading = document.querySelector('.loading');
-
-      //Define variables for input elements
-      var fieldEl = document.getElementById("filter-field");
-      var typeEl = document.getElementById("filter-type");
-      var valueEl = document.getElementById("filter-value");
-
-
-
-      loading.style.display = "block";
-
-      fetch("http://localhost:8000/api/courses")
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          setTimeout(() => {
-            loading.style.display = 'none';
-
-
-            const rows = data.map(item => ({
-              code: item.code,
-              title: item.title,
-              created_at: this.formatReadableDate(item.created_at)
-            }));
-
-            var openIcon = function (value, data, cell, row, options) { //plain text value
-              return "<i class='fa fa-search'></i>"
+    // create a vue app inside this template
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello, Vue 3!'
             };
+        },
+        mounted() {
+            const loading = document.querySelector('.loading');
 
-            var table = new Tabulator("#spreadsheet", {
-              data: rows, //assign data to table
-              autoColumns: true, //create columns from data field names
-              layout: "fitColumns",      //fit columns to width of table
-              responsiveLayout: "hide",  //hide columns that don't fit on the table
-              addRowPos: "top",          //when adding a new row, add it to the top of the table
-              history: true,             //allow undo and redo actions on the table
-              pagination: "local",       //paginate the data
-              paginationSize: 10,         //allow 7 rows per page of data
-              paginationCounter: "rows", //display count of paginated rows in footer
-              movableColumns: true,
-              columns: [                 //define the table columns
-                { title: "code", field: "code", editor: "input" },
-                { title: "Title", field: "title" },
-                { title: "created_at", field: "created_at" },
-                { title: "action", sortable: false, formatter: openIcon },
-              ],
-            });
+            //Define variables for input elements
+            var fieldEl = document.getElementById("filter-field");
+            var typeEl = document.getElementById("filter-type");
+            var valueEl = document.getElementById("filter-value");
 
 
-            //Update filters on value change
-            document.getElementById("filter-field").addEventListener("change", updateFilter);
-            document.getElementById("filter-value").addEventListener("keyup", updateFilter);
 
-            //Clear filters on "Clear Filters" button click
-            document.getElementById("filter-clear").addEventListener("click", function () {
-              fieldEl.value = "";
-              valueEl.value = "";
+            loading.style.display = "block";
 
-              table.clearFilter();
-            });
-
-            //Trigger setFilter function with correct parameters
-            function updateFilter() {
-              var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
-              var typeVal = "like";
+            fetch("http://localhost:8000/api/programs")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setTimeout(() => {
+                        loading.style.display = 'none';
 
 
-              if (filterVal) {
-                table.setFilter(filterVal, typeVal, valueEl.value);
-              }
+                        const rows = data.map(item => ({
+                            code: item.code,
+                            name: item.name,
+                            degree_level: this.formatDegreeLevel(item.degree_level),
+                            department: item.department.name,
+                        }));
+
+                        var openIcon = function (value, data, cell, row, options) { //plain text value
+                            return "<i class='fa fa-search'></i>"
+                        };
+
+                        var table = new Tabulator("#spreadsheet", {
+                            data: rows, //assign data to table
+                            autoColumns: true, //create columns from data field names
+                            layout: "fitColumns",      //fit columns to width of table
+                            responsiveLayout: "hide",  //hide columns that don't fit on the table
+                            addRowPos: "top",          //when adding a new row, add it to the top of the table
+                            history: true,             //allow undo and redo actions on the table
+                            pagination: "local",       //paginate the data
+                            paginationSize: 10,         //allow 7 rows per page of data
+                            paginationCounter: "rows", //display count of paginated rows in footer
+                            movableColumns: true,
+                            columns: [                 //define the table columns
+                                { title: "code", field: "code", editor: "input" },
+                                { title: "name", field: "title" },
+                                { title: "created_at", field: "created_at" },
+                                { title: "action", sortable: false, formatter: openIcon },
+                            ],
+                        });
+
+
+                        //Update filters on value change
+                        document.getElementById("filter-field").addEventListener("change", updateFilter);
+                        document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+                        //Clear filters on "Clear Filters" button click
+                        document.getElementById("filter-clear").addEventListener("click", function () {
+                            fieldEl.value = "";
+                            valueEl.value = "";
+
+                            table.clearFilter();
+                        });
+
+                        //Trigger setFilter function with correct parameters
+                        function updateFilter() {
+                            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+                            var typeVal = "like";
+
+
+                            if (filterVal) {
+                                table.setFilter(filterVal, typeVal, valueEl.value);
+                            }
+                        }
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        },
+        methods: {
+            formatReadableDate(dateString) {
+                const date = new Date(dateString);
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                };
+                return date.toLocaleDateString('en-US', options);
+            },
+            formatDegreeLevel(degree_level) {
+                if (degree_level === "B") return 'Bachelors'
+                else if (degree_level === "D") return 'Diploma'
+                else if (degree_level === "PGd") return 'Postgraduate Diploma'
+                else if (degree_level === "M") return 'Masters'
+                else return 'Invalid degree level'
             }
-          }, 200);
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
-    },
-    methods: {
-      formatReadableDate(dateString) {
-        const date = new Date(dateString);
-        const options = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        };
-        return date.toLocaleDateString('en-US', options);
-      }
-    }
-  });
 
-  app.mount('#app'); 
+        }
+    });
+
+    app.mount('#app'); 
 </script>
 {% endblock javascripts %}

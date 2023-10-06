@@ -8,4 +8,5 @@ urlpatterns = [
     path(
         "enrollments/", views.EnrollmentListView.as_view(), name="enrollment_api_list"
     ),
+    path('programs/', views.ProgramListView.as_view(), name='program_api_list'),
 ]

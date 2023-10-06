@@ -5,12 +5,13 @@ from .serializers import (
     CourseListSerializer,
     IntakeListSerializer,
     EnrollmentListSerializer,
+    ProgramListSerializer
 )
 from allocations.models import Allocation
 from lecturers.models import LecturerCourse
 from courses.models import Course
 from intakes.models import Intake
-from programs.models import Enrollment
+from programs.models import Enrollment,Program
 
 # Create your views here.
 
@@ -33,3 +34,8 @@ class IntakeListView(ListAPIView):
 class EnrollmentListView(ListAPIView):
     serializer_class = EnrollmentListSerializer
     queryset = Enrollment.objects.all()
+
+class ProgramListView(ListAPIView):
+    serializer_class = ProgramListSerializer
+    queryset = Program.objects.all()
+
