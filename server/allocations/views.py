@@ -1,10 +1,11 @@
 from typing import Any, Dict
+
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
-
-from .models import Allocation
 from lecturers.models import LecturerCourse
 from programs.models import Program
+
+from .models import Allocation
 
 # Create your views here.
 

@@ -1,17 +1,14 @@
-from django.shortcuts import render
-from rest_framework.generics import ListAPIView
-from .serializers import (
-    AllocationSerializer,
-    CourseListSerializer,
-    IntakeListSerializer,
-    EnrollmentListSerializer,
-    ProgramListSerializer
-)
 from allocations.models import Allocation
-from lecturers.models import LecturerCourse
 from courses.models import Course
+from django.shortcuts import render
 from intakes.models import Intake
-from programs.models import Enrollment,Program
+from lecturers.models import LecturerCourse
+from programs.models import Enrollment, Program
+from rest_framework.generics import ListAPIView
+
+from .serializers import (AllocationSerializer, CourseListSerializer,
+                          EnrollmentListSerializer, IntakeListSerializer,
+                          ProgramListSerializer)
 
 # Create your views here.
 

@@ -1,11 +1,13 @@
-from typing import Any
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-from django.urls import reverse
-from programs.models import Enrollment
-from .forms import EnrollmentCreateForm, EnrollmentUpdateForm
-from django.http import HttpRequest
 import json
+from typing import Any
+
+from django.http import HttpRequest
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.generic import ListView
+from programs.models import Enrollment
+
+from .forms import EnrollmentCreateForm, EnrollmentUpdateForm
 
 # Create your views here.
 

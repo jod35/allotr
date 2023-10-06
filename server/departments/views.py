@@ -8,10 +8,10 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from programs.models import Program
 
 from .forms import DepartmentCreateForm, DepartmentUpdateForm
 from .models import Department
-from programs.models import Program
 
 # Create your views here.
 

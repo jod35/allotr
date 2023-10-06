@@ -6,11 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import ListView
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.generic import ListView
 
-from .forms import CourseUpdateForm, CourseCreateForm
+from .forms import CourseCreateForm, CourseUpdateForm
 
 # Create your views here.
 

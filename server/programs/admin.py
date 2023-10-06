@@ -1,7 +1,8 @@
 from typing import Any
+
 from django.contrib import admin
 
-from .models import Program, Enrollment
+from .models import Enrollment, Program
 
 # Register your models here.
 

@@ -1,13 +1,14 @@
-from typing import Any, Dict
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-from django.views import View
-from django.http import JsonResponse, HttpRequest
-from .forms import IntakeCreateUpdateForm
-from django.urls import reverse
-from django.contrib import messages
 import json
+from typing import Any, Dict
 
+from django.contrib import messages
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View
+from django.views.generic import ListView
+
+from .forms import IntakeCreateUpdateForm
 from .models import Intake
 
 # Create your views here.

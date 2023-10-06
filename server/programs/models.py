@@ -1,7 +1,7 @@
 from courses.models import Course
 from departments.models import Department
-from intakes.models import Intake
 from django.db import models
+from intakes.models import Intake
 
 
 # Create your models here.

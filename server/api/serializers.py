@@ -1,10 +1,10 @@
-from rest_framework import serializers
 from allocations.models import Allocation
-from lecturers.models import LecturerCourse
 from courses.models import Course
-from intakes.models import Intake
-from programs.models import Program, Enrollment
 from departments.models import Department
+from intakes.models import Intake
+from lecturers.models import LecturerCourse
+from programs.models import Enrollment, Program
+from rest_framework import serializers
 
 
 class AllocationSerializer(serializers.ModelSerializer):

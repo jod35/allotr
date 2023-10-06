@@ -1,6 +1,6 @@
-from django.db import models
 from courses.models import Course
 from departments.models import Department
+from django.db import models
 from intakes.models import Intake
 from programs.models import Program
 
