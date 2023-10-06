@@ -34,5 +34,3 @@ class IntakeCourse(models.Model):
 
     def __str__(self) -> str:
         return f"{self.intake.name} - {self.course.title}"
-
-

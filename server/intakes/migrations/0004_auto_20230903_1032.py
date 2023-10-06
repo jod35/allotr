@@ -5,21 +5,24 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('programs', '0001_initial'),
-        ('intakes', '0003_auto_20230903_1023'),
+        ("programs", "0001_initial"),
+        ("intakes", "0003_auto_20230903_1023"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='intakeprogram',
-            name='course',
+            model_name="intakeprogram",
+            name="course",
         ),
         migrations.AddField(
-            model_name='intakeprogram',
-            name='program',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='programs.program'),
+            model_name="intakeprogram",
+            name="program",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="programs.program",
+            ),
             preserve_default=False,
         ),
     ]

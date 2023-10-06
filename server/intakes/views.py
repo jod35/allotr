@@ -1,8 +1,8 @@
 from typing import Any, Dict
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views import View
-from django.http import JsonResponse,HttpRequest
+from django.http import JsonResponse, HttpRequest
 from .forms import IntakeCreateUpdateForm
 from django.urls import reverse
 from django.contrib import messages
@@ -16,46 +16,41 @@ from .models import Intake
 class IntakeListView(ListView):
     template_name = "intakes/index.html"
     queryset = Intake.objects.all()
-    context_object_name = 'intakes'
-
+    context_object_name = "intakes"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
-
-        context['form'] = IntakeCreateUpdateForm()
-        
+        context["form"] = IntakeCreateUpdateForm()
 
         return context
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         form = IntakeCreateUpdateForm(request.POST)
 
         if form.is_valid():
             form.save()
-            messages.success(request,"Intake Createx successfully")
-            return redirect(reverse('intake_list'))
-        
+            messages.success(request, "Intake Createx successfully")
+            return redirect(reverse("intake_list"))
+
 
 class IntakeUpdateView(View):
-
-    def post(self,request: HttpRequest,intake_id):
-
-        data =  json.loads(request.body)
+    def post(self, request: HttpRequest, intake_id):
+        data = json.loads(request.body)
 
         print(data)
 
         # query the intake to update
         intake = Intake.objects.get(id=intake_id)
 
-        intake.name = data.get('name')
-        intake.academic_year = data.get('academic_year')
-        intake.start_date = data.get('start_date')
-        intake.end_date =data.get('end_date')
-        intake.term = data.get('term')
-        intake.is_active =data.get('is_active')
+        intake.name = data.get("name")
+        intake.academic_year = data.get("academic_year")
+        intake.start_date = data.get("start_date")
+        intake.end_date = data.get("end_date")
+        intake.term = data.get("term")
+        intake.is_active = data.get("is_active")
 
         intake.save()
-        
-        messages.success(request,f"Intake {data.get('name')} updated successfully")
-        return JsonResponse({"message":"yomama","intake":data})
+
+        messages.success(request, f"Intake {data.get('name')} updated successfully")
+        return JsonResponse({"message": "yomama", "intake": data})

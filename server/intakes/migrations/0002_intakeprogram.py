@@ -5,23 +5,41 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('programs', '0001_initial'),
-        ('intakes', '0001_initial'),
+        ("programs", "0001_initial"),
+        ("intakes", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='IntakeProgram',
+            name="IntakeProgram",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number_of_students', models.IntegerField(default=0)),
-                ('intake', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='intakes.intake')),
-                ('program', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programs.program')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("number_of_students", models.IntegerField(default=0)),
+                (
+                    "intake",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="intakes.intake"
+                    ),
+                ),
+                (
+                    "program",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programs.program",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'program_intakes',
+                "verbose_name": "program_intakes",
             },
         ),
     ]

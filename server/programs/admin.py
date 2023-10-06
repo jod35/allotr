@@ -1,7 +1,7 @@
 from typing import Any
 from django.contrib import admin
 
-from .models import Program,Enrollment
+from .models import Program, Enrollment
 
 # Register your models here.
 
@@ -12,5 +12,6 @@ class ProgramAdmin(admin.ModelAdmin):
     list_filter = ["created_at", "years_of_study"]
     search_fields = ["name"]
     # filter_horizontal = ['courses']
+
 
 admin.site.register(Enrollment)

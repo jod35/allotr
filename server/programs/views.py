@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import DetailView,ListView
+from django.views.generic import DetailView, ListView
 from django.core.paginator import Paginator
 
 from .forms import ProgramCourseUpdateForm, ProgramCreateForm
@@ -28,7 +28,6 @@ class ProgramListView(ListView):
         context = super().get_context_data(**kwargs)
 
         context["form"] = ProgramCreateForm()
-        
 
         return context
 
@@ -66,11 +65,11 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
 
         courses = self.get_object().courses.all()
 
-        paginator = Paginator(courses,per_page=10)
+        paginator = Paginator(courses, per_page=10)
 
-        page_number = self.request.GET.get('page',1)
+        page_number = self.request.GET.get("page", 1)
 
-        context['page_obj'] = paginator.page(page_number)
+        context["page_obj"] = paginator.page(page_number)
 
         return context
 
@@ -80,23 +79,22 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
         form = ProgramCourseUpdateForm(data=request.POST, instance=program)
 
         if form.is_valid():
-            #program instance has to be saved first
+            # program instance has to be saved first
             program = form.save(commit=False)
 
             program.save()
 
-            courses = form.cleaned_data.get('courses')
+            courses = form.cleaned_data.get("courses")
 
             program.courses.clear()
             for course in courses:
-                
                 program.courses.add(course)
 
             messages.success(request, "Courses updated successfully!")
 
             return redirect(reverse("program_detail", kwargs={"pk": program.id}))
 
-        
+
 @login_required
 def updated_program(request: HttpRequest, program_id):
     data = json.loads(request.body)

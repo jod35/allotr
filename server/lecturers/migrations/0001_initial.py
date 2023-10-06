@@ -5,36 +5,74 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('intakes', '0001_initial'),
-        ('courses', '0001_initial'),
+        ("intakes", "0001_initial"),
+        ("courses", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Lecturer',
+            name="Lecturer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('profile_picture', models.ImageField(blank=True, null=True, upload_to='lecturer_profiles/')),
-                ('join_date', models.DateField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=100)),
+                ("last_name", models.CharField(max_length=100)),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                (
+                    "profile_picture",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="lecturer_profiles/"
+                    ),
+                ),
+                ("join_date", models.DateField()),
             ],
         ),
         migrations.CreateModel(
-            name='LecturerCourse',
+            name="LecturerCourse",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.course')),
-                ('intake', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='allocations', to='intakes.intake')),
-                ('lecturer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lecturers.lecturer')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "course",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="courses.course"
+                    ),
+                ),
+                (
+                    "intake",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="allocations",
+                        to="intakes.intake",
+                    ),
+                ),
+                (
+                    "lecturer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lecturers.lecturer",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('lecturer', 'course')},
+                "unique_together": {("lecturer", "course")},
             },
         ),
     ]

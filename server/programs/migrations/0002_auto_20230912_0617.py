@@ -5,25 +5,48 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('intakes', '0005_delete_intakeprogram'),
-        ('programs', '0001_initial'),
+        ("intakes", "0005_delete_intakeprogram"),
+        ("programs", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Enrollment',
+            name="Enrollment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('students_enrolled', models.PositiveIntegerField(default=0)),
-                ('intake', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='intakes.intake')),
-                ('program', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='programs.program')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("students_enrolled", models.PositiveIntegerField(default=0)),
+                (
+                    "intake",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="enrollments",
+                        to="intakes.intake",
+                    ),
+                ),
+                (
+                    "program",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="enrollments",
+                        to="programs.program",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='program',
-            name='semesters',
-            field=models.ManyToManyField(through='programs.Enrollment', to='intakes.Intake'),
+            model_name="program",
+            name="semesters",
+            field=models.ManyToManyField(
+                through="programs.Enrollment", to="intakes.Intake"
+            ),
         ),
     ]

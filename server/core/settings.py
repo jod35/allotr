@@ -52,15 +52,14 @@ INSTALLED_APPS = [
     "intakes.apps.IntakesConfig",
     "allocations.apps.AllocationsConfig",
     "lecturers.apps.LecturersConfig",
-    "enrollments.apps.EnrollmentsConfig", 
+    "enrollments.apps.EnrollmentsConfig",
     "api.apps.ApiConfig",
     # third party apps
     "crispy_forms",
     "crispy_bootstrap4",
     "rest_framework",
-    'django_select2',
-     "corsheaders"
-    
+    "django_select2",
+    "corsheaders",
 ]
 
 CACHES = {
@@ -73,8 +72,8 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
+        },
+    },
 }
 
 # Tell select2 which cache configuration to use:
@@ -91,13 +90,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-#CORS settings
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
     "http://localhost:8080",
     "http://127.0.0.1:8000",
-    "http://127.0.0.1:5500"
+    "http://127.0.0.1:5500",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -132,9 +131,7 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)
 }
 
 AUTH_USER_MODEL = "users.User"

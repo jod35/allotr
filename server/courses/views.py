@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404, render,redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView
 from django.urls import reverse
 
@@ -25,18 +25,18 @@ class CourseListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         context["update_form"] = CourseUpdateForm()
-        context['form'] = CourseCreateForm()
+        context["form"] = CourseCreateForm()
 
         return context
 
-
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         form = CourseCreateForm(self.request.POST)
 
         if form.is_valid():
             form.save()
-            messages.success(self.request,"Course created successfully")
-            return redirect(reverse('course_list'))
+            messages.success(self.request, "Course created successfully")
+            return redirect(reverse("course_list"))
+
 
 @login_required
 def update_course(request: HttpRequest, course_id):
@@ -51,7 +51,8 @@ def update_course(request: HttpRequest, course_id):
         )
 
         messages.success(
-            request, f"Course '{course_to_update.first().title}' has been updated successfully!"
+            request,
+            f"Course '{course_to_update.first().title}' has been updated successfully!",
         )
 
         return JsonResponse(data={"message": "Course Updated successfully"})

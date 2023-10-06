@@ -15,17 +15,16 @@ class ProgramCourseWidget(s2forms.ModelSelect2MultipleWidget):
     def __init__(self, **kwargs):
         super().__init__(kwargs)
         self.attrs = {"style": "width: 100%"}
-    search_fields =[
-        "title__icontains",
-        "code__icontains"
-    ]
+
+    search_fields = ["title__icontains", "code__icontains"]
+
 
 class ProgramCreateForm(forms.ModelForm):
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self.fields['details'].widget.attrs['rows'] = 5
+        self.fields["details"].widget.attrs["rows"] = 5
+
     class Meta:
         model = Program
         fields = [
@@ -37,15 +36,10 @@ class ProgramCreateForm(forms.ModelForm):
             "details",
         ]
 
-    
-
 
 class ProgramCourseUpdateForm(forms.ModelForm):
-    
     class Meta:
         model = Program
         fields = ["courses"]
 
-        widgets={
-            'courses':ProgramCourseWidget
-        }
+        widgets = {"courses": ProgramCourseWidget}

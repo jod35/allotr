@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('courses', '0001_initial'),
-        ('lecturers', '0003_alter_lecturercourse_unique_together'),
+        ("courses", "0001_initial"),
+        ("lecturers", "0003_alter_lecturercourse_unique_together"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='lecturercourse',
-            name='course',
+            model_name="lecturercourse",
+            name="course",
         ),
         migrations.AddField(
-            model_name='lecturercourse',
-            name='courses',
-            field=models.ManyToManyField(related_name='lecturer', to='courses.Course'),
+            model_name="lecturercourse",
+            name="courses",
+            field=models.ManyToManyField(related_name="lecturer", to="courses.Course"),
         ),
     ]
