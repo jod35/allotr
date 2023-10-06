@@ -41,8 +41,8 @@
                         <div class="col-md-3">
                             <select id="filter-field" class="form-select">
                                 <option></option>
-                                <option value="Name">Name</option>
-                                <option value="Code">Code</option>
+                                <option value="name">Name</option>
+                                <option value="code">Code</option>
                                 <option value="degree_level">Degree Level</option>
                             </select>
                         </div>
@@ -87,6 +87,9 @@
                                         <div class="form-group">
                                             {{ form.details|as_crispy_field }}
                                         </div>
+                                        <div class="form-group">
+                                            {{ form.department|as_crispy_field }}
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" @click="resetState()" class="btn bg-gradient-dark"
                                                 data-bs-dismiss="modal">
@@ -111,47 +114,80 @@
                         <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h6 class="modal-title" id="modal-title-default">[[code]] [[title]]</h6>
+                                    <h6 class="modal-title" id="modal-title-default">([[code]]) [[name]]</h6>
                                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
                                         aria-label="Close" @click="resetState()">
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="">
+                                    <form method="post" action="" id="update-form">
                                         {% csrf_token %}
-                                        <div id="div_id_code" class="form-group"> <label for="id_code"
-                                                class=" requiredField">
-                                                Code<span class="asteriskField">*</span> </label>
-                                            <div>
-                                                <input type="text" name="code" maxlength="10"
-                                                    class="textinput form-control" required id="id_code" v-model="code">
+                                        <div class="row">
+                                            <div id="div_id_name" class="col">
+                                                <label for="id_name" class="requiredField">
+                                                    Name<span class="asteriskField">*</span>
+                                                </label>
+                                                <div>
+                                                    <input type="text" name="name" maxlength="255"
+                                                        class="textinput form-control" required id="id_name"
+                                                        :value="[[name]]" />
+                                                </div>
+                                            </div>
+                                            <div id="div_id_code" class="col">
+                                                <label for="id_code" class="requiredField">
+                                                    Code<span class="asteriskField">*</span>
+                                                </label>
+                                                <div>
+                                                    <input type="text" name="code" maxlength="10"
+                                                        class="textinput form-control" required id="id_code"
+                                                        :value="[[code]]" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="div_id_title" class="form-group"> <label for="id_title"
-                                                class=" requiredField">
-                                                Title<span class="asteriskField">*</span> </label>
+                                        <div id="div_id_years_of_study" class="form-group">
+                                            <label for="id_years_of_study" class="requiredField">
+                                                Years of study<span class="asteriskField">*</span>
+                                            </label>
                                             <div>
-                                                <input type="text" name="title" maxlength="225"
-                                                    class="textinput form-control" required id="id_title"
-                                                    v-model="title">
+                                                <input type="number" name="years_of_study" :value="[[years_of_study]]"
+                                                    class="numberinput form-control" required id="id_years_of_study" />
                                             </div>
                                         </div>
-                                        <div id="div_id_program_description" class="form-group"> <label
-                                                for="id_program_description" class=" requiredField">
-                                                program description<span class="asteriskField">*</span> </label>
+                                        <div id="div_id_degree_level" class="form-group">
+                                            <label for="id_degree_level" class="requiredField">
+                                                Degree level<span class="asteriskField">*</span>
+                                            </label>
                                             <div>
-                                                <textarea name="program_description" v-model="program_description"
-                                                    cols="40" rows="10" class="textarea form-control" required
-                                                    id="id_program_description"></textarea>
+                                                <select name="degree_level" class="select form-control" required
+                                                    id="id_degree_level">
+                                                    <option value="[[degree_level]]" selected>
+                                                        [[degree_level]]
+                                                    </option>
+                                                    <option value="D">Diploma</option>
+                                                    <option value="B">Bachelors</option>
+                                                    <option value="PGd">PostGraduateDiploma</option>
+                                                    <option value="M">Masters</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div id="div_id_details" class="form-group">
+                                            <label for="id_details" class="requiredField">
+                                                Details<span class="asteriskField">*</span>
+                                            </label>
+                                            <div>
+                                                <textarea name="details" cols="40" rows="5"
+                                                    class="textarea form-control" required
+                                                    id="id_details">[[details]]</textarea>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-sm bg-gradient-dark"
-                                        @click="updateCourse()">Update
-                                        Course</button>
+                                        @click="updateProgram()">Update
+                                        Program</button>
                                     <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
                                         @click="resetState()">Close</button>
                                 </div>
@@ -178,9 +214,15 @@
     const app = Vue.createApp({
         data() {
             return {
-                message: 'Hello, Vue 3!'
+                id: "",
+                name: "",
+                code: "",
+                years_of_study: "",
+                degree_level: "",
+                details:""
             };
         },
+        delimiters: ["[[", "]]"],
         mounted() {
             const loading = document.querySelector('.loading');
 
@@ -204,10 +246,13 @@
                     setTimeout(() => {
                         loading.style.display = 'none';
 
-
+                        // transform api data into a format 
                         const rows = data.map(item => ({
+                            id: item.id,
                             code: item.code,
                             name: item.name,
+                            years_of_study: item.years_of_study,
+                            details: item.details,
                             degree_level: this.formatDegreeLevel(item.degree_level),
                             department: item.department.name,
                         }));
@@ -252,12 +297,32 @@
                         function updateFilter() {
                             var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
                             var typeVal = "like";
-
+                            console.log(filterVal)
+                            console.log(typeVal)
+                            console.log(valueEl.value)
 
                             if (filterVal) {
                                 table.setFilter(filterVal, typeVal, valueEl.value);
                             }
                         }
+
+                        //display update modal for row when row is clicked
+                        table.on("rowClick", (e, id, data, row) => {
+
+                            //display update modal
+                            $('#modal-default').modal('show');
+
+                            // update state variables depending on which row is clicked
+                            this.setProgramData(
+                                id._row.data.id,
+                                id._row.data.name,
+                                id._row.data.code,
+                                id._row.data.years_of_study,
+                                id._row.data.degree_level,
+                                id._row.data.department_id,
+                                id._row.data.details
+                            )
+                        })
                     }, 200);
                 })
                 .catch(error => {
@@ -282,8 +347,102 @@
                 else if (degree_level === "PGd") return 'Postgraduate Diploma'
                 else if (degree_level === "M") return 'Masters'
                 else return 'Invalid degree level'
-            }
+            },
+            // update the state of details, name etc on a program
+            setProgramData(
+                id,
+                name,
+                code,
+                years_of_study,
+                degree_level,
+                department_id,
+                details
+            ) {
+                this.id = id;
+                this.name = name;
+                this.code = code;
+                this.years_of_study = years_of_study;
+                this.degree_level = degree_level;
+                this.details = details;
+            },
+            resetState() {
+                this.name = "";
+                this.Program_head = "";
+                this.contact_email = "";
+                this.description = "";
+            },
+            async createProgram() {
+                const createForm = document.getElementById("create-form");
 
+                const tokenField = document.querySelector(
+                    'input[name="csrfmiddlewaretoken"]'
+                );
+
+                let csrfToken = tokenField.value;
+                const formData = new FormData(createForm);
+
+                let name = formData.get("name");
+                let code = formData.get("code");
+                let years_of_study = formData.get("years_of_study");
+                let degree_level = formData.get("degree_level");
+                let details = formData.get("details");
+                let department_id = formData.get("department");
+
+                const response = await fetch("/programs/create/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/Json",
+                        "X-CSRFToken": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    body: JSON.stringify({
+                        name,
+                        code,
+                        years_of_study,
+                        degree_level,
+                        details,
+                        department_id,
+                    }),
+                });
+
+                createForm.reset();
+
+
+            },
+            async updateProgram() {
+                const updateForm = document.getElementById("update-form");
+                const tokenField = document.querySelector(
+                    'input[name="csrfmiddlewaretoken"]'
+                );
+
+                let csrfToken = tokenField.value;
+
+                console.log(updateForm);
+
+                const updateData = new FormData(updateForm);
+
+                let body = {
+                    name: updateData.get("name"),
+                    code: updateData.get("code"),
+                    degree_level: updateData.get("degree_level"),
+                    years_of_study: updateData.get("years_of_study"),
+                    details: updateData.get("details"),
+                };
+
+                const response = await fetch(`/programs/update/${this.id}/`, {
+                    headers: {
+                        "Content-Type": "Application/Json",
+                        "X-CSRFToken": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(body),
+                });
+
+                const data = await response.json();
+
+                window.location.reload();
+            },
         }
     });
 

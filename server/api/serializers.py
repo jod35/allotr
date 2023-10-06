@@ -64,7 +64,7 @@ class ProgramListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Program
-        fields = ["name", "code", "degree_level", "department", "created_at"]
+        fields = ["id","name", "code", "degree_level", "department", "created_at","years_of_study","details"]
 
 
 class EnrollmentListSerializer(serializers.ModelSerializer):
