@@ -11,7 +11,8 @@
     /* Set a border for the entire jExcel table */
     color: black;
   }
-  .jexcel thead th{
+
+  .jexcel thead th {
     color: white;
     background-color: #31385F;
   }
@@ -21,7 +22,6 @@
 {% block content %}
 
 <div class="container card mb-4  py-4" id="app">
-
   <div class="row">
     <div class="col-12">
       <div class="card-header pb-0">
@@ -36,6 +36,21 @@
           course table
           {% endcomment %}
           <p class="loading text-center" style="display: none;">Loading ...</p>
+          <div class="row">
+            <div class="col-md-3">
+              <select id="filter-field" class="form-select">
+                <option></option>
+                <option value="code">Code</option>
+                <option value="title">Title</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
+            </div>
+            <div class="col-md-3">
+              <button id="filter-clear" class="btn btn-dark">Clear Filter</button>
+            </div>
+          </div>
           <div id="spreadsheet"></div>
           {% comment %}
           modal for creating a course
@@ -159,6 +174,13 @@
     mounted() {
       const loading = document.querySelector('.loading');
 
+      //Define variables for input elements
+      var fieldEl = document.getElementById("filter-field");
+      var typeEl = document.getElementById("filter-type");
+      var valueEl = document.getElementById("filter-value");
+
+
+
       loading.style.display = "block";
 
       fetch("http://localhost:8000/api/courses")
@@ -169,25 +191,63 @@
           return response.json();
         })
         .then(data => {
-          loading.style.display = 'none';
+          setTimeout(() => {
+            loading.style.display = 'none';
 
-          const rows = data.map(item => [
-            item.code,
-            item.title,
-            this.formatReadableDate(item.created_at),
-          ]);
 
-          jspreadsheet(document.getElementById("spreadsheet"), {
-            data: rows.reverse(),
-            colWidths: [150, 350, 350],
-            search: true,
-            pagination: 20,
-            columns: [
-              { type: "string", title: "Code" },
-              { type: "string", title: "Title" },
-              { type: "date", title: "Created At" }
-            ]
-          });
+            const rows = data.map(item => ({
+              code: item.code,
+              title: item.title,
+              created_at: this.formatReadableDate(item.created_at)
+            }));
+
+            var openIcon = function (value, data, cell, row, options) { //plain text value
+              return "<i class='fa fa-search'></i>"
+            };
+
+            var table = new Tabulator("#spreadsheet", {
+              data: rows, //assign data to table
+              autoColumns: true, //create columns from data field names
+              layout: "fitColumns",      //fit columns to width of table
+              responsiveLayout: "hide",  //hide columns that don't fit on the table
+              addRowPos: "top",          //when adding a new row, add it to the top of the table
+              history: true,             //allow undo and redo actions on the table
+              pagination: "local",       //paginate the data
+              paginationSize: 10,         //allow 7 rows per page of data
+              paginationCounter: "rows", //display count of paginated rows in footer
+              movableColumns: true,
+              columns: [                 //define the table columns
+                { title: "code", field: "code", editor: "input" },
+                { title: "Title", field: "title" },
+                { title: "created_at", field: "created_at" },
+                { title: "action", sortable: false, formatter: openIcon },
+              ],
+            });
+
+
+            //Update filters on value change
+            document.getElementById("filter-field").addEventListener("change", updateFilter);
+            document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+            //Clear filters on "Clear Filters" button click
+            document.getElementById("filter-clear").addEventListener("click", function () {
+              fieldEl.value = "";
+              valueEl.value = "";
+
+              table.clearFilter();
+            });
+
+            //Trigger setFilter function with correct parameters
+            function updateFilter() {
+              var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+              var typeVal = "like";
+
+
+              if (filterVal) {
+                table.setFilter(filterVal, typeVal, valueEl.value);
+              }
+            }
+          }, 200);
         })
         .catch(error => {
           console.error('Error fetching data:', error);

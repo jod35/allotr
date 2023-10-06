@@ -1,247 +1,139 @@
-{% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
-{% block stylesheets %} {{ form.media.css }} {% endblock stylesheets %} {% block content %}
+{% extends 'layouts/base.html' %}
+{% load static %}
 
-<div class="card mb-4 container-fluid py-4" id="app">
+{% load crispy_forms_tags %}
+{% block title %} Courses {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+  .jexcel {
+    /* Set a border for the entire jExcel table */
+    color: black;
+  }
+
+  .jexcel thead th {
+    color: white;
+    background-color: #31385F;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container card mb-4  py-4" id="app">
   <div class="row">
     <div class="col-12">
-      <div class="container">
-        <div class="card-header pb-0">
-          <h6>Enrollments</h6>
-        </div>
-        <div class="card-header pb-0">
-          <button
-            type="button"
-            class="btn btn-sm bg-gradient-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#ProgramCreateModal"
-          >
-            Create Enrollment
-          </button>
-        </div>
+      <div class="card-header pb-0">
+        <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+          data-bs-target="#ProgramCreateModal">
+          Add Enrollment
+        </button>
+      </div>
+      <div class="">
+        <div class="card-body px-0 pt-0 pb-2 ">
+          {% comment %}
+          enrollment table
+          {% endcomment %}
+          <p class="loading text-center" style="display: none;">Loading ...</p>
+          <div class="row">
+            <div class="col-md-3">
+              <select id="filter-field" class="form-select">
+                <option></option>
+                <option value="code">Code</option>
+                <option value="title">Title</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
+            </div>
+            <div class="col-md-3">
+              <button id="filter-clear" class="btn btn-dark">Clear Filter</button>
+            </div>
+          </div>
+          <div id="spreadsheet"></div>
+          {% comment %}
+          modal for creating a enrollment
+          {% endcomment %}
 
-        <div class="card-body px-0 pt-0 pb-2">
-          <div class="table-responsive p-0">
-            <table id="dtBasicExample" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Program
-                  </th>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Intake
-                  </th>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Students Enrolled
-                  </th>
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for enrollment in enrollments %}
-                <tr>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">
-                      {{enrollment.program}}
-                    </p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">
-                      {{enrollment.intake}}
-                    </p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">
-                      {{ enrollment.students_enrolled }}
-                    </p>
-                  </td>
-                  <td class="align-middle">
-                    <button
-                      type="button"
-                      class="btn btn-sm bg-gradient-dark"
-                      data-bs-toggle="modal"
-                      data-bs-target="#programUpdateModal"
-                      @click="setEnrollmentState(`{{enrollment.id}}`,`{{enrollment.program}}`,`{{enrollment.intake}}`,`{{ enrollment.students_enrolled }}`)"
-                    >
-                      <i class="fas fa-pen fa-2x"></i>
-                    </button>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
-                  Program
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
-                  Intake
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
-                  Students Enrolled
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
-                  Action
-                </th>
-              </tfoot>
-            </table>
-            {% comment %} Program Create form {% endcomment %}
-            <div
-              class="modal modal-lg fade"
-              id="ProgramCreateModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      Create Enrollment
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close text-dark"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      @click="resetState()"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form method="post" action="" id="create-form">
-                      {% csrf_token %}
-                      <div class="row">
-                        <div class="col">{{form.program|as_crispy_field}}</div>
-                        <div class="col">{{ form.intake|as_crispy_field }}</div>
-                      </div>
-                      <div class="form-group">
-                        {{ form.students_enrolled |as_crispy_field}}
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          @click="resetState()"
-                          class="btn bg-gradient-dark"
-                          data-bs-dismiss="modal"
-                        >
-                          Close
-                        </button>
-                        <button type="submit" class="btn bg-gradient-primary">
-                          Save
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+          <div class="modal modal-lg fade" id="ProgramCreateModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Create Enrollment
+                  </h5>
+                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                    @click="resetState()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="" id="create-form">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <div class="modal-footer">
+                      <button type="button" @click="resetState()" class="btn bg-gradient-dark" data-bs-dismiss="modal">
+                        Close
+                      </button>
+                      <button type="submit" class="btn bg-gradient-primary">
+                        Save
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
+          </div>
+          {% comment %}
+          form for updating a course
+          {% endcomment %}
 
-            {% comment %} modal for updating enrollment {% endcomment %}
-            <div
-              class="modal fade"
-              id="programUpdateModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      Edit Enrollment
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close text-dark"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div id="div_id_intake" class="form-group">
-                      <label for="id_intake" class="requiredField">
-                        Intake<span class="asteriskField">*</span>
-                      </label>
+          <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
+            aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title" id="modal-title-default">[[code]] [[title]]</h6>
+                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                    @click="resetState()">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="">
+                    {% csrf_token %}
+                    <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
+                        Code<span class="asteriskField">*</span> </label>
                       <div>
-                        <select
-                          name="intake"
-                          disabled
-                          class="select form-control"
-                          required
-                          id="id_intake"
-                        >
-                          <option value="" selected>[[intake]]</option>
-                        </select>
+                        <input type="text" name="code" maxlength="10" class="textinput form-control" required
+                          id="id_code" v-model="code">
                       </div>
                     </div>
-                    <div id="div_id_program" class="form-group">
-                      <label for="id_program" class="requiredField">
-                        Program<span class="asteriskField">*</span>
-                      </label>
+                    <div id="div_id_title" class="form-group"> <label for="id_title" class=" requiredField">
+                        Title<span class="asteriskField">*</span> </label>
                       <div>
-                        <select
-                          name="program"
-                          disabled
-                          class="select form-control"
-                          required
-                          id="id_program"
-                        >
-                          <option value="1">[[program_name]]</option>
-                        </select>
+                        <input type="text" name="title" maxlength="225" class="textinput form-control" required
+                          id="id_title" v-model="title">
                       </div>
                     </div>
-                    <div id="div_id_students_enrolled" class="form-group">
-                      <label for="id_students_enrolled" class="requiredField">
-                        Students enrolled<span class="asteriskField">*</span>
-                      </label>
+                    <div id="div_id_course_description" class="form-group"> <label for="id_course_description"
+                        class=" requiredField">
+                        Course description<span class="asteriskField">*</span> </label>
                       <div>
-                        <input
-                          type="number"
-                          name="students_enrolled"
-                          value="0"
-                          min="0"
-                          class="form-control"
-                          v-model="students_enrolled"
-                          required
-                          id="id_students_enrolled"
-                        />
+                        <textarea name="course_description" v-model="course_description" cols="40" rows="10"
+                          class="textarea form-control" required id="id_course_description"></textarea>
                       </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn bg-gradient-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button type="button" class="btn bg-gradient-dark">
-                      Save changes
-                    </button>
-                  </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm bg-gradient-dark" @click="updateCourse()">Update
+                    Course</button>
+                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
+                    @click="resetState()">Close</button>
                 </div>
               </div>
             </div>
@@ -250,29 +142,122 @@
       </div>
     </div>
   </div>
-
-  {% include "includes/footer.html" %}
 </div>
-{% endblock content %} {% block javascripts %}
+
+
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
 <script>
+  // create a vue app inside this template
   const app = Vue.createApp({
     data() {
       return {
-        id: "",
-        intake: "",
-        program_name: "",
-        students_enrolled: 0,
+        message: 'Hello, Vue 3!'
       };
     },
-    delimiters: ["[[", "]]"],
-    methods: {
-      setEnrollmentState(id, intake, program_name, students_enrolled) {
-        this.id = id;
-        this.intake = intake;
-        this.program_name = program_name;
-        this.students_enrolled = students_enrolled;
-      },
+    mounted() {
+      const loading = document.querySelector('.loading');
+
+      //Define variables for input elements
+      var fieldEl = document.getElementById("filter-field");
+      var typeEl = document.getElementById("filter-type");
+      var valueEl = document.getElementById("filter-value");
+
+
+
+      loading.style.display = "block";
+
+      fetch("http://localhost:8000/api/enrollments")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setTimeout(() => {
+            loading.style.display = 'none';
+
+
+            const rows = data.map(item => ({
+              program: item.program.name,
+              intake: item.intake.name,
+              students_enrolled: item.students_enrolled
+            }));
+
+            var openIcon = function (value, data, cell, row, options) { //plain text value
+              return "<i class='fa fa-search'></i>"
+            };
+
+            var table = new Tabulator("#spreadsheet", {
+              data: rows, //assign data to table
+              autoColumns: true, //create columns from data field names
+              layout: "fitColumns",      //fit columns to width of table
+              responsiveLayout: "hide",  //hide columns that don't fit on the table
+              addRowPos: "top",          //when adding a new row, add it to the top of the table
+              history: true,             //allow undo and redo actions on the table
+              pagination: "local",       //paginate the data
+              paginationSize: 10,         //allow 7 rows per page of data
+              paginationCounter: "rows", //display count of paginated rows in footer
+              movableColumns: true,
+              columns: [                 //define the table columns
+                { title: "program", field: "program", editor: "input" },
+                { title: "intake", field: "intake" },
+                { title: "created_at", field: "created_at" },
+                { title: "action", sortable: false, formatter: openIcon },
+              ],
+            });
+
+
+            //Update filters on value change
+            document.getElementById("filter-field").addEventListener("change", updateFilter);
+            document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+            //Clear filters on "Clear Filters" button click
+            document.getElementById("filter-clear").addEventListener("click", function () {
+              fieldEl.value = "";
+              valueEl.value = "";
+
+              table.clearFilter();
+            });
+
+            //Trigger setFilter function with correct parameters
+            function updateFilter() {
+              var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+              var typeVal = "like";
+
+
+              if (filterVal) {
+                table.setFilter(filterVal, typeVal, valueEl.value);
+              }
+            }
+          }, 200);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     },
-  }).mount("#app");
+    methods: {
+      formatReadableDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        };
+        return date.toLocaleDateString('en-US', options);
+      }
+    }
+  });
+
+  app.mount('#app'); 
 </script>
 {% endblock javascripts %}
