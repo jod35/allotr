@@ -91,53 +91,148 @@
           form for updating a course
           {% endcomment %}
 
-          <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-            aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h6 class="modal-title" id="modal-title-default">[[code]] [[title]]</h6>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                    @click="resetState()">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="">
-                    {% csrf_token %}
-                    <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
-                        Code<span class="asteriskField">*</span> </label>
+          <div
+          class="modal fade"
+          id="intakeUpdateForm"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Intake Details
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close text-dark"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  {% csrf_token %}
+                  <form action="" method="post">
+                    <div id="div_id_name" class="form-group">
+                      <label for="id_name" class="requiredField">
+                        Name<span class="asteriskField">*</span>
+                      </label>
                       <div>
-                        <input type="text" name="code" maxlength="10" class="textinput form-control" required
-                          id="id_code" v-model="code">
+                        <input
+                          type="text"
+                          name="name"
+                          maxlength="50"
+                          class="textinput form-control"
+                          required
+                          id="id_update_name"
+                          :value="[[name]]"
+                        />
                       </div>
                     </div>
-                    <div id="div_id_title" class="form-group"> <label for="id_title" class=" requiredField">
-                        Title<span class="asteriskField">*</span> </label>
+                    <div id="div_id_start_date" class="form-group">
+                      <label for="id_start_date" class="requiredField">
+                        Start date<span class="asteriskField">*</span>
+                      </label>
                       <div>
-                        <input type="text" name="title" maxlength="225" class="textinput form-control" required
-                          id="id_title" v-model="title">
+                        <input
+                          type="datetime-local"
+                          name="start_date"
+                          class="datetimeinput form-control"
+                          required
+                          id="id_update_start_date"
+                          :value="[[start_date]]"
+                        />
                       </div>
                     </div>
-                    <div id="div_id_course_description" class="form-group"> <label for="id_course_description"
-                        class=" requiredField">
-                        Course description<span class="asteriskField">*</span> </label>
+                    <div id="div_id_end_date" class="form-group">
+                      <label for="id_end_date" class="requiredField">
+                        End date<span class="asteriskField">*</span>
+                      </label>
                       <div>
-                        <textarea name="course_description" v-model="course_description" cols="40" rows="10"
-                          class="textarea form-control" required id="id_course_description"></textarea>
+                        <input
+                          type="date"
+                          name="end_date"
+                          class="dateinput form-control"
+                          required
+                          id="id_update_end_date"
+                          :value="[[end_date]]"
+                        />
                       </div>
+                    </div>
+                    <div id="div_id_academic_year" class="form-group">
+                      <label for="id_academic_year" class="requiredField">
+                        Academic year<span class="asteriskField">*</span>
+                      </label>
+                      <div>
+                        <input
+                          type="number"
+                          name="academic_year"
+                          value="2023"
+                          class="numberinput form-control"
+                          required
+                          id="id_update_academic_year"
+                          :value="[[academic_year]]"
+                        />
+                      </div>
+                    </div>
+                    <div id="div_id_term" class="form-group">
+                      <label for="id_term" class="requiredField">
+                        Term<span class="asteriskField">*</span>
+                      </label>
+                      <div>
+                        <select
+                          name="term"
+                          class="select form-control"
+                          id="id_update_term"
+                          v-model="term"
+                        >
+                          <option value="Jan" selected>January</option>
+                          <option value="May">May</option>
+                          <option value="Sep">September</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div id="div_id_is_active" class="form-check">
+                        <input
+                          type="checkbox"
+                          name="is_active"
+                          class="checkboxinput form-check-input"
+                          id="id_update_is_active"
+                          :value="[[is_active]]"
+                        />
+                        <label for="id_is_active" class="form-check-label">
+                          Is active
+                        </label>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn bg-gradient-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        class="btn bg-gradient-dark"
+                        @click="updateIntake()"
+                      >
+                        Save changes
+                      </button>
                     </div>
                   </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm bg-gradient-dark" @click="updateCourse()">Update
-                    Course</button>
-                  <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
-                    @click="resetState()">Close</button>
-                </div>
+                </form>
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -158,7 +253,13 @@
   const app = Vue.createApp({
     data() {
       return {
-        message: 'Hello, Vue 3!'
+        id: "",
+        name: "",
+        start_date: "",
+        end_date: "",
+        academic_year: "",
+        term: "",
+        is_active: ""
       };
     },
     mounted() {
@@ -183,13 +284,16 @@
         .then(data => {
           setTimeout(() => {
             loading.style.display = 'none';
-
+            console.log(data)
 
             const rows = data.map(item => ({
+              id: item.id,
               name: item.name,
+              start_date: item.start_date,
+              end_date: item.end_date,
               academic_year: item.academic_year,
-              term:item.term,
-              created_at: this.formatReadableDate(item.created_at)
+              term: item.term,
+              is_active: item.is_active
             }));
 
             var openIcon = function (value, data, cell, row, options) { //plain text value
@@ -210,7 +314,7 @@
               columns: [                 //define the table columns
                 { title: "name", field: "name", editor: "input" },
                 { title: "academic_year", field: "academic_year" },
-                {title:"term",field:'term'},
+                { title: "term", field: 'term' },
                 { title: "created_at", field: "created_at" },
                 { title: "action", sortable: false, formatter: openIcon },
               ],
@@ -239,6 +343,21 @@
                 table.setFilter(filterVal, typeVal, valueEl.value);
               }
             }
+
+
+            table.on('rowClick', (e, id, data, row) => {
+              $('#intakeUpdateForm').modal('show');
+
+              this.setIntake(
+                id._row.data.id,
+                id._row.data.name,
+                id._row.data.start_date,
+                id._row.data.end_date,
+                id._row.data.academic_year,
+                id._row.data.term,
+                id._row.data.is_active
+              )
+            })
           }, 200);
         })
         .catch(error => {
@@ -256,7 +375,145 @@
           minute: '2-digit',
         };
         return date.toLocaleDateString('en-US', options);
+      },
+      setIntake(
+        id,
+        name,
+        start_date,
+        end_date,
+        academic_year,
+        term,
+        is_active
+      ) {
+        this.id = id;
+        this.name = name;
+        this.start_date = this.parseCustomDateTime(start_date);
+        this.end_date = this.parseDate(end_date);
+        this.academic_year = academic_year;
+        this.term = term;
+        this.is_active = is_active;
+      },
+      parseCustomDateTime(customDateString) {
+        const parts = customDateString.split(/[\s,]+/);
+
+        // Map abbreviated month to its numerical value
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          May: 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
+
+        // Extract components from the parsed string
+        const month = monthMap[parts[0]];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        let hour = 0;
+        let minute = 0;
+
+        // Check if time components are present
+        if (parts.length >= 4) {
+          const timeParts = parts[3].split(":");
+          hour = parseInt(timeParts[0], 10);
+          minute = parseInt(timeParts[1], 10);
+
+          const ampm = parts[4];
+
+          // Adjust hour for AM/PM
+          if (ampm === "p.m." && hour !== 12) {
+            hour += 12;
+          } else if (ampm === "a.m." && hour === 12) {
+            hour = 0;
+          }
+        }
+
+        // Create a JavaScript Date object
+        const date = new Date(year, month, day, hour, minute);
+
+        let formattedDate = date.toISOString().slice(0, 16);
+
+        const value = Vue.ref(formattedDate);
+
+        return value;
+      },
+      parseDate(date) {
+        const parts = date.split(/[\s,]+/);
+        const month = parts[0];
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+
+        const monthMap = {
+          "Jan.": 0,
+          "Feb.": 1,
+          "Mar.": 2,
+          "Apr.": 3,
+          May: 4,
+          "Jun.": 5,
+          "Jul.": 6,
+          "Aug.": 7,
+          "Sept.": 8,
+          "Oct.": 9,
+          "Nov.": 10,
+          "Dec.": 11,
+        };
+
+        const date_ = new Date(Date.UTC(year, monthMap[month], day));
+
+        const value = Vue.ref(date_.toISOString().slice(0, 10));
+
+        return value;
+      },
+      async updateIntake() {
+        const tokenField = document.querySelector(
+          'input[name="csrfmiddlewaretoken"]'
+        );
+
+        let csrfToken = tokenField.value;
+        const body = {
+          name: document.getElementById("id_update_name").value,
+          start_date: document.getElementById("id_update_start_date").value,
+          end_date: document.getElementById("id_update_end_date").value,
+          term: document.getElementById("id_update_term").value,
+          academic_year: document.getElementById("id_update_academic_year")
+            .value,
+          is_active: document.getElementById("id_update_is_active").value,
+        };
+
+        const response = await fetch(`/intakes/update/${this.id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/Json",
+            "X-CSRFToken": csrfToken,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify(body),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        window.location.reload();
+      },
+      resetState() {
+        this.id = "";
+        this.name = "";
+        this.start_date = "";
+        this.end_date = "";
+        this.academic_year = "";
+        this.term = "";
+        this.is_active = "";
       }
+
     }
   });
 
