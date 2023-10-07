@@ -44,7 +44,7 @@ class IntakeSerializer(serializers.ModelSerializer):
 class IntakeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intake
-        fields = ["id","name", "academic_year", "start_date","end_date","term", "created_at","is_active"]
+        fields = ["id","name", "academic_year","term", "created_at","is_active"]
 
 
 class ProgramSerializer(serializers.ModelSerializer):

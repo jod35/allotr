@@ -35,7 +35,7 @@
           {% comment %}
           course table
           {% endcomment %}
-          <p class="loading text-center" style="display: none;">Loading ...</p>
+          <p class="loading text-center" style="display: none;"><img src="{% static 'assets/img/loading.gif' %}" width="50"></p>
           <div class="row">
             <div class="col-md-3">
               <select id="filter-field" class="form-select">
@@ -134,36 +134,6 @@
                         />
                       </div>
                     </div>
-                    <div id="div_id_start_date" class="form-group">
-                      <label for="id_start_date" class="requiredField">
-                        Start date<span class="asteriskField">*</span>
-                      </label>
-                      <div>
-                        <input
-                          type="datetime-local"
-                          name="start_date"
-                          class="datetimeinput form-control"
-                          required
-                          id="id_update_start_date"
-                          :value="[[start_date]]"
-                        />
-                      </div>
-                    </div>
-                    <div id="div_id_end_date" class="form-group">
-                      <label for="id_end_date" class="requiredField">
-                        End date<span class="asteriskField">*</span>
-                      </label>
-                      <div>
-                        <input
-                          type="date"
-                          name="end_date"
-                          class="dateinput form-control"
-                          required
-                          id="id_update_end_date"
-                          :value="[[end_date]]"
-                        />
-                      </div>
-                    </div>
                     <div id="div_id_academic_year" class="form-group">
                       <label for="id_academic_year" class="requiredField">
                         Academic year<span class="asteriskField">*</span>
@@ -204,7 +174,7 @@
                           name="is_active"
                           class="checkboxinput form-check-input"
                           id="id_update_is_active"
-                          :value="[[is_active]]"
+                          v-model="is_active"
                         />
                         <label for="id_is_active" class="form-check-label">
                           Is active
@@ -216,6 +186,7 @@
                         type="button"
                         class="btn bg-gradient-secondary"
                         data-bs-dismiss="modal"
+                        @click="resetState()"
                       >
                         Close
                       </button>
@@ -289,8 +260,6 @@
             const rows = data.map(item => ({
               id: item.id,
               name: item.name,
-              start_date: item.start_date,
-              end_date: item.end_date,
               academic_year: item.academic_year,
               term: item.term,
               is_active: item.is_active
@@ -358,7 +327,7 @@
                 id._row.data.is_active
               )
             })
-          }, 200);
+          }, 500);
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -387,8 +356,8 @@
       ) {
         this.id = id;
         this.name = name;
-        this.start_date = this.parseCustomDateTime(start_date);
-        this.end_date = this.parseDate(end_date);
+        this.start_date = start_date;
+        this.end_date = end_date;
         this.academic_year = academic_year;
         this.term = term;
         this.is_active = is_active;
