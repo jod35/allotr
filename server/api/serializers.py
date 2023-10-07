@@ -32,7 +32,7 @@ class AllocationSerializer(serializers.ModelSerializer):
 class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ["code", "title", "created_at"]
+        fields = ["id","code", "title", "created_at","course_description"]
 
 
 class IntakeSerializer(serializers.ModelSerializer):

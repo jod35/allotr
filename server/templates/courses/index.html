@@ -168,9 +168,12 @@
   const app = Vue.createApp({
     data() {
       return {
-        message: 'Hello, Vue 3!'
+        title: '',
+        code: '',
+        course_description: ''
       };
     },
+    delimiters: ['[[', ']]'],
     mounted() {
       const loading = document.querySelector('.loading');
 
@@ -196,8 +199,10 @@
 
 
             const rows = data.map(item => ({
+              id: item.id,
               code: item.code,
               title: item.title,
+              course_description: item.course_description,
               created_at: this.formatReadableDate(item.created_at)
             }));
 
@@ -247,6 +252,16 @@
                 table.setFilter(filterVal, typeVal, valueEl.value);
               }
             }
+
+            table.on('rowClick', (e, id, data, row) => {
+              $('#modal-default').modal('show');
+              this.setCourse(
+                id._row.data.id,
+                id._row.data.title,
+                id._row.data.code,
+                id._row.data.course_description
+              )
+            })
           }, 200);
         })
         .catch(error => {
@@ -264,9 +279,42 @@
           minute: '2-digit',
         };
         return date.toLocaleDateString('en-US', options);
+      },
+      resetState() {
+        this.title = ''
+        this.code = ''
+        this.course_description = ''
+      },
+      setCourse(id, title, code, course_description) {
+        this.id = id
+        this.title = title
+        this.code = code
+        this.course_description = course_description
+      },
+      async updateCourse() {
+
+        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+        let csrfToken = tokenField.value;
+
+        const response = await fetch(`/courses/update/${this.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'Application/Json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({
+            title: this.title,
+            code: this.code,
+            course_description: this.course_description
+          })
+        });
+        
+        window.location.reload()
       }
     }
-  });
+  })
 
   app.mount('#app'); 
 </script>
