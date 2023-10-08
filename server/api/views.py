@@ -4,11 +4,13 @@ from django.shortcuts import render
 from intakes.models import Intake
 from lecturers.models import LecturerCourse
 from programs.models import Enrollment, Program
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,GenericAPIView
+from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import (AllocationSerializer, CourseListSerializer,
                           EnrollmentListSerializer, IntakeListSerializer,
-                          ProgramListSerializer)
+                          ProgramListSerializer,EnrollmentUpdateSerializer)
 
 # Create your views here.
 
@@ -36,3 +38,19 @@ class ProgramListView(ListAPIView):
     serializer_class = ProgramListSerializer
     queryset = Program.objects.all()
 
+class EnrollmentDetailUpdateView(GenericAPIView):
+    serializer_class = EnrollmentUpdateSerializer
+    queryset =Enrollment.objects.all()
+
+    def post(self, request,pk):
+        data = request.data
+
+        enrollment = Enrollment.objects.get(pk=pk)
+
+        serializer = self.serializer_class(instance= self.get_object(),data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data= serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

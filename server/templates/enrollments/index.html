@@ -197,7 +197,7 @@
                       <button
                         type="button"
                         class="btn btn-sm bg-gradient-dark"
-                        @click="updateCourse()"
+                        @click="updateEnrollment()"
                       >
                         Update Enrollment data
                       </button>
@@ -377,6 +377,32 @@
         this.intake = "";
         this.students_enrolled = "";
       },
+      async updateEnrollment(){
+        const tokenField = document.querySelector(
+          'input[name="csrfmiddlewaretoken"]'
+        );
+
+        let csrfToken = tokenField.value;
+        const body = {
+          students_enrolled: this.students_enrolled,
+        };
+
+        const response = await fetch(`/api/enrollment/${this.id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/Json",
+            "X-CSRFToken": csrfToken,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify(body),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        window.location.reload();
+      }
     },
   });
 
