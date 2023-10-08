@@ -73,4 +73,4 @@ class EnrollmentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Enrollment
-        fields = ["program", "intake", "students_enrolled"]
+        fields = ["id","program", "intake", "students_enrolled"]
