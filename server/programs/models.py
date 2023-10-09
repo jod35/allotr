@@ -2,6 +2,7 @@ from courses.models import Course
 from departments.models import Department
 from django.db import models
 from intakes.models import Intake
+from schools.models import School
 
 
 # Create your models here.
@@ -23,7 +24,7 @@ class Program(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     courses = models.ManyToManyField(Course, related_name="programs")
     semesters = models.ManyToManyField(Intake, through="Enrollment")
-
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.name
 
