@@ -9,7 +9,7 @@
       <div class="card mb-4">
         <div class="card-body px-0 pt-0 pb-2">
           <div class="container container-fluid">
-            {% comment %} This is a tab for the allocation summary {% endcomment %}
+            {% comment %} This is a tab for the allocation summary {%endcomment%}
 
             <div class="tab-content" id="myTabContent" style="height: 80vh">
               <div
@@ -19,59 +19,11 @@
                 aria-labelledby="tab{{ program.id }}-tab"
               >
                 <h3>Summary</h3>
-                <div class="table-responsive p-0" style="height: 65vh">
-                  <table
-                    class="table align-items-center mb-0 mt-4 .table-bordered"
-                  >
-                    <table
-                      id="dtBasicExample"
-                      class="table table-striped table-bordered table-sm"
-                      cellspacing="0"
-                      width="100%"
-                      style="height: 65vh"
-                    >
-                      <thead>
-                        <tr>
-                          <th class="th-sm">Name</th>
-                          <th class="th-sm">Courses</th>
-                          <th class="th-sm">Office</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for allocation in allocations %}
-                        <tr>
-                          <td class="text-dark text-bold">
-                            {{allocation.lecturer}}
-                          </td>
-                          <td>
-                            {% for course in allocation.courses.all %}
-                            <small class="text-dark">{{course}}</small>
-                            <br />
-                            {% endfor %}
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              @click="resetState()"
-                              class="btn btn-sm bg-gradient-link"
-                              data-bs-dismiss="modal"
-                            >
-                              <i class="fas fa-eye fa-2x"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Name</th>
-                          <th>Position</th>
-                          <th>Office</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </table>
-                </div>
+                <div
+                  class="table-responsive p-0"
+                  style="height: 65vh"
+                  id="allocation-table"
+                ></div>
               </div>
               {% for program in programs %}
               <div
@@ -131,35 +83,77 @@
   <!-- Specific JS goes HERE -->
   {% block javascripts %}
   <script>
-    const app = Vue.createApp({ 
+    const app = Vue.createApp({
+      mounted() {
+        const data = [
+          {
+            id: 1,
+            name: "Billy Bob",
+            age: "12",
+            _children: [
+              { id: 2, name: "Mary May", age: "1" }, //child rows nested under billy bob
+              { id: 3, name: "Christine Lobowski", age: "42" },
+              {
+                id: 4,
+                name: "Brendon Philips",
+                age: "125",
+                _children: [
+                  { id: 5, name: "Margret Marmajuke", age: "16" }, //child rows nested under brendon philps
+                  { id: 6, name: "Frank Peoney", age: "12" },
+                ],
+              },
+            ],
+          },
+          { id: 7, name: "Jenny Jane", age: "1" },
+          {
+            id: 8,
+            name: "Martha Tiddly",
+            age: "42",
+            _children: [
+              { id: 9, name: "Frasier Franks", age: "125" }, //child row nested under martha tiddly
+            ],
+          },
+          { id: 10, name: "Bobby Green", age: "11" },
+        ];
+
+        var table = new Tabulator("#allocation-table", {
+          height: "311px",
+          data: data,
+          dataTree: true,
+          dataTreeStartExpanded: true,
+          columns: [
+            { title: "id", field: "id", width: 200, responsive: 0 },
+            { title: "Name", field: "name", width: 200, responsive: 0 },
+            { title: "Age", field: "age", width: 200, responsive: 0 }, //never hide this column
+          ],
+        });
+      },
       data() {
         return {
           id: "",
-          url:'http://localhost:8000/api'
+          url: "http://localhost:8000/api",
         };
       },
       delimiters: ["[[", "]]"],
       methods: {
-        greet(){
-          console.log("Hello")
+        greet() {
+          console.log("Hello");
         },
         async fetchData(code) {
+          const response = await fetch(`${this.url}/allocations`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "Application/Json",
+            },
+          });
 
-           const response = await fetch(`${this.url}/allocations`,{
-            method :"GET",
-            headers :{
-              "Content-Type":"Application/Json",
-            }
-           });
+          if (response.ok) {
+            const data = await response.json();
 
-           if (response.ok){
-             const data = await response.json();
-
-             console.log(data)
-           }
-           else{
-            throw Error("Something is not right", response.status)
-           }
+            console.log(data);
+          } else {
+            throw Error("Something is not right", response.status);
+          }
         },
       },
     }).mount("#app");

@@ -32,7 +32,7 @@ class AllocationSerializer(serializers.ModelSerializer):
 class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ["id","code", "title", "created_at","course_description"]
+        fields = ["id", "code", "title", "created_at", "course_description"]
 
 
 class IntakeSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class IntakeSerializer(serializers.ModelSerializer):
 class IntakeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intake
-        fields = ["id","name", "academic_year","term", "created_at","is_active"]
+        fields = ["id", "name", "academic_year", "term", "created_at", "is_active"]
 
 
 class ProgramSerializer(serializers.ModelSerializer):
@@ -64,7 +64,16 @@ class ProgramListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Program
-        fields = ["id","name", "code", "degree_level", "department", "created_at","years_of_study","details"]
+        fields = [
+            "id",
+            "name",
+            "code",
+            "degree_level",
+            "department",
+            "created_at",
+            "years_of_study",
+            "details",
+        ]
 
 
 class EnrollmentListSerializer(serializers.ModelSerializer):
@@ -73,9 +82,23 @@ class EnrollmentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Enrollment
-        fields = ["id","program", "intake", "students_enrolled"]
+        fields = ["id", "program", "intake", "students_enrolled"]
+
+    def get_program(self, obj):
+        # Serialize the program field, excluding the course field
+        program_serializer = ProgramSerializer(obj.program)
+        program_data = program_serializer.data
+        program_data.pop('courses', None)  # Exclude the 'course' field
+        return program_data
+
+    def to_representation(self, instance):
+        # Override to include the modified program representation
+        representation = super().to_representation(instance)
+        representation['program'] = self.get_program(instance)
+        return representation
+
 
 class EnrollmentUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment
-        fields = ['students_enrolled']
+        fields = ["students_enrolled"]

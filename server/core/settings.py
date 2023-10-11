@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_select2",
     "corsheaders",
+    "drf_yasg",
 ]
 
 CACHES = {

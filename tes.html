@@ -1,114 +1,53 @@
-<div class="container container-fluid">
-    {% comment %} This is a tab for the allocation summary {% endcomment %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="" role="presentation">
-        <a
-          class="btn btn-sm btn-dark"
-          id="tab{{ program.id }}"
-          data-bs-toggle="tab"
-          data-bs-target="#tab{{ program.id }}"
-          type="button"
-          role="tab"
-          aria-controls="home"
-          aria-selected="true"
-          @click="fetchData(`{{program.code}}`)"
-        >
-          summary
-        </a>
-      </li>
-      {% for program in programs %}
-      <li class="" role="presentation">
-        <a
-          class="tab-link {% if forloop.first %}active{% endif %}"
-          id="tab{{ program.id }}"
-          data-bs-toggle="tab"
-          data-bs-target="#tab{{ program.id }}"
-          type="button"
-          role="tab"
-          @click="fetchData(`{{program.code}}`)"
-          aria-controls="home"
-          aria-selected="true"
-        >
-          {{program.code}}
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="tab-content" id="myTabContent" style="height: 80vh">
-      <div
-        class="tab-pane fade show"
-        id="tab{{ program.id }}"
-        role="tabpanel"
-        aria-labelledby="tab{{ program.id }}-tab"
-      >
-        <h3>Summary</h3>
-        <div class="table-responsive p-0" style="height: 65vh">
-          <table
-            class="table align-items-center mb-0 mt-4 .table-bordered"
-          >
-            <table
-              id="dtBasicExample"
-              class="table table-striped table-bordered table-sm"
-              cellspacing="0"
-              width="100%"
-              style="height: 65vh"
-            >
-              <thead>
-                <tr>
-                  <th class="th-sm">Name</th>
-                  <th class="th-sm">Courses</th>
-                  <th class="th-sm">Office</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for allocation in allocations %}
-                <tr>
-                  <td class="text-dark text-bold">
-                    {{allocation.lecturer}}
-                  </td>
-                  <td>
-                    {% for course in allocation.courses.all %}
-                    <small class="text-dark">{{course}}</small>
-                    <br />
-                    {% endfor %}
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      @click="resetState()"
-                      class="btn btn-sm bg-gradient-link"
-                      data-bs-dismiss="modal"
-                    >
-                      <i class="fas fa-eye fa-2x"></i>
-                    </button>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                </tr>
-              </tfoot>
-            </table>
-          </table>
-        </div>
-      </div>
-      {% for program in programs %}
-      <div
-        class="tab-pane fade {% if forloop.first %}show{% endif %}"
-        id="tab{{ program.id }}"
-        role="tabpanel"
-        aria-labelledby="tab{{ program.id }}-tab"
-      >
-        <h3>{{program.name}}</h3>
-        <div class="table-responsive p-0" style="height: 60vh">
-          <div id="example-table"></div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/tabulator.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/js/tabulator.min.js"></script>
+<div id="example-table"></div>
+  <script>
+    var tabledata = [{
+  "id": 1,
+  "name": "Test 01",
+  "books": {
+    "number": "0254",
+    "details": [{
+      "var1": "Testdata",
+      "var2": "XXX"
+    }],
+    "detail02": [{
+        "name": "Data 01",
+        "value": "5645"
+      },
+      {
+        "name": "Data 02",
+        "value": "5125"
+      },
+    ]
+  }
+}];
+
+var table = new Tabulator("#example-table", {
+  data: tabledata,
+  layout:"fitColumns",
+  columns: [{
+      title: "Number",
+      field: "id"
+    },
+    {
+      title: "Name",
+      field: "name"
+    },
+    {
+      title: "Books Number",
+      field: "books.number"
+    }
+  ],
+});
+  </script>
+</body>
+</html>
