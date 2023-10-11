@@ -10,7 +10,7 @@ from rest_framework import serializers
 class AllocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = LecturerCourse
-        fields = ["lecturer", "courses"]
+        fields = ["lecturer"]
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
