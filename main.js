@@ -1,19 +1,4 @@
-function convertToNestedStructure(flatData) {
-    const nestedData = [];
-  
-    for (const item of flatData) {
-      const { lecturer, courses } = item;
-  
-      const lecturerObj = {
-        name: lecturer,
-        _children: courses.map(course => ({ name: course }))
-      };
-  
-      nestedData.push(lecturerObj);
-    }
-  
-    console.log(nestedData);
-}
+
 
 const data = [
     {

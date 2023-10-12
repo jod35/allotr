@@ -36,7 +36,8 @@
                     {% comment %}
                     course table
                     {% endcomment %}
-                    <p class="loading text-center" style="display: none;"><img src="{% static 'assets/img/loading.gif' %}" width="50"></p>
+                    <p class="loading text-center" style="display: none;"><img
+                            src="{% static 'assets/img/loading.gif' %}" width="50"></p>
                     <div class="row">
                         <div class="col-md-3">
                             <select id="filter-field" class="form-select">
@@ -50,7 +51,8 @@
                             <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
                         </div>
                         <div class="col-md-3">
-                            <button id="filter-clear" class="btn btn-sm btn-dark"><i class="fa fa-filter" aria-hidden="true"></i>
+                            <button id="filter-clear" class="btn btn-sm btn-dark"><i class="fa fa-filter"
+                                    aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -94,15 +96,14 @@
                                             {{ form.department|as_crispy_field }}
                                         </div>
                                         <div class="modal-footer">
-                                           
-                                            <button type="button" class="btn btn-sm btn-dark"
-                                                @click="createProgram()">
+
+                                            <button type="button" class="btn btn-sm btn-dark" @click="createProgram()">
                                                 Save
                                             </button>
                                             <button type="button" @click="resetState()" class="btn btn-sm  btn-link"
-                                            data-bs-dismiss="modal">
-                                            Close
-                                        </button>
+                                                data-bs-dismiss="modal">
+                                                Close
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -189,9 +190,12 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
+                                  
                                     <button type="button" class="btn btn-sm bg-gradient-dark"
                                         @click="updateProgram()">Update
                                         Program</button>
+                                        <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
+                                        @click="redirect(`[[id]]`)">More Details</button>
                                     <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal"
                                         @click="resetState()">Close</button>
                                 </div>
@@ -203,6 +207,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 {% include "includes/footer.html" %}
@@ -218,12 +225,13 @@
     const app = Vue.createApp({
         data() {
             return {
+                url:'http://localhost:8000/',
                 id: "",
                 name: "",
                 code: "",
                 years_of_study: "",
                 degree_level: "",
-                details:""
+                details: ""
             };
         },
         delimiters: ["[[", "]]"],
@@ -249,10 +257,11 @@
                 .then(data => {
                     setTimeout(() => {
                         loading.style.display = 'none';
+                        
 
                         // transform api data into a format 
                         const rows = data.map(item => ({
-                            id: item.id,
+                            ID: item.id,
                             code: item.code,
                             name: item.name,
                             years_of_study: item.years_of_study,
@@ -264,6 +273,12 @@
                         var openIcon = function (value, data, cell, row, options) { //plain text value
                             return "<i class='fa fa-search'></i>"
                         };
+
+                        function link(cell, formatterParams) {
+                            var url = cell.getValue();
+                            return "<a href='/taskEditor/" + url + "'>" + url + "</a>";
+                        }
+
 
                         var table = new Tabulator("#spreadsheet", {
                             data: rows, //assign data to table
@@ -277,10 +292,13 @@
                             paginationCounter: "rows", //display count of paginated rows in footer
                             movableColumns: true,
                             columns: [                 //define the table columns
+                                { title: "ID", field: "id", formatter: "html", hozAlign: "center" },
                                 { title: "code", field: "code", editor: "input" },
-                                { title: "name", field: "title" },
-                                { title: "created_at", field: "created_at" },
-                                { title: "action", sortable: false, formatter: openIcon },
+                                { title: "name", field: "name" },
+                                { title: "years_of_study", field: "years_of_study" },
+                                { title: "details", field: "details" },
+                                { title: "degree_level", field: "degree_level" },
+                                { title: "department", field: "department" }
                             ],
                         });
 
@@ -318,7 +336,7 @@
 
                             // update state variables depending on which row is clicked
                             this.setProgramData(
-                                id._row.data.id,
+                                id._row.data.ID,
                                 id._row.data.name,
                                 id._row.data.code,
                                 id._row.data.years_of_study,
@@ -344,6 +362,9 @@
                     minute: '2-digit',
                 };
                 return date.toLocaleDateString('en-US', options);
+            },
+            redirect(id){
+                window.location.href = `${this.url}/programs/${this.id}`
             },
             formatDegreeLevel(degree_level) {
                 if (degree_level === "B") return 'Bachelors'

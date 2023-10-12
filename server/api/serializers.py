@@ -102,3 +102,9 @@ class EnrollmentUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment
         fields = ["students_enrolled"]
+
+
+class ProgramCourseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id','code','title','course_description','created_at']

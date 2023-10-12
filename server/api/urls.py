@@ -44,4 +44,9 @@ urlpatterns = [
         views.EnrollmentDetailUpdateView.as_view(),
         name="enrollment_api_list",
     ),
+    path(
+        "programcourses/",
+        views.ProgramCourseListView.as_view(),
+        name="program_course_api_list"
+    )
 ]

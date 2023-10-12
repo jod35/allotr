@@ -15,6 +15,7 @@ from .serializers import (
     IntakeListSerializer,
     ProgramListSerializer,
     EnrollmentUpdateSerializer,
+    ProgramCourseListSerializer
 )
 
 # Create your views here.
@@ -61,3 +62,15 @@ class EnrollmentDetailUpdateView(GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProgramCourseListView(GenericAPIView):
+    serializer_class = ProgramCourseListSerializer
+    queryset = Program.objects.all()
+
+    def get(self,request):
+        programs = Course.objects.all()
+
+        serializer = self.serializer_class(instance=programs,many=True)
+        
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
