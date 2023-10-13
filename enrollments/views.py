@@ -16,7 +16,7 @@ class EnrollmentListView(ListView):
     template_name = "enrollments/index.html"
     queryset = Enrollment.objects.all()
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
         context["form"] = EnrollmentCreateForm()
         context["update_form"] = EnrollmentUpdateForm()

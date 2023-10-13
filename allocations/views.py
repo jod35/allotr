@@ -13,7 +13,7 @@ from .models import Allocation
 class AllocationView(TemplateView):
     template_name = "allocations/index.html"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
 
         department = Department.objects.get(name="Computer Science And Engineering")
