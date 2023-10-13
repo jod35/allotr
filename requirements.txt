@@ -1,6 +1,6 @@
 asgiref==3.7.2
 async-timeout==4.0.3
-black==23.9.1
+black
 click==8.1.7
 colorama==0.4.6
 crispy-bootstrap4==2022.1
