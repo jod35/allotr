@@ -1,0 +1,292 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid py-4" id="app">
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Departments</h6>
+        </div>
+        <div class="card-header pb-0">
+          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+            data-bs-target="#departmentCreateModal">
+            Add Department
+          </button>
+        </div>
+
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department Name</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for department in departments %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div>
+                        <img src="{% static 'assets/img/grad.png' %}" class="avatar avatar-sm me-3" alt="user1">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{department.name}}</h6>
+                        <p class="text-xs text-secondary mb-0">{{ department.contact_email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-success">{{department.code}}</span>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">School</p>
+                    <p class="text-xs text-secondary mb-0">{{department.school}}</p>
+                  </td>
+                  <td class="align-middle">
+                    <button type="button"
+                      @click="setCourseUpdate(`{{department.id}}`,`{{department.name}}`,`{{department.department_head}}`,`{{department.contact_email}}`,`{{department.description}}`)"
+                      class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Details
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+
+
+            {% comment %}
+            A department update and detail form
+            {% endcomment %}
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Department Info</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      {% csrf_token %}
+
+
+                      <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
+                          Name<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input required type="text" name="name" maxlength="500" class="textinput form-control"
+                            required id="id_name" :value=[[name]]>
+                        </div>
+                      </div>
+                      <div id="div_id_department_head" class="form-group"> <label for="id_department_head"
+                          class=" requiredField">
+                          Department head<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input required type="text" name="department_head" maxlength="255"
+                            class="textinput form-control" required id="id_department_head" :value=[[department_head]]
+                            @input="event => department_head = event.target.value">
+                        </div>
+                      </div>
+                      <div id="div_id_contact_email" class="form-group"> <label for="id_contact_email"
+                          class=" requiredField">
+                          Contact email<span class="asteriskField">*</span> </label>
+                        <div>
+                          <input required type="email" name="contact_email" maxlength="80"
+                            class="emailinput form-control" required id="id_contact_email" :value=[[contact_email]]>
+                        </div>
+                      </div>
+                      <div id="div_id_description" class="form-group"> <label for="id_description"
+                          class=" requiredField">
+                          Description<span class="asteriskField">*</span> </label>
+                        <div>
+                          <textarea name="description" cols="40" rows="5" class="textarea form-control" required
+                            id="id_description">[[description]]</textarea>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal"
+                      @click="resetState">Close</button>
+                    <button type="button" @click="updateCourse()" class="btn bg-gradient-primary">Update
+                      Department</button>
+                    <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal">Delete Department</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% comment %}
+            department Create form
+            {% endcomment %}
+            <div class="modal fade" id="departmentCreateModal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Department</h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" @click="resetState()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="post" action="{% url 'create_department' %}">
+                      {% csrf_token %}
+                      {{form|crispy}}
+                      <div class="modal-footer">
+                        <button type="button" @click="resetState()" class="btn bg-gradient-dark"
+                          data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn bg-gradient-primary">Save</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% comment %}
+            Modal for deleting department
+            {% endcomment %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+              aria-hidden="true">
+              <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-notification">Delete Department</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" @click="resetState()">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="py-3 text-center">
+                      <i class="ni ni-bell-55 ni-3x"></i>
+                      <h4 class="text-gradient text-danger mt-4">Are you sure you want to delete this department?</h4>
+                      <p>[[name]]</p>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-danger" @click="deleteDepartment()">Ok, Delete</button>
+                    <button type="button" class="btn bg-gradient-dark text-white ml-auto"
+                      data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+<script>
+
+  const app = Vue.createApp({
+    mounted() {
+
+    },
+    data() {
+      return {
+        count: 0,
+        id: '',
+        name: '',
+        department_head: '',
+        contact_email: '',
+        description: ''
+      }
+    },
+    delimiters: ['[[', ']]'],
+    methods: {
+      setCourseUpdate(id, name, department_head, email, description) {
+        this.name = name
+        this.department_head = department_head
+        this.contact_email = email
+        this.description = description
+        this.id = id
+      },
+      resetState() {
+        this.name = ''
+        this.department_head = ''
+        this.contact_email = ''
+        this.description = ''
+      },
+      async updateCourse() {
+        const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+
+        let csrfToken = tokenField.value;
+
+        const body = {
+          id: this.id,
+          name: document.querySelector('#id_name').value,
+          department_head: document.querySelector('#id_department_head').value,
+          contact_email: document.querySelector('#id_contact_email').value,
+          description: document.querySelector('#id_description').value
+        }
+
+        console.log(body)
+
+
+        const response = await fetch(`/departments/update/${this.id}/`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'Application/Json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+
+
+        const data = await response.json()
+
+
+        this.name = ''
+        this.department_head = ''
+        this.contact_email = ''
+        this.description = ''
+
+        window.location.reload()
+      },
+      async deleteDepartment() {
+        const response = await fetch(`/departments/delete/${this.id}/`);
+
+
+        const data = response.json();
+
+        console.log(data)
+
+        window.location.reload()
+      }
+    }
+
+
+  }).mount('#app')
+
+</script>
+{% endblock javascripts %}

@@ -1,0 +1,237 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <a href="{% url 'school_list' %}">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize font-weight-bold">Schools</p>
+                      <h5 class="font-weight-bolder mb-0">
+                        {{school_count}}
+                        
+                        {% comment %}
+                        <span class="text-success text-sm font-weight-bolder">+55%</span>
+                        {% endcomment %}
+                          
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                      <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+         <a href="{% url 'department_list' %}">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Departments</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{department_count}}
+                      
+                      {% comment %}
+                      <span class="text-success text-sm font-weight-bolder">+3%</span>
+                      {% endcomment %}
+                        
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                    <i class="fa fa-building" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         </a>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <a href="{% url 'program_list' %}">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize font-weight-bold">Programs</p>
+                      <h5 class="font-weight-bolder mb-0">
+                        {{ program_count }}
+                        
+                        {% comment %}
+                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                        {% endcomment %}
+                          
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                      <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <a href="{% url 'course_list' %}">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize font-weight-bold">Courses</p>
+                      <h5 class="font-weight-bolder mb-0">
+                        {{ course_count }}
+                        
+                        {% comment %}
+                        <span class="text-success text-sm font-weight-bolder">+5%</span>
+                        {% endcomment %}
+                          
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-dark shadow text-center border-radius-md">
+                      <i class="fa fa-book" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="row my-4">
+        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="row">
+                <div class="col-lg-6 col-7">
+                  <h6>Departments</h6>
+                </div>
+                <div class="col-lg-6 col-5 my-auto text-end">
+                  <div class="dropdown float-lg-end pe-4">
+                    <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-ellipsis-v text-secondary"></i>
+                    </a>
+                    <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a></li>
+                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Another action</a></li>
+                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">department</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for department in departments %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div>
+                            <img src="{% static 'assets/img/grad.png' %}" class="avatar avatar-sm me-3" alt="xd">
+                          </div>
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">
+                              <a href="{% url 'department_detail' pk=department.id%}" class="text-secondary">{{department.name}}</a>
+                            </h6>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                      
+                  </tbody>
+                </table>
+
+                
+                {% comment %}
+                <ul class="pagination justify-content-center mt-4">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="javascript:;" tabindex="-1">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="javascript:;">1</a></li>
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:;">2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="javascript:;">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:;">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+                {% endcomment %}
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <div class="card-header pb-0">
+              <div id="calendar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+<script>
+  const options = {
+  settings: {
+    visibility: {
+      theme: 'light',
+    },
+  },
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    const calendar = new VanillaCalendar('#calendar',options);
+    calendar.init();
+  });
+</script>
+{% endblock javascripts %}
