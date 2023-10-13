@@ -34,7 +34,7 @@ class DepartmentDetailView(LoginRequiredMixin, DetailView):
     queryset = Department.objects.all()
     context_object_name = "department"
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
 
         context["departments"] = Department.objects.all()
