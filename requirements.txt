@@ -30,3 +30,4 @@ typing_extensions
 tzdata
 uritemplate
 whitenoise
+psycopg2-binary
