@@ -234,6 +234,7 @@
         intake: "",
         program: "",
         students_enrolled: 0,
+        url: window.location.origin
       };
     },
     delimiters: ["[[", "]]"],
@@ -242,7 +243,7 @@
 
       loading.style.display = "block";
 
-      fetch(`${window.location.origin}/api/enrollments`)
+      fetch(`${this.url}/api/enrollments`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");

@@ -225,7 +225,7 @@
     const app = Vue.createApp({
         data() {
             return {
-                url:`${window.location.origin}/`,
+                url:`${window.location.origin}`,
                 id: "",
                 name: "",
                 code: "",
@@ -247,7 +247,7 @@
 
             loading.style.display = "block";
 
-            fetch(`${window.location.origin}/api/programs`)
+            fetch(`${this.url}/api/programs`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

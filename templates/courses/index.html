@@ -172,7 +172,8 @@
       return {
         title: '',
         code: '',
-        course_description: ''
+        course_description: '',
+        url:window.location.origin
       };
     },
     delimiters: ['[[', ']]'],
@@ -188,7 +189,7 @@
 
       loading.style.display = "block";
 
-      fetch(`${window.location.origin}/api/courses`)
+      fetch(`${this.url}/api/courses`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
