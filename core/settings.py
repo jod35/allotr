@@ -138,16 +138,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES ={}
 
 
-if DEBUG:
-    DATABASES['default'] = dj_database_url.config(
-        default='sqlite:///db.sqlite3')
-    
-else:
-    DATABASES['default'] = dj_database_url.config(
-        default=os.getenv('PROD_DB_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+DATABASES['default'] = dj_database_url.config(
+    default=os.getenv('PROD_DB_URL'),
+    conn_max_age=600,
+    conn_health_checks=True,
+)
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)
