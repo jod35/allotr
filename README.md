@@ -50,7 +50,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Now your application should be up and running at http://localhost:8000/
+Now your application should be up and running at ${window.location.origin}/
 
 ## Usage
 Explain how to use your application here. Provide examples and screenshots if applicable.

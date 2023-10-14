@@ -188,7 +188,7 @@
 
       loading.style.display = "block";
 
-      fetch("http://localhost:8000/api/courses")
+      fetch(`${window.location.origin}/api/courses`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
