@@ -14,7 +14,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -135,15 +135,19 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
+DATABASES ={}
 
-DATABASES = {
-    'default': dj_database_url.config(
+
+if DEBUG:
+    DATABASES['default'] = dj_database_url.config(
+        default='sqlite:///db.sqlite3')
+    
+else:
+    DATABASES['default'] = dj_database_url.config(
         default=os.getenv('PROD_DB_URL'),
         conn_max_age=600,
         conn_health_checks=True,
-    ),
-}
-
+    )
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)

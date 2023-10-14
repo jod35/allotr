@@ -19,6 +19,6 @@ class AllocationView(TemplateView):
         department = Department.objects.get(name="Computer Science And Engineering")
 
         context["allocations"] = LecturerCourse.objects.all()
-        context["programs"] = Program.objects.all().filter(department=department)
+        context["programs"] = Program.objects.all()
 
         return context

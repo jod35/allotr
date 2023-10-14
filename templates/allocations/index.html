@@ -8,93 +8,133 @@
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-body px-0 pt-0 pb-2">
-          <div class="container container-fluid">
-            {% comment %} This is a tab for the allocation summary
-            {%endcomment%}
-
-            <div class="tab-content" id="myTabContent" style="height: 80vh">
-                {% for program in programs %}
-                <div class="tab-pane fade {% if forloop.first %}show{% endif %}" id="tab{{ program.id }}"
-                  role="tabpanel" aria-labelledby="tab{{ program.id }}-tab">
-                  <h3>{{program.name}}</h3>
-                  <div class="table-responsive p-0" style="height: 60vh">
-                    <div class="table-responsive p-0" style="height: 65vh" id="allocation-table">
-                    </div>
-                  </div>
+          <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm active" id="bcs-tab" data-bs-toggle="tab" data-bs-target="#bcs" type="button" role="tab" aria-controls="bcs" aria-selected="true">BCS</button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="bse-tab" data-bs-toggle="tab" data-bs-target="#bse" type="button" role="tab" aria-controls="bse" aria-selected="false">BSE</button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="bcsf-tab" data-bs-toggle="tab" data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf" aria-selected="false">BCSF</button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="bist-tab" data-bs-toggle="tab" data-bs-target="#bist" type="button" role="tab" aria-controls="bist" aria-selected="false">BIST</button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="dcomp-tab" data-bs-toggle="tab" data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp" aria-selected="false">DComp</button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="bce-tab" data-bs-toggle="tab" data-bs-target="#bce" type="button" role="tab" aria-controls="bce" aria-selected="false">BCE</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              
+              <div class="tab-pane fade show active" id="bcs" role="tabpanel" aria-labelledby="bcs-tab">
+                <div class="container">
+                  <h4 class="mt-2">Bachelor of Science in Computer Science</h4>
                 </div>
-                {% endfor %}
               </div>
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                {% for program in programs %}
-                <li class="" role="presentation">
-                  <a class="tab-link {% if forloop.first %}active{% endif %}" id="tab{{ program.id }}"
-                    data-bs-toggle="tab" data-bs-target="#tab{{ program.id }}" type="button" role="tab"
-                    aria-controls="home" aria-selected="true">
-                    {{program.code}}
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
+              
+              <div class="tab-pane fade" id="bse" role="tabpanel" aria-labelledby="bse-tab">
+                <div class="container">
+                  <h4 class="mt-2">Bachelor of Science in Software Engineering</h4>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="bcsf" role="tabpanel" aria-labelledby="bcsf-tab">
+                <div class="container">
+                  <h4 class="mt-2">Bachelor of Science in Computer Security & Forensics</h4>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="dcomp" role="tabpanel" aria-labelledby="dcomp-tab">
+                <div class="container">
+                  <h4 class="mt-2">Diploma In Computing</h4>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="bist" role="tabpanel" aria-labelledby="bist-tab">
+                <div class="container">
+                  <h4 class="mt-2">Bachelor of Information Systems and Technology</h4>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="bce" role="tabpanel" aria-labelledby="bce-tab">
+                <div class="container">
+                  <h4 class="mt-2">Bachelor of Science in Computer Engineering</h4>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    {% endblock content %}
+  </div>
+  {% endblock content %}
 
-    <!-- Specific JS goes HERE -->
-    {% block javascripts %}
-    <script>
-      const app = Vue.createApp({
-        mounted() {
+  <!-- Specific JS goes HERE -->
+  {% block javascripts %}
+  <script>
+    const app = Vue.createApp({
+      mounted() {
+        fetch(`${this.url}`)
+          .then((res) => res.json())
+          .then((data) => {
+            this.allocations = data;
 
-        
+            var customMutator = function (
+              value,
+              data,
+              type,
+              params,
+              component
+            ) {
+              return `<td>${value}</td>\n`;
+            };
 
-          fetch(`${this.url}`).then(res => res.json()).then(data =>{
-            this.allocations = data
-
-            var customMutator = function(value, data, type, params, component){
-                  return `<td>${value}</td>\n`
-            }
-                
             var table = new Tabulator("#allocation-table", {
-                data:this.allocations,
-                autoColumns:true,
-                formatter: customFormatter,
-                columns:[
-                  {title:"lecturer", field:"lecturer", formatter:"textarea"},
-                  {title:"courses",field:"courses", formatter:customFormatter, mutator:customMutator,},
-                ],
+              data: this.allocations,
+              autoColumns: true,
+              formatter: customFormatter,
+              minHeight: 300,
+              columns: [
+                { title: "lecturer", field: "lecturer", formatter: "textarea" },
+                {
+                  title: "courses",
+                  field: "courses",
+                  formatter: customFormatter,
+                  mutator: customMutator,
+                },
+              ],
             });
 
-            
             function customFormatter(cell, formatterParams, onRendered) {
               const val = cell.getValue();
-              const cellDiv = document.createElement('div');
-              for (let i = 0; i < val.length; i++){
-                const valItemDiv = document.createElement('div');
+              const cellDiv = document.createElement("div");
+              for (let i = 0; i < val.length; i++) {
+                const valItemDiv = document.createElement("div");
                 valItemDiv.textContent = val[i];
-                valItemDiv.style.border = 'purple 1px solid';
+                valItemDiv.style.border = "purple 1px solid";
                 cellDiv.appendChild(valItemDiv);
               }
               return cellDiv;
             }
-          })
+          });
+      },
+      data() {
+        return {
+          id: "",
+          url: "http://localhost:8000/api/allocations",
+          allocations: [],
+        };
+      },
+      delimiters: ["[[", "]]"],
+      methods: {
+        greet() {
+          console.log("Hello");
         },
-        data() {
-          return {
-            id: "",
-            url: "http://localhost:8000/api/allocations",
-            allocations : []
-          };
-        },
-        delimiters: ["[[", "]]"],
-        methods: {
-          greet() {
-            console.log("Hello");
-          },
-        },
-      }).mount("#app");
-    </script>
-    {% endblock javascripts %}
-  </div>
+      },
+    }).mount("#app");
+  </script>
+  {% endblock javascripts %}
+</div>
