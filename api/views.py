@@ -15,7 +15,8 @@ from .serializers import (
     IntakeListSerializer,
     ProgramListSerializer,
     EnrollmentUpdateSerializer,
-    ProgramCourseListSerializer
+    ProgramCourseListSerializer,
+    CoursesInProgramSerializer
 )
 
 # Create your views here.
@@ -73,4 +74,22 @@ class ProgramCourseListView(GenericAPIView):
         serializer = self.serializer_class(instance=programs,many=True)
         
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-        
+    
+
+class CoursesInProgramListView(GenericAPIView):
+
+    serializer_class = CoursesInProgramSerializer
+    queryset = Course.objects.all()
+
+    def get(self,request,program_id):
+        program = Program.objects.get(id=program_id)
+
+        courses_in_program = program.courses.all()
+
+        result = self.serializer_class(
+            instance=courses_in_program,
+            many = True
+        )
+
+        return Response(data=result.data,status=status.HTTP_200_OK)        
+ 

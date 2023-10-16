@@ -48,5 +48,6 @@ urlpatterns = [
         "programcourses/",
         views.ProgramCourseListView.as_view(),
         name="program_course_api_list"
-    )
+    ),
+    path('courses-in-program/<int:program_id>/',views.CoursesInProgramListView.as_view(),name='courses_in_program')
 ]

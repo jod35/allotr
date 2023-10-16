@@ -15,10 +15,15 @@ class AllocationView(TemplateView):
 
     def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
-
-        department = Department.objects.get(name="Computer Science And Engineering")
-
         context["allocations"] = LecturerCourse.objects.all()
         context["programs"] = Program.objects.all()
 
+        context["BSE"] = context['programs'].filter(code='BSE').first()
+        context["BIST"] = context['programs'].filter(code='BIST').first()
+        context["BCSF"] = context['programs'].filter(code='BCSF').first()
+        context["BCS"] = context['programs'].filter(code='BCS').first()
+        context["DCOMP"] = context['programs'].filter(code='DComp').first()
+        context["BCE"] = context['programs'].filter(code='BCE').first()
+        
+        print(context)
         return context

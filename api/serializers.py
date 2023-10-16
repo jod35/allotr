@@ -108,3 +108,9 @@ class ProgramCourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id','code','title','course_description','created_at']
+
+
+class CoursesInProgramSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id','code','title','course_description','created_at']

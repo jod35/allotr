@@ -11,57 +11,75 @@
           <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm active" id="bcs-tab" data-bs-toggle="tab" data-bs-target="#bcs" type="button" role="tab" aria-controls="bcs" aria-selected="true">BCS</button>
+                <button class="btn btn-sm active" id="bcs-tab" @click="fetchCourseData(`{{BCS.id}}`)"
+                  data-bs-toggle="tab" data-bs-target="#bcs" type="button" role="tab" aria-controls="bcs"
+                  aria-selected="true">{{ BCS.code }}</button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bse-tab" data-bs-toggle="tab" data-bs-target="#bse" type="button" role="tab" aria-controls="bse" aria-selected="false">BSE</button>
+                <button class="btn btn-sm" id="bse-tab" @click="fetchCourseData(`{{BSE.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#bse" type="button" role="tab" aria-controls="bse"
+                  aria-selected="false">{{BSE.code}}</button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bcsf-tab" data-bs-toggle="tab" data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf" aria-selected="false">BCSF</button>
+                <button class="btn btn-sm" id="bcsf-tab" @click="fetchCourseData(`{{BCSF.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf"
+                  aria-selected="false">{{BCSF.code}}</button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bist-tab" data-bs-toggle="tab" data-bs-target="#bist" type="button" role="tab" aria-controls="bist" aria-selected="false">BIST</button>
+                <button class="btn btn-sm" id="bist-tab" @click="fetchCourseData(`{{BIST.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#bist" type="button" role="tab" aria-controls="bist"
+                  aria-selected="false">{{BIST.code}}</button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="dcomp-tab" data-bs-toggle="tab" data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp" aria-selected="false">DComp</button>
+                <button class="btn btn-sm" id="dcomp-tab" @click="fetchCourseData(`{{DCOMP.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp"
+                  aria-selected="false">{{DCOMP.code}}</button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bce-tab" data-bs-toggle="tab" data-bs-target="#bce" type="button" role="tab" aria-controls="bce" aria-selected="false">BCE</button>
+                <button class="btn btn-sm" id="bce-tab" @click="fetchCourseData(`{{BCE.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#bce" type="button" role="tab" aria-controls="bce"
+                  aria-selected="false">{{BCE.code}}</button>
               </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-              
+
               <div class="tab-pane fade show active" id="bcs" role="tabpanel" aria-labelledby="bcs-tab">
                 <div class="container">
-                  <h4 class="mt-2">Bachelor of Science in Computer Science</h4>
+                  <h4 class="mt-2">{{BCS.name}}</h4>
+                  <tablator tableData="[[programCourses]]" id=""/>
                 </div>
               </div>
-              
+
               <div class="tab-pane fade" id="bse" role="tabpanel" aria-labelledby="bse-tab">
                 <div class="container">
-                  <h4 class="mt-2">Bachelor of Science in Software Engineering</h4>
+                  <h4 class="mt-2">{{BSE.name}}</h4>
+                  <tablator tableData="[[programCourses]]" />
                 </div>
               </div>
-              
+
               <div class="tab-pane fade" id="bcsf" role="tabpanel" aria-labelledby="bcsf-tab">
                 <div class="container">
-                  <h4 class="mt-2">Bachelor of Science in Computer Security & Forensics</h4>
+                  <h4 class="mt-2">{{BCSF.name}}</h4>
+                  <tablator tableData="[[programCourses]]" />
                 </div>
               </div>
               <div class="tab-pane fade" id="dcomp" role="tabpanel" aria-labelledby="dcomp-tab">
                 <div class="container">
-                  <h4 class="mt-2">Diploma In Computing</h4>
+                  <h4 class="mt-2">{{DCOMP.name}}</h4>
+                  <tablator tableData="[[programCourses]]" />
                 </div>
               </div>
               <div class="tab-pane fade" id="bist" role="tabpanel" aria-labelledby="bist-tab">
                 <div class="container">
-                  <h4 class="mt-2">Bachelor of Information Systems and Technology</h4>
+                  <h4 class="mt-2">{{BIST.name}}</h4>
+                  <tablator tableData="[[programCourses]]" />
                 </div>
               </div>
-              
+
               <div class="tab-pane fade" id="bce" role="tabpanel" aria-labelledby="bce-tab">
                 <div class="container">
-                  <h4 class="mt-2">Bachelor of Science in Computer Engineering</h4>
+                  <h4 class="mt-2">{{BCE.name}}</h4>
+                  <tablator tableData="[[programCourses]]" />
                 </div>
               </div>
             </div>
@@ -75,6 +93,7 @@
   <!-- Specific JS goes HERE -->
   {% block javascripts %}
   <script>
+
     const app = Vue.createApp({
       mounted() {
         fetch(`${this.url}`)
@@ -126,6 +145,7 @@
           id: "",
           url: `${window.location.origin}/api/allocations`,
           allocations: [],
+          programCourses: []
         };
       },
       delimiters: ["[[", "]]"],
@@ -133,8 +153,27 @@
         greet() {
           console.log("Hello");
         },
+        async fetchCourseData(id) {
+          console.log(this.programCourses)
+          const response = await fetch(`${window.location.origin}/api/courses-in-program/${id}/`);
+
+          const data = await response.json();
+
+          this.programCourses = data;
+        }
       },
-    }).mount("#app");
+    });
+
+    const tablu = {
+      template: `<div id="table">
+                  <p>[[id]]</p>
+                </div>`,
+      props: ['tableData','tableId'],
+      data() { return { data: "something" } },
+      delimiters: ["[[", "]]"]
+    }
+    app.component('tablator', tablu);
+    app.mount("#app");
   </script>
   {% endblock javascripts %}
 </div>
