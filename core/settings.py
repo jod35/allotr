@@ -15,6 +15,7 @@ import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +29,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -135,11 +136,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-DATABASES ={}
+DATABASES = {}
 
 
-DATABASES['default'] = dj_database_url.config(
-    default=os.getenv('PROD_DB_URL'),
+DATABASES["default"] = dj_database_url.config(
+    default=os.getenv("PROD_DB_URL"),
     conn_max_age=600,
     conn_health_checks=True,
 )

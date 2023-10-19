@@ -1,27 +1,27 @@
 asgiref
-async-timeout
+async - timeout
 black
 click
 colorama
-crispy-bootstrap4
-dj-database-url
+crispy - bootstrap4
+dj - database - url
 Django
-django-appconf
-django-cors-headers
-django-crispy-forms
-django-jazzmin
-django-redis
-django-select2
+django - appconf
+django - cors - headers
+django - crispy - forms
+django - jazzmin
+django - redis
+django - select2
 djangorestframework
-drf-yasg
+drf - yasg
 gunicorn
 inflection
-mypy-extensions
+mypy - extensions
 packaging
 pathspec
 Pillow
 platformdirs
-python-dotenv
+python - dotenv
 pytz
 PyYAML
 redis
@@ -30,4 +30,4 @@ typing_extensions
 tzdata
 uritemplate
 whitenoise
-psycopg2-binary
+psycopg2 - binary

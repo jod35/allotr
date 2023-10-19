@@ -30,11 +30,9 @@ def index(request):
     allocations = LecturerCourse.objects.all()
     course_list = Course.objects.all()
 
-
     allocations = LecturerCourse.objects.filter()
 
     allocation_for_courses = []
-            
 
     context = {
         "course_count": course_count,
@@ -49,4 +47,4 @@ def index(request):
 
 @login_required(login_url="/auth/login")
 def profile_page(request):
-    return render(request,'home/profile.html')
+    return render(request, "home/profile.html")

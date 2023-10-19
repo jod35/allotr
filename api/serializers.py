@@ -2,7 +2,7 @@ from allocations.models import Allocation
 from courses.models import Course
 from departments.models import Department
 from intakes.models import Intake
-from lecturers.models import LecturerCourse,Lecturer
+from lecturers.models import LecturerCourse, Lecturer
 from programs.models import Enrollment, Program
 from rest_framework import serializers
 
@@ -88,13 +88,13 @@ class EnrollmentListSerializer(serializers.ModelSerializer):
         # Serialize the program field, excluding the course field
         program_serializer = ProgramSerializer(obj.program)
         program_data = program_serializer.data
-        program_data.pop('courses', None)  # Exclude the 'course' field
+        program_data.pop("courses", None)  # Exclude the 'course' field
         return program_data
 
     def to_representation(self, instance):
         # Override to include the modified program representation
         representation = super().to_representation(instance)
-        representation['program'] = self.get_program(instance)
+        representation["program"] = self.get_program(instance)
         return representation
 
 
@@ -107,23 +107,24 @@ class EnrollmentUpdateSerializer(serializers.ModelSerializer):
 class ProgramCourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id','code','title','course_description','created_at']
+        fields = ["id", "code", "title", "course_description", "created_at"]
 
 
 class LecturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = LecturerCourse
-        fields = ('lecturer',)
+        fields = ("lecturer",)
 
 
 class CoursesInProgramSerializer(serializers.ModelSerializer):
-    lecturer = LecturerSerializer(source='lecturer_set', many=True, read_only=True)
+    lecturer = LecturerSerializer(source="lecturer_set", many=True, read_only=True)
+
     class Meta:
         model = Course
-        fields = ['id','code','title','course_description','created_at', 'lecturer']
+        fields = ["id", "code", "title", "course_description", "created_at", "lecturer"]
 
 
 class LecturerListSerializer(serializers.ModelSerializer):
     class Meta:
-        model =Lecturer
-        fields =['first_name','last_name','email']
+        model = Lecturer
+        fields = ["first_name", "last_name", "email"]

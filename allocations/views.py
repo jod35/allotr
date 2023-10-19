@@ -19,12 +19,12 @@ class AllocationView(TemplateView):
         context["allocations"] = LecturerCourse.objects.all()
         context["programs"] = Program.objects.all()
 
-        context["BSE"] = context['programs'].filter(code='BSE').first()
-        context["BIST"] = context['programs'].filter(code='BIST').first()
-        context["BCSF"] = context['programs'].filter(code='BCSF').first()
-        context["BCS"] = context['programs'].filter(code='BCS').first()
-        context["DCOMP"] = context['programs'].filter(code='DComp').first()
-        context["BCE"] = context['programs'].filter(code='BCE').first()
-        
-        context["intake"] = Intake.objects.latest('created_at')
+        context["BSE"] = context["programs"].filter(code="BSE").first()
+        context["BIST"] = context["programs"].filter(code="BIST").first()
+        context["BCSF"] = context["programs"].filter(code="BCSF").first()
+        context["BCS"] = context["programs"].filter(code="BCS").first()
+        context["DCOMP"] = context["programs"].filter(code="DComp").first()
+        context["BCE"] = context["programs"].filter(code="BCE").first()
+
+        context["intake"] = Intake.objects.latest("created_at")
         return context

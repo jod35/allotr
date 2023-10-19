@@ -7,15 +7,16 @@ def find_vowel(word):
         for char in word:
             if char not in "aeiouAEIOU":
                 if char not in consonats:
-                    consonant_count +=1
+                    consonant_count += 1
 
             else:
-                vowel_count +=1
+                vowel_count += 1
         print(f"Number of vowels: {vowel_count}")
         print(f"Number of consonants: {consonats}")
 
     except Exception as e:
         print("Something wrong happened")
-    
+
+
 find_vowel("Jonathan")
 find_vowel("EXCUSE ME")

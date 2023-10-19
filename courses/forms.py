@@ -14,6 +14,4 @@ class CourseCreateForm(forms.ModelForm):
         model = Course
         fields = ["code", "title", "course_description"]
 
-        widgets ={
-            'course_description':forms.Textarea(attrs={'rows':5})
-        }
+        widgets = {"course_description": forms.Textarea(attrs={"rows": 5})}

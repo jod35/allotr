@@ -40,6 +40,11 @@ urlpatterns = [
     ),
     path("programs/", views.ProgramListView.as_view(), name="program_api_list"),
     path(
+        "program/<int:program_id>/",
+        views.ProgramDetailView.as_view(),
+        name="program_detail",
+    ),
+    path(
         "enrollment/<int:pk>/",
         views.EnrollmentDetailUpdateView.as_view(),
         name="enrollment_api_list",
@@ -47,9 +52,17 @@ urlpatterns = [
     path(
         "programcourses/",
         views.ProgramCourseListView.as_view(),
-        name="program_course_api_list"
+        name="program_course_api_list",
     ),
-    path('courses-in-program/<int:program_id>/',views.CoursesInProgramListView.as_view(),name='courses_in_program'),
-    path('list_allocations/', views.ListAllocationView.as_view(), name='list_allocations_matching'),
-    path('lecturers/', views.LecturerList.as_view(), name='lecturer_list'),
+    path(
+        "courses-in-program/<int:program_id>/",
+        views.CoursesInProgramListView.as_view(),
+        name="courses_in_program",
+    ),
+    path(
+        "list_allocations/",
+        views.ListAllocationView.as_view(),
+        name="list_allocations_matching",
+    ),
+    path("lecturers/", views.LecturerList.as_view(), name="lecturer_list"),
 ]
