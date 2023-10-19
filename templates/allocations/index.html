@@ -257,21 +257,21 @@
             title: item.course.title,
             lecturer: item.lecturer,
             intake: item.intake,
-            matching: item.matching[0]
+            matching: item.matching.join(',   ')
           }));
 
           var table7 = new Tabulator("#summary-table", {
             data: rows,
-            autoColumns: true,
             minHeight: 300,
             pagination: true,
             paginationSize: 12,
             layout: "fitColumns",
             columns: [
-              { title: "Code", field: "code", sorter: "string", width: 200, editor: true },
-              { title: "Title", field: "title", sorter: "string", width: 200, editor: true },
-              { title: "Lecturer", field: "title", sorter: "string", width: 200, editor: true },
-              { title: "Title", field: "title", sorter: "string", width: 200, editor: true },
+              { title: "Code", field: "code", sorter: "string", width: 100},
+              { title: "Title", field: "title", sorter: "string", width: 300},
+              { title: "Lecturer", field: "lecturer", sorter: "string", width: 200},
+              { title: "Intake", field: "intake", sorter: "string", width: 100},
+              { title: "Matching", field: "matching", sorter: "string", width: 300},
           ]
           })
         });
