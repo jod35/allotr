@@ -9,5 +9,5 @@ class LecturerListView(ListView):
     template_name = 'lecturers/index.html'
     queryset = Lecturer.objects.all()
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any):
         return super().get_context_data(**kwargs)
