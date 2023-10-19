@@ -6,6 +6,7 @@ from lecturers.models import LecturerCourse
 from programs.models import Program
 from departments.models import Department
 from .models import Allocation
+from intakes.models import Intake
 
 # Create your views here.
 
@@ -25,5 +26,5 @@ class AllocationView(TemplateView):
         context["DCOMP"] = context['programs'].filter(code='DComp').first()
         context["BCE"] = context['programs'].filter(code='BCE').first()
         
-        print(context)
+        context["intake"] = Intake.objects.latest('created_at')
         return context

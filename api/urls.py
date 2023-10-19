@@ -49,5 +49,6 @@ urlpatterns = [
         views.ProgramCourseListView.as_view(),
         name="program_course_api_list"
     ),
-    path('courses-in-program/<int:program_id>/',views.CoursesInProgramListView.as_view(),name='courses_in_program')
+    path('courses-in-program/<int:program_id>/',views.CoursesInProgramListView.as_view(),name='courses_in_program'),
+    path('list_allocations/', views.ListAllocationView.as_view(), name='list_allocations_matching'),
 ]

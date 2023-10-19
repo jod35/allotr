@@ -110,7 +110,14 @@ class ProgramCourseListSerializer(serializers.ModelSerializer):
         fields = ['id','code','title','course_description','created_at']
 
 
+class LecturerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LecturerCourse
+        fields = ('lecturer',)
+
+
 class CoursesInProgramSerializer(serializers.ModelSerializer):
+    lecturer = LecturerSerializer(source='lecturer_set', many=True, read_only=True)
     class Meta:
         model = Course
-        fields = ['id','code','title','course_description','created_at']
+        fields = ['id','code','title','course_description','created_at', 'lecturer']

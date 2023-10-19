@@ -13,73 +13,109 @@
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm active" id="bcs-tab" @click="fetchCourseData(`{{BCS.id}}`)"
                   data-bs-toggle="tab" data-bs-target="#bcs" type="button" role="tab" aria-controls="bcs"
-                  aria-selected="true">{{ BCS.code }}</button>
+                  aria-selected="true">
+                  {{ BCS.code }}
+                </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm" id="bse-tab" @click="fetchCourseData(`{{BSE.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bse" type="button" role="tab" aria-controls="bse"
-                  aria-selected="false">{{BSE.code}}</button>
+                  data-bs-target="#bse" type="button" role="tab" aria-controls="bse" aria-selected="false">
+                  {{BSE.code}}
+                </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm" id="bcsf-tab" @click="fetchCourseData(`{{BCSF.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf"
-                  aria-selected="false">{{BCSF.code}}</button>
+                  data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf" aria-selected="false">
+                  {{BCSF.code}}
+                </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm" id="bist-tab" @click="fetchCourseData(`{{BIST.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bist" type="button" role="tab" aria-controls="bist"
-                  aria-selected="false">{{BIST.code}}</button>
+                  data-bs-target="#bist" type="button" role="tab" aria-controls="bist" aria-selected="false">
+                  {{BIST.code}}
+                </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm" id="dcomp-tab" @click="fetchCourseData(`{{DCOMP.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp"
-                  aria-selected="false">{{DCOMP.code}}</button>
+                  data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp" aria-selected="false">
+                  {{DCOMP.code}}
+                </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
                 <button class="btn btn-sm" id="bce-tab" @click="fetchCourseData(`{{BCE.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bce" type="button" role="tab" aria-controls="bce"
-                  aria-selected="false">{{BCE.code}}</button>
+                  data-bs-target="#bce" type="button" role="tab" aria-controls="bce" aria-selected="false">
+                  {{BCE.code}}
+                </button>
+              </li>
+              <li class="nav-item mt-4" role="presentation">
+                <button class="btn btn-sm" id="summary-tab" @click="fetchCourseData(`{{BCE.id}}`)" data-bs-toggle="tab"
+                  data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">
+                  Summary
+                </button>
               </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-
               <div class="tab-pane fade show active" id="bcs" role="tabpanel" aria-labelledby="bcs-tab">
                 <div class="container">
                   <h4 class="mt-2">{{BCS.name}}</h4>
-                  <tablator tableData="[[programCourses]]" id=""/>
+                  <div id="bcs-table"></div>
                 </div>
               </div>
 
               <div class="tab-pane fade" id="bse" role="tabpanel" aria-labelledby="bse-tab">
                 <div class="container">
                   <h4 class="mt-2">{{BSE.name}}</h4>
-                  <tablator tableData="[[programCourses]]" />
+                  <div id="bse-table"></div>
                 </div>
               </div>
 
               <div class="tab-pane fade" id="bcsf" role="tabpanel" aria-labelledby="bcsf-tab">
                 <div class="container">
                   <h4 class="mt-2">{{BCSF.name}}</h4>
-                  <tablator tableData="[[programCourses]]" />
+                  <div id="bcsf-table"></div>
                 </div>
               </div>
               <div class="tab-pane fade" id="dcomp" role="tabpanel" aria-labelledby="dcomp-tab">
                 <div class="container">
                   <h4 class="mt-2">{{DCOMP.name}}</h4>
-                  <tablator tableData="[[programCourses]]" />
+                  <div id="dcomp-table"></div>
                 </div>
               </div>
               <div class="tab-pane fade" id="bist" role="tabpanel" aria-labelledby="bist-tab">
                 <div class="container">
                   <h4 class="mt-2">{{BIST.name}}</h4>
-                  <tablator tableData="[[programCourses]]" />
+                  <div id="bist-table"></div>
                 </div>
               </div>
 
               <div class="tab-pane fade" id="bce" role="tabpanel" aria-labelledby="bce-tab">
                 <div class="container">
                   <h4 class="mt-2">{{BCE.name}}</h4>
-                  <tablator tableData="[[programCourses]]" />
+                  <div id="bce-table"></div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                <div class="container">
+                  <h4 class="mt-2">Summary for intake {{intake.name}}<h4>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <select id="filter-field" class="form-select">
+                            <option value="name">Name</option>
+                            <option value="code">Code</option>
+                            <option value="title">Title</option>
+                            <option value="lecturer">Lecturer</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
+                        </div>
+                        <div class="col-md-3">
+                          <button id="filter-clear" class="btn btn-sm btn-dark"><i class="fa fa-filter"
+                              aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div id="summary-table"></div>
                 </div>
               </div>
             </div>
@@ -91,89 +127,181 @@
   {% endblock content %}
 
   <!-- Specific JS goes HERE -->
-  {% block javascripts %}
-  <script>
 
-    const app = Vue.createApp({
-      mounted() {
-        fetch(`${this.url}`)
-          .then((res) => res.json())
-          .then((data) => {
-            this.allocations = data;
-
-            var customMutator = function (
-              value,
-              data,
-              type,
-              params,
-              component
-            ) {
-              return `<td>${value}</td>\n`;
-            };
-
-            var table = new Tabulator("#allocation-table", {
-              data: this.allocations,
-              autoColumns: true,
-              formatter: customFormatter,
-              minHeight: 300,
-              columns: [
-                { title: "lecturer", field: "lecturer", formatter: "textarea" },
-                {
-                  title: "courses",
-                  field: "courses",
-                  formatter: customFormatter,
-                  mutator: customMutator,
-                },
-              ],
-            });
-
-            function customFormatter(cell, formatterParams, onRendered) {
-              const val = cell.getValue();
-              const cellDiv = document.createElement("div");
-              for (let i = 0; i < val.length; i++) {
-                const valItemDiv = document.createElement("div");
-                valItemDiv.textContent = val[i];
-                valItemDiv.style.border = "purple 1px solid";
-                cellDiv.appendChild(valItemDiv);
-              }
-              return cellDiv;
-            }
-          });
-      },
-      data() {
-        return {
-          id: "",
-          url: `${window.location.origin}/api/allocations`,
-          allocations: [],
-          programCourses: []
-        };
-      },
-      delimiters: ["[[", "]]"],
-      methods: {
-        greet() {
-          console.log("Hello");
-        },
-        async fetchCourseData(id) {
-          console.log(this.programCourses)
-          const response = await fetch(`${window.location.origin}/api/courses-in-program/${id}/`);
-
-          const data = await response.json();
-
-          this.programCourses = data;
-        }
-      },
-    });
-
-    const tablu = {
-      template: `<div id="table">
-                  <p>[[id]]</p>
-                </div>`,
-      props: ['tableData','tableId'],
-      data() { return { data: "something" } },
-      delimiters: ["[[", "]]"]
-    }
-    app.component('tablator', tablu);
-    app.mount("#app");
-  </script>
-  {% endblock javascripts %}
 </div>
+{% block javascripts %}
+<script>
+  const app = Vue.createApp({
+    mounted() {
+
+      var customMutator = function (
+        value,
+        data,
+        type,
+        params,
+        component
+      ) {
+        return `<td>${value}</td>\n`;
+      };
+
+
+      function customFormatter(cell, formatterParams, onRendered) {
+        const val = cell.getValue();
+        const cellDiv = document.createElement("div");
+        for (let i = 0; i < val.length; i++) {
+          const valItemDiv = document.createElement("div");
+          valItemDiv.textContent = val[i];
+          valItemDiv.style.border = "purple 1px solid";
+          cellDiv.appendChild(valItemDiv);
+        }
+        return cellDiv;
+      }
+
+
+      var fieldEl = document.getElementById("filter-field");
+      var typeEl = document.getElementById("filter-type");
+      var valueEl = document.getElementById("filter-value");
+
+      const baseurl = `${window.location.origin}/api`;
+      var table1 = new Tabulator("#bcs-table", {
+        ajaxURL: `${baseurl}/courses-in-program/3/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      var table2 = new Tabulator("#bse-table", {
+        ajaxURL: `${baseurl}/courses-in-program/15/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      var table3 = new Tabulator("#bcsf-table", {
+        ajaxURL: `${baseurl}/courses-in-program/6/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      var table4 = new Tabulator("#bist-table", {
+        ajaxURL: `${baseurl}/courses-in-program/12/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      var table5 = new Tabulator("#dcomp-table", {
+        ajaxURL: `${baseurl}/courses-in-program/17/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      var table6 = new Tabulator("#bce-table", {
+        ajaxURL: `${baseurl}/courses-in-program/4/`,
+        autoColumns: true,
+        formatter: customFormatter,
+        minHeight: 300,
+        pagination: true,
+        paginationSize: 12,
+        layout: "fitDataStretch",
+        responsiveLayout: "hide",
+        columns: [
+
+        ],
+      });
+
+      fetch(`${this.url}/list_allocations/`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+
+          const rows = data.map(item => ({
+            code: item.course.code,
+            title: item.course.title,
+            lecturer: item.lecturer,
+            intake: item.intake,
+            matching: item.matching[0]
+          }));
+
+          var table7 = new Tabulator("#summary-table", {
+            data: rows,
+            autoColumns: true,
+            minHeight: 300,
+            pagination: true,
+            paginationSize: 12,
+            layout: "fitColumns",
+            columns: [
+              { title: "Code", field: "code", sorter: "string", width: 200, editor: true },
+              { title: "Title", field: "title", sorter: "string", width: 200, editor: true },
+              { title: "Lecturer", field: "title", sorter: "string", width: 200, editor: true },
+              { title: "Title", field: "title", sorter: "string", width: 200, editor: true },
+          ]
+          })
+        });
+    },
+    data() {
+      return {
+        id: "",
+        url: `${window.location.origin}/api`,
+        allocations: [],
+        programCourses: [],
+      };
+    },
+    delimiters: ["[[", "]]"],
+    methods: {
+      greet() {
+        console.log("Hello");
+      },
+      async fetchCourseData(id) {
+        this.id = id;
+        const response = await fetch(
+          `${window.location.origin}/api/courses-in-program/${id}/`
+        );
+
+        const data = await response.json();
+
+        this.programCourses = data;
+      },
+    },
+  });
+
+  app.mount("#app");
+</script>
+{% endblock javascripts %}

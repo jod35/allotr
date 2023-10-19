@@ -5,6 +5,7 @@ from intakes.models import Intake
 from lecturers.models import LecturerCourse
 from programs.models import Enrollment, Program
 from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -76,20 +77,32 @@ class ProgramCourseListView(GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
     
 
-class CoursesInProgramListView(GenericAPIView):
-
+class CoursesInProgramListView(ListAPIView):
     serializer_class = CoursesInProgramSerializer
-    queryset = Course.objects.all()
-
-    def get(self,request,program_id):
-        program = Program.objects.get(id=program_id)
-
-        courses_in_program = program.courses.all()
-
-        result = self.serializer_class(
-            instance=courses_in_program,
-            many = True
-        )
-
-        return Response(data=result.data,status=status.HTTP_200_OK)        
+    queryset = Course.objects.select_related()
+    
  
+
+class ListAllocationView(APIView):
+    def get(self,request):
+        
+        allocations = LecturerCourse.objects.all()
+        course_list = Course.objects.all()
+        programs =Program.objects.all()
+        allocations = LecturerCourse.objects.filter()
+
+        allocation_for_courses = []
+
+        latest_intake = Intake.objects.latest('created_at')
+
+        for course in course_list:
+            for allocation in allocations:
+                if (course in allocation.courses.all()):
+
+                    alloc = {'course':{'title':course.title,'code':course.code},'lecturer':f"{allocation.lecturer.first_name} {allocation.lecturer.last_name}","matching":[
+                        program.code for program in programs if (course in program.courses.all())
+                    ],"intake":allocation.intake.name}
+
+                    allocation_for_courses.append(alloc)
+
+        return Response(data=allocation_for_courses,status=status.HTTP_200_OK)
