@@ -2,7 +2,7 @@ from allocations.models import Allocation
 from courses.models import Course
 from departments.models import Department
 from intakes.models import Intake
-from lecturers.models import LecturerCourse
+from lecturers.models import LecturerCourse,Lecturer
 from programs.models import Enrollment, Program
 from rest_framework import serializers
 
@@ -121,3 +121,9 @@ class CoursesInProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id','code','title','course_description','created_at', 'lecturer']
+
+
+class LecturerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =Lecturer
+        fields =['first_name','last_name','email']

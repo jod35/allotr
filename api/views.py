@@ -106,3 +106,8 @@ class ListAllocationView(APIView):
                     allocation_for_courses.append(alloc)
 
         return Response(data=allocation_for_courses,status=status.HTTP_200_OK)
+    
+class LecturerList(ListAPIView):
+
+    def get(self, request, *args, **kwargs):
+        pass
