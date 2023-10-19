@@ -43,6 +43,18 @@ class EnrollmentListView(ListAPIView):
     queryset = Enrollment.objects.all()
 
 
+    def post(self,request):
+        """Create enrollment"""
+        data = request.data
+
+        serializer = self.serializer_class(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class ProgramListView(ListAPIView):
     serializer_class = ProgramListSerializer
     queryset = Program.objects.all()
