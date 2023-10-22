@@ -34,6 +34,7 @@ class ProgramCreateForm(forms.ModelForm):
             "degree_level",
             "department",
             "details",
+            "school"
         ]
 
 

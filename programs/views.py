@@ -14,6 +14,7 @@ from django.views.generic import DetailView, ListView
 
 from .forms import ProgramCourseUpdateForm, ProgramCreateForm
 from .models import Program
+from schools.models import School
 
 # Create your views here.
 
@@ -23,6 +24,7 @@ class ProgramListView(ListView):
     queryset = Program.objects.all()
     context_object_name = "programs"
     paginate_by = 6
+    form_class = ProgramCreateForm
 
     def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
@@ -30,12 +32,13 @@ class ProgramListView(ListView):
         context["form"] = ProgramCreateForm()
 
         return context
+    
 
 
 @login_required
 def create_program(request: HttpRequest):
     data = json.loads(request.body)
-    print(data)
+    school  = School.objects.get(pk=1)
 
     new_program = Program(
         name=data.get("name"),
@@ -44,6 +47,7 @@ def create_program(request: HttpRequest):
         details=data.get("details"),
         degree_level=data.get("degree_level"),
         department=Department.objects.get(id=data.get("department_id")),
+        school =school
     )
 
     new_program.save()

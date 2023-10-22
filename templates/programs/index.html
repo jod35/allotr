@@ -58,7 +58,7 @@
                     </div>
                     <div id="spreadsheet"></div>
                     {% comment %}
-                    modal for creating a course
+                    modal for creating a program
                     {% endcomment %}
 
                     <div class="modal modal-lg fade" id="ProgramCreateModal" tabindex="-1" role="dialog"
@@ -76,7 +76,8 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" action="" id="create-form">
+                                    <form method="post"id="create-form">
+                                        {% csrf_token %}
                                         <div class="row">
                                             <div class="col">{{form.name|as_crispy_field}}</div>
                                             <div class="col">{{ form.code|as_crispy_field }}</div>
