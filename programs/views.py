@@ -52,7 +52,7 @@ def create_program(request: HttpRequest):
 
     new_program.save()
 
-    messages.success(request, "Program created successfully")
+    
     return JsonResponse({"message": "Program created successfuly"})
 
 
@@ -93,8 +93,6 @@ class ProgramDetailView(LoginRequiredMixin, DetailView):
             program.courses.clear()
             for course in courses:
                 program.courses.add(course)
-
-            messages.success(request, "Courses updated successfully!")
 
             return redirect(reverse("program_detail", kwargs={"pk": program.id}))
 
