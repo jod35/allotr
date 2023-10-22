@@ -266,6 +266,7 @@
                             code: item.code,
                             name: item.name,
                             years_of_study: item.years_of_study,
+                            details: item.details,
                             degree_level: this.formatDegreeLevel(item.degree_level),
                             department: item.department.name,
                         }));
@@ -296,6 +297,7 @@
                                 { title: "code", field: "code", editor: "input" },
                                 { title: "name", field: "name" },
                                 { title: "years_of_study", field: "years_of_study" },
+                                { title: "details", field: "details" },
                                 { title: "degree_level", field: "degree_level" },
                                 { title: "department", field: "department" }
                             ],
@@ -341,6 +343,7 @@
                                 id._row.data.years_of_study,
                                 id._row.data.degree_level,
                                 id._row.data.department_id,
+                                id._row.data.details
                             )
                         })
                     }, 200);
