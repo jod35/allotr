@@ -446,5 +446,6 @@ table.dataTable thead .sorting_desc_disabled:before {
 
 .active{
     border-width: 1.5px;
+    color: white;
 }
 
