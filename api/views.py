@@ -2,8 +2,9 @@ from allocations.models import Allocation
 from courses.models import Course
 from django.shortcuts import render
 from intakes.models import Intake
-from lecturers.models import LecturerCourse
+from lecturers.models import LecturerCourse,Lecturer
 from programs.models import Enrollment, Program
+from departments.models import Department
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,6 +19,8 @@ from .serializers import (
     EnrollmentUpdateSerializer,
     ProgramCourseListSerializer,
     CoursesInProgramSerializer,
+    DepartmentProgramSerializer,
+    LecturerListSerializer
 )
 
 # Create your views here.
@@ -124,6 +127,15 @@ class ProgramDetailView(GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ProgramsInDepartmentView(GenericAPIView):
+    serializer_class = DepartmentProgramSerializer
+
+    def get(self,request,department_id):
+        department = Department.objects.filter(pk=department_id).first()
+        programs = Program.objects.filter(department=department).all()
+        serializer = self.serializer_class(instance=programs,many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 class EnrollmentDetailUpdateView(GenericAPIView):
     serializer_class = EnrollmentUpdateSerializer
     queryset = Enrollment.objects.all()
@@ -204,5 +216,11 @@ class ListAllocationView(APIView):
 
 
 class LecturerList(ListAPIView):
+    serializer_class = LecturerListSerializer
     def get(self, request, *args, **kwargs):
-        pass
+        
+        lecturers = Lecturer.objects.all()
+
+        serializer = self.serializer_class(instance = lecturers,many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

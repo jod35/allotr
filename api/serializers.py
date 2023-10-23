@@ -52,6 +52,11 @@ class ProgramSerializer(serializers.ModelSerializer):
         model = Program
         fields = "__all__"
 
+class DepartmentProgramSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Program
+        fields = ['id','code','name','degree_level']
+
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,7 +65,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class ProgramListSerializer(serializers.ModelSerializer):
-    department = DepartmentSerializer()
 
     class Meta:
         model = Program
@@ -69,10 +73,6 @@ class ProgramListSerializer(serializers.ModelSerializer):
             "name",
             "code",
             "degree_level",
-            "department",
-            "created_at",
-            "years_of_study",
-            "details",
         ]
 
 

@@ -78,77 +78,10 @@
               >
                 <h6>Programs Offered under this program</h6>
                 <div class="card-body px-0 pt-0 pb-2">
-                  <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0 mt-4 .table-bordered">
-                      <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                        <thead>
-                          <tr>
-                            <th
-                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                            >
-                              Program Code
-                            </th>
-                            <th
-                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                          >
-                            Program Name
-                          </th>
-                            <th
-                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                              Programs offering
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for Program in programs %}
-                        <tr>
-                          <td>
+                  <div id="programTable" class="table-responsive p-0">
+                  
+                  </div>
 
-                              <div class="d-flex">
-                                <img
-                                src="{% static 'assets/img/courses.png' %}"
-                                class="avatar avatar-sm me-3"
-                                alt="user1"
-                              />
-
-                                <p class="text-xs">{{Program.code}}</p>
-                              </div>
-                          </td>
-                          <td>
-                            <p class="text-xs text-secondary mb-0">
-                              {{Program.name}}
-                            </p>
-                          </td>
-                          <td class="align-middle">
-                            {{program.years_of_study}}
-                          </td>
-                        </tr>
-                        {% endfor %} 
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <tr>
-                              <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                              >
-                                Program
-                              </th>
-                              <th
-                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                            >
-                              Program Name
-                            </th>
-                              <th
-                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                              >
-                                Programs offering
-                              </th>
-                            </tr>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </table>
                     <div class="modal modal-lg fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
@@ -189,4 +122,28 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 {{ form.media.js }}
+
+<script>
+  const degreeLevelFormatter =(cell, formatterParams, onRendered)=>{
+    let value = cell.getValue();
+    if (value == 'D'){return "Diploma";}
+    else if (value == "B") return "Bachelor's";
+    else if (value == "PGd") return "Post Graduate Diploma";
+    else if (value == "M") return "Master's"
+  }
+  let id = 1;
+  let table = new Tabulator("#programTable",{
+    ajaxURL: `${window.location.origin}/api/programs-in-department/department/${id}/`,
+    layout:'fitColumns',
+    columns:[                 //define the table columns
+        {title:"id", field:"id",width:100},
+        {title:"Code", field:"code"},
+        {title:"Name", field:"name", width:95},
+        {title:"Degree Level", field:"degree_level",formatter:degreeLevelFormatter},
+    ],
+  })
+
+
+
+</script>
 {% endblock javascripts %}
