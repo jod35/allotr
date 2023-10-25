@@ -271,6 +271,10 @@
                             department: item.department.name,
                         }));
 
+
+                        console.log(data);
+
+
                         var openIcon = function (value, data, cell, row, options) { //plain text value
                             return "<i class='fa fa-search'></i>"
                         };
@@ -345,6 +349,8 @@
                                 id._row.data.department_id,
                                 id._row.data.details
                             )
+
+                    
                         })
                     }, 200);
                 })

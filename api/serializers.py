@@ -65,6 +65,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class ProgramListSerializer(serializers.ModelSerializer):
+    department = DepartmentSerializer()
 
     class Meta:
         model = Program
@@ -73,6 +74,9 @@ class ProgramListSerializer(serializers.ModelSerializer):
             "name",
             "code",
             "degree_level",
+            "details",
+            "years_of_study",
+            "department"
         ]
 
 
@@ -127,4 +131,4 @@ class CoursesInProgramSerializer(serializers.ModelSerializer):
 class LecturerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecturer
-        fields = ["first_name", "last_name", "email"]
+        fields = ["id","first_name", "last_name", "email"]
