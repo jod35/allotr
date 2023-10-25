@@ -66,4 +66,5 @@ urlpatterns = [
         name="list_allocations_matching",
     ),
     path("lecturers/", views.LecturerList.as_view(), name="lecturer_api_list"),
+    path('lecturers/<int:lecturer_id>/', views.LecturerDetailView.as_view(), name='lecturer_api_detail'),
 ]

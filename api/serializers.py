@@ -132,3 +132,8 @@ class LecturerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecturer
         fields = ["id","first_name", "last_name", "email"]
+
+class LecturerDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lecturer
+        fields = ["first_name", "last_name", "email"]

@@ -9,164 +9,176 @@
 {% block content %}
 
 <div class="container-fluid py-4" id="app">
+  <div class="card mb-4">
+    <div class="card-header pb-0">
+      <h6>Lecturers</h6>
+    </div>
+    <div class="card-header pb-0">
+      <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+        data-bs-target="#lecturerCreateModal">
+        Add Lecturer
+      </button>
+    </div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-4">
-        <div class="card-header pb-0">
-          <h6>Lecturers</h6>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <select id="filter-field" class="form-select">
+            <option></option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+          </select>
         </div>
-        <div class="card-header pb-0">
-          <button type="button" class="btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
-            data-bs-target="#lecturerCreateModal">
-            Add Lecturer
+        <div class="col-md-4">
+          <input id="filter-value" class="form-control" type="text" placeholder="Value to filter">
+        </div>
+        <div class="col-md-3">
+          <button id="filter-clear" class="btn btn-sm btn-dark"><i class="fa fa-filter" aria-hidden="true"></i>
           </button>
         </div>
+      </div>
+      <p class="loading text-center"><img
+        src="{% static 'assets/img/loading.gif' %}" width="50"></p>
+      <div class="table-responsive p-0" id="lecturer-table">
+      </div>
+      {% comment %}
+      A Lecturer update and detail form
+      {% endcomment %}
 
-        <div class="card-body container px-0 pt-0 pb-2">
-          <div class="table-responsive p-0" id="lecturer-table">
-          </div>
-          {% comment %}
-          A Lecturer update and detail form
-          {% endcomment %}
+      <div class="modal fade" id="lecturer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit [[first_name]] [[last_name]]'s details</h5>
+              <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col">
+                  <form>
+                    <div id="div_id_first_name" class="form-group">
+                      <label for="id_first_name" class=" requiredField">
+                        First name<span class="asteriskField">*</span>
+                      </label>
 
-          <div class="modal fade" id="lecturer-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit [[first_name]] [[last_name]]'s details</h5>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  {% csrf_token %}
-                  <div class="row">
-                    <div class="col">
-                      <form>
-                      <div id="div_id_first_name" class="form-group">
-                        <label for="id_first_name" class=" requiredField">
-                          First name<span class="asteriskField">*</span>
-                        </label>
-
-                        <div>
-                          <input type="text" name="first_name" maxlength="100" class="textinput form-control" v-model="first_name" id="id_first_name">
-                        </div>
+                      <div>
+                        <input type="text" name="first_name" maxlength="100" class="textinput form-control"
+                          v-model="first_name" id="id_first_name">
                       </div>
                     </div>
-                    <div class="col">
-                      <div id="div_id_last_name" class="form-group">
-                        <label for="id_last_name" class=" requiredField">
-                          Last name<span class="asteriskField">*</span></label>
-                        <div>
-                          <input type="text" name="last_name" maxlength="100" class="textinput form-control" required v-model="last_name"
-                            id="id_last_name">
-                        </div>
-                      </div>
+                </div>
+                <div class="col">
+                  <div id="div_id_last_name" class="form-group">
+                    <label for="id_last_name" class=" requiredField">
+                      Last name<span class="asteriskField">*</span></label>
+                    <div>
+                      <input type="text" name="last_name" maxlength="100" class="textinput form-control" required
+                        v-model="last_name" id="id_last_name">
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col">
-                      <div id="div_id_email" class="form-group">
-                        <label for="id_email" class=" requiredField">
-                          Email<span class="asteriskField">*</span>
-                        </label>
-                        <div>
-                          <input type="email" name="email" maxlength="254" class="emailinput form-control" disabled
-                            v-model="email" id="id_email">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" @click="updateCourse()" class="btn btn-sm bg-gradient-dark">Update
-                    Department</button>
-                  <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
-                    Department</a>
-                                      <button type="button" class="btn btn-link" data-bs-dismiss="modal"
-                    @click="resetState">Close</button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {% comment %}
-          lecturer Create form
-          {% endcomment %}
-          <div class="modal modal-lg fade" id="lecturerCreateModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Lecturer</h5>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                    @click="resetState()">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form method="post" action="">
-                    {% csrf_token %}
-                    <div class="row">
-                      <div class="col">
-                        {{form.first_name|as_crispy_field}}
-                      </div>
-                      <div class="col">
-                        {{form.last_name|as_crispy_field}}
-                      </div>
+              <div class="row">
+                <div class="col">
+                  <div id="div_id_email" class="form-group">
+                    <label for="id_email" class=" requiredField">
+                      Email<span class="asteriskField">*</span>
+                    </label>
+                    <div>
+                      <input type="email" name="email" maxlength="254" class="emailinput form-control" disabled
+                        v-model="email" id="id_email">
                     </div>
-                    <div class="row">
-                      <div class="col">
-                        {{form.email|as_crispy_field}}
-                      </div>
-                      <div class="col">
-                        {{form.department|as_crispy_field}}
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      {{form.profile_picture|as_crispy_field}}
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" @click="resetState()" class="btn bg-gradient-dark"
-                        data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn bg-gradient-dark">Save</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {% comment %}
-          Modal for deleting department
-          {% endcomment %}
-          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
-            aria-hidden="true">
-            <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h6 class="modal-title" id="modal-title-notification">Delete Department</h6>
-                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
-                    @click="resetState()">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="py-3 text-center">
-                    <i class="ni ni-bell-55 ni-3x"></i>
-                    <h4 class="text-gradient text-danger mt-4">Are you sure you want to delete this department?</h4>
-                    <p>[[name]]</p>
                   </div>
                 </div>
+              </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" @click="updateCourse()" class="btn btn-sm bg-gradient-dark">Update</button>
+              <a href="#" class="btn bg-gradient-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
+              <button type="button" class="btn btn-link" data-bs-dismiss="modal" @click="resetState">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% comment %}
+      lecturer Create form
+      {% endcomment %}
+      <div class="modal modal-lg fade" id="lecturerCreateModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Lecturer</h5>
+              <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                @click="resetState()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" action="">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col">
+                    {{form.first_name|as_crispy_field}}
+                  </div>
+                  <div class="col">
+                    {{form.last_name|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    {{form.email|as_crispy_field}}
+                  </div>
+                  <div class="col">
+                    {{form.department|as_crispy_field}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  {{form.profile_picture|as_crispy_field}}
+                </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn bg-gradient-danger" @click="deleteDepartment()">Ok, Delete</button>
-                  <button type="button" class="btn bg-gradient-dark text-white ml-auto"
+
+                  <button type="submit" class="btn bg-gradient-dark">Save</button>
+                  <button type="button" @click="resetState()" class="btn bg-link text-danger"
                     data-bs-dismiss="modal">Close</button>
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% comment %}
+      Modal for deleting department
+      {% endcomment %}
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+        aria-hidden="true">
+        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 class="modal-title" id="modal-title-notification">Delete Department</h6>
+              <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
+                @click="resetState()">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="py-3 text-center">
+                <i class="ni ni-bell-55 ni-3x"></i>
+                <h4 class="text-gradient text-danger mt-4">Are you sure you want to delete this department?</h4>
+                <p>[[name]]</p>
               </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-gradient-danger" @click="deleteDepartment()">Ok, Delete</button>
+              <button type="button" class="btn bg-gradient-dark text-white ml-auto"
+                data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -175,9 +187,11 @@
   </div>
 </div>
 
+
+
 {% include "includes/footer.html" %}
 
-</div>
+
 
 {% endblock content %}
 
@@ -185,40 +199,96 @@
 {% block javascripts %}
 <script>
 
+
+
   const app = Vue.createApp({
     mounted() {
-      const table = new Tabulator('#lecturer-table', {
-        ajaxURL: `${window.origin}/api/lecturers`,
-        columns: [
-          { title: "first Name", field: "first_name" },
-          { title: "Last Name", field: "last_name" },
-          { title: "Email", field: "email" },
-        ],
-        layout: "fitColumns",
-        pagination: true,
-        paginationSize: 10,
-      });
+      const loading = document.querySelector('.loading');
+
+      const tokenField = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+      let csrfToken = tokenField.value;
+
+      setTimeout(() => {
+
+        loading.style.display = 'none';
+
+        fetch(`${window.origin}/api/lecturers`).then(
+        res => res.json()
+      ).then(
+        data => {
 
 
-      table.on('rowClick', (e, id, data, row) => {
-        $('#lecturer-modal').modal('show');
-        this.setLecturer(
-          id._row.data.id,
-          id._row.data.first_name,
-          id._row.data.last_name,
-          id._row.data.email
-        )
+          const rows = data.map(item => ({
+            id: item.id,
+            first_name: item.first_name,
+            last_name: item.last_name,
+            email: item.email
+          }));
 
-        console.log(this.email)
-      });
+
+          const table = new Tabulator('#lecturer-table', {
+            data: rows,
+            columns: [
+              { title: "first Name", field: "first_name" },
+              { title: "Last Name", field: "last_name" },
+              { title: "Email", field: "email" },
+            ],
+            layout: "fitColumns",
+            pagination: true,
+            paginationSize: 10,
+          });
+
+          var fieldEl = document.getElementById("filter-field");
+          var typeEl = document.getElementById("filter-type");
+          var valueEl = document.getElementById("filter-value");
+
+
+          //Update filters on value change
+          document.getElementById("filter-field").addEventListener("change", updateFilter);
+          document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+          //Clear filters on "Clear Filters" button click
+          document.getElementById("filter-clear").addEventListener("click", function () {
+            fieldEl.value = "";
+            valueEl.value = "";
+
+            table.clearFilter();
+          });
+
+          //Trigger setFilter function with correct parameters
+          function updateFilter() {
+            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+            var typeVal = "like";
+
+
+            if (filterVal) {
+              table.setFilter(filterVal, typeVal, valueEl.value);
+            }
+          }
+
+          table.on('rowClick', (e, id, data, row) => {
+            $('#lecturer-modal').modal('show');
+            this.setLecturer(
+              id._row.data.id,
+              id._row.data.first_name,
+              id._row.data.last_name,
+              id._row.data.email
+            )
+
+            console.log(this.email)
+          });
+        }
+      ) 
+      }, 2000);
     },
     data() {
       return {
         count: 0,
         id: '',
-        first_name:'',
-        last_name:'',
-        email:'',
+        first_name: '',
+        last_name: '',
+        email: '',
       }
     },
     delimiters: ['[[', ']]'],
@@ -243,17 +313,16 @@
 
         const body = {
           id: this.id,
-          name: document.querySelector('#id_name').value,
-          department_head: document.querySelector('#id_department_head').value,
-          contact_email: document.querySelector('#id_contact_email').value,
-          description: document.querySelector('#id_description').value
+          first_name: this.first_name,
+          last_name: this.last_name,
+          email: this.email
         }
 
         console.log(body)
 
 
-        const response = await fetch(`/Lecturers/update/${this.id}/`, {
-          method: 'POST',
+        const response = await fetch(`${window.location.origin}/api/lecturers/${this.id}/`, {
+          method: 'PUT',
           body: JSON.stringify(body),
           headers: {
             'Content-Type': 'Application/Json',
@@ -272,7 +341,16 @@
         this.contact_email = ''
         this.description = ''
 
+        $()
+
+        Swal.fire(
+          'Updated!',
+          'Lecturer Updated Successfully!',
+          'success'
+        )
+
         window.location.reload()
+
       },
       async deleteDepartment() {
         const response = await fetch(`/Lecturers/delete/${this.id}/`);

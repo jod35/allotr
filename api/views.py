@@ -20,7 +20,8 @@ from .serializers import (
     ProgramCourseListSerializer,
     CoursesInProgramSerializer,
     DepartmentProgramSerializer,
-    LecturerListSerializer
+    LecturerListSerializer,
+    LecturerDetailSerializer
 )
 
 # Create your views here.
@@ -224,3 +225,20 @@ class LecturerList(ListAPIView):
         serializer = self.serializer_class(instance = lecturers,many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class LecturerDetailView(GenericAPIView):
+    serializer_class = LecturerDetailSerializer
+
+
+    def put(self,request,lecturer_id):
+        lecturer_to_update = Lecturer.objects.get(id=lecturer_id)
+        serializer  =self.serializer_class(instance=lecturer_to_update,data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
