@@ -62,7 +62,7 @@
 
               </tbody>
             </table>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <div class="modal modal modal-lg fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -77,19 +77,21 @@
                       {% csrf_token %}
 
 
-                      <div id="div_id_name" class="form-group"> <label for="id_name" class=" requiredField">
+                      <div class="row">
+                        <div id="div_id_name" class="col"> <label for="id_name" class=" requiredField">
                           Name<span class="asteriskField">*</span> </label>
                         <div>
                           <input type="text" name="name" maxlength="500" class="textinput form-control" required
                             id="id_name" :value=[[name]]>
                         </div>
                       </div>
-                      <div id="div_id_code" class="form-group"> <label for="id_code" class=" requiredField">
+                      <div id="div_id_code" class="col"> <label for="id_code" class=" requiredField">
                           Code<span class="asteriskField">*</span> </label>
                         <div>
                           <input type="text" name="code" maxlength="255" class="textinput form-control" required
                             id="id_code" :value=[[code]] @input="event => code = event.target.value">
                         </div>
+                      </div>
                       </div>
                       <div id="div_id_dean" class="form-group"> <label for="id_dean" class=" requiredField">
                           Dean<span class="asteriskField">*</span> </label>
@@ -126,7 +128,7 @@
                 </div>
               </div>
             </div>
-            <div class="modal fade" id="createSchoolModal" tabindex="-1" role="dialog"
+            <div class="modal modal-lg fade" id="createSchoolModal" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -139,10 +141,28 @@
                   <div class="modal-body">
                     <form action="" method="post" id="create-form">
                       {% csrf_token %}
-                      {{form |crispy}}
+                      <div class="row">
+                        <div class="col">
+                          {{form.name |as_crispy_field}}
+                        </div>
+                        <div class="col">
+                          {{form.code |as_crispy_field}}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          {{ form.dean|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                          {{ form.contact_email|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+                          {{form.details|as_crispy_field}}
+                        </div>
+                      </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn bg-gradient-dark" @click="createSchool()">Save</button>
+                        <button type="button" class="btn btn-link text-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm bg-gradient-dark" @click="createSchool()">Save</button>
                       </div>
                     </form>
                   </div>

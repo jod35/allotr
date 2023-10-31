@@ -50,5 +50,5 @@ def register_user(request):
     return render(
         request,
         "accounts/register.html",
-        {"form": form, "msg": msg, "success": success},
+        {"form": form, "msg": msg, "success": success, "user": user},
     )

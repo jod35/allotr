@@ -2,7 +2,6 @@ from django.urls import path
 
 from . import views
 
-from django.urls import re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -44,7 +43,11 @@ urlpatterns = [
         views.ProgramDetailView.as_view(),
         name="program_detail",
     ),
-    path('programs-in-department/department/<int:department_id>/',views.ProgramsInDepartmentView.as_view(),name='programs_in_department_api_list'),
+    path(
+        "programs-in-department/department/<int:department_id>/",
+        views.ProgramsInDepartmentView.as_view(),
+        name="programs_in_department_api_list",
+    ),
     path(
         "enrollment/<int:pk>/",
         views.EnrollmentDetailUpdateView.as_view(),
@@ -66,5 +69,9 @@ urlpatterns = [
         name="list_allocations_matching",
     ),
     path("lecturers/", views.LecturerList.as_view(), name="lecturer_api_list"),
-    path('lecturers/<int:lecturer_id>/', views.LecturerDetailView.as_view(), name='lecturer_api_detail'),
+    path(
+        "lecturers/<int:lecturer_id>/",
+        views.LecturerDetailView.as_view(),
+        name="lecturer_api_detail",
+    ),
 ]

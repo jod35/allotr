@@ -1,9 +1,9 @@
 import json
-from typing import Any, Dict
+from typing import Any
 
 from django.contrib import messages
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView

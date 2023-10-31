@@ -1,8 +1,7 @@
-import json
 from typing import Any
 
 from django.http import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView
 from programs.models import Enrollment

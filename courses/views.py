@@ -1,12 +1,12 @@
 import json
-from typing import Any, Dict
+from typing import Any
 
 from courses.models import Course
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView
 

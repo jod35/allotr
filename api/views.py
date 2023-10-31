@@ -1,8 +1,6 @@
-from allocations.models import Allocation
 from courses.models import Course
-from django.shortcuts import render
 from intakes.models import Intake
-from lecturers.models import LecturerCourse,Lecturer
+from lecturers.models import LecturerCourse, Lecturer
 from programs.models import Enrollment, Program
 from departments.models import Department
 from rest_framework.generics import ListAPIView, GenericAPIView
@@ -21,7 +19,7 @@ from .serializers import (
     CoursesInProgramSerializer,
     DepartmentProgramSerializer,
     LecturerListSerializer,
-    LecturerDetailSerializer
+    LecturerDetailSerializer,
 )
 
 # Create your views here.
@@ -46,8 +44,7 @@ class EnrollmentListView(ListAPIView):
     serializer_class = EnrollmentListSerializer
     queryset = Enrollment.objects.all()
 
-
-    def post(self,request):
+    def post(self, request):
         """Create enrollment"""
         data = request.data
 
@@ -59,8 +56,8 @@ class EnrollmentListView(ListAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ProgramListView(ListAPIView):
-    
     serializer_class = ProgramListSerializer
     queryset = Program.objects.all()
 
@@ -131,11 +128,12 @@ class ProgramDetailView(GenericAPIView):
 class ProgramsInDepartmentView(GenericAPIView):
     serializer_class = DepartmentProgramSerializer
 
-    def get(self,request,department_id):
+    def get(self, request, department_id):
         department = Department.objects.filter(pk=department_id).first()
         programs = Program.objects.filter(department=department).all()
-        serializer = self.serializer_class(instance=programs,many=True)
+        serializer = self.serializer_class(instance=programs, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 
 class EnrollmentDetailUpdateView(GenericAPIView):
     serializer_class = EnrollmentUpdateSerializer
@@ -148,8 +146,6 @@ class EnrollmentDetailUpdateView(GenericAPIView):
             pk (int): pk for enrollment
         """
         data = request.data
-
-        enrollment = Enrollment.objects.get(pk=pk)
 
         serializer = self.serializer_class(instance=self.get_object(), data=data)
 
@@ -195,8 +191,6 @@ class ListAllocationView(APIView):
 
         allocation_for_courses = []
 
-        latest_intake = Intake.objects.latest("created_at")
-
         for course in course_list:
             for allocation in allocations:
                 if course in allocation.courses.all():
@@ -218,11 +212,11 @@ class ListAllocationView(APIView):
 
 class LecturerList(ListAPIView):
     serializer_class = LecturerListSerializer
+
     def get(self, request, *args, **kwargs):
-        
         lecturers = Lecturer.objects.all()
 
-        serializer = self.serializer_class(instance = lecturers,many=True)
+        serializer = self.serializer_class(instance=lecturers, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -230,15 +224,14 @@ class LecturerList(ListAPIView):
 class LecturerDetailView(GenericAPIView):
     serializer_class = LecturerDetailSerializer
 
-
-    def put(self,request,lecturer_id):
+    def put(self, request, lecturer_id):
         lecturer_to_update = Lecturer.objects.get(id=lecturer_id)
-        serializer  =self.serializer_class(instance=lecturer_to_update,data=request.data)
+        serializer = self.serializer_class(
+            instance=lecturer_to_update, data=request.data
+        )
 
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

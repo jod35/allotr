@@ -1,16 +1,16 @@
 import json
-from typing import Any, Dict
+from typing import Any
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import DetailView, ListView
 from programs.models import Program
 
-from .forms import DepartmentCreateForm, DepartmentUpdateForm
+from .forms import DepartmentCreateForm
 from .models import Department
 
 # Create your views here.

@@ -1,14 +1,13 @@
 import json
-from typing import Any, Dict
+from typing import Any
 
-from courses.models import Course
 from departments.models import Department
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
@@ -32,13 +31,12 @@ class ProgramListView(ListView):
         context["form"] = ProgramCreateForm()
 
         return context
-    
 
 
 @login_required
 def create_program(request: HttpRequest):
     data = json.loads(request.body)
-    school  = School.objects.get(pk=1)
+    school = School.objects.get(pk=1)
 
     new_program = Program(
         name=data.get("name"),
@@ -47,12 +45,11 @@ def create_program(request: HttpRequest):
         details=data.get("details"),
         degree_level=data.get("degree_level"),
         department=Department.objects.get(id=data.get("department_id")),
-        school =school
+        school=school,
     )
 
     new_program.save()
 
-    
     return JsonResponse({"message": "Program created successfuly"})
 
 

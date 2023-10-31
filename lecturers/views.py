@@ -1,5 +1,5 @@
 from typing import Any
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView
 from .models import Lecturer
@@ -15,15 +15,13 @@ class LecturerListView(ListView):
     form_class = LecturerCreateForm
 
     def get_context_data(self, **kwargs: Any):
-        
         context = super().get_context_data(**kwargs)
 
-        context['form'] = self.form_class()
+        context["form"] = self.form_class()
 
         return context
-    
 
-    def post(self,request):
+    def post(self, request):
         form = self.form_class(data=request.POST, files=request.FILES)
 
         if form.is_valid():
@@ -31,6 +29,6 @@ class LecturerListView(ListView):
 
             messages.success(request, message="Lecturer added successfully")
 
-            return redirect(reverse('lecturer_list'))
-        
-        return render(request,self.template_name)
+            return redirect(reverse("lecturer_list"))
+
+        return render(request, self.template_name)

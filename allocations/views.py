@@ -1,11 +1,8 @@
-from typing import Any, Dict
+from typing import Any
 
-from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import TemplateView
 from lecturers.models import LecturerCourse
 from programs.models import Program
-from departments.models import Department
-from .models import Allocation
 from intakes.models import Intake
 
 # Create your views here.

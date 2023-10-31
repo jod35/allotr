@@ -1,6 +1,6 @@
-from datetime import datetime, date
+from datetime import datetime
 
-new_datetime = date(2023,1,17)
+date1 = "2023-10-29"
 
-print(new_datetime)
 
+formatted = datetime.strptime(date1, "%Y-%m-%d")

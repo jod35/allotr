@@ -1,4 +1,3 @@
-from allocations.models import Allocation
 from courses.models import Course
 from departments.models import Department
 from intakes.models import Intake
@@ -52,10 +51,11 @@ class ProgramSerializer(serializers.ModelSerializer):
         model = Program
         fields = "__all__"
 
+
 class DepartmentProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
-        fields = ['id','code','name','degree_level']
+        fields = ["id", "code", "name", "degree_level"]
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -76,7 +76,7 @@ class ProgramListSerializer(serializers.ModelSerializer):
             "degree_level",
             "details",
             "years_of_study",
-            "department"
+            "department",
         ]
 
 
@@ -131,7 +131,8 @@ class CoursesInProgramSerializer(serializers.ModelSerializer):
 class LecturerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecturer
-        fields = ["id","first_name", "last_name", "email"]
+        fields = ["id", "first_name", "last_name", "email"]
+
 
 class LecturerDetailSerializer(serializers.ModelSerializer):
     class Meta:

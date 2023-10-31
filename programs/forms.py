@@ -1,11 +1,4 @@
-from typing import Any, Dict, Mapping, Optional, Type, Union
-
-from courses.models import Course
 from django import forms
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.core.files.base import File
-from django.db.models.base import Model
-from django.forms.utils import ErrorList
 from django_select2 import forms as s2forms
 
 from .models import Program
@@ -34,7 +27,7 @@ class ProgramCreateForm(forms.ModelForm):
             "degree_level",
             "department",
             "details",
-            "school"
+            "school",
         ]
 
 
