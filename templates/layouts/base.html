@@ -29,16 +29,15 @@
   </title>
 
 <!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
 <!-- JQuery datatables -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js">
+<script src="{% static 'assets/js/datatables.js' %}"></script>
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap_datatables.css' %}">
 
 
 <!-- DataTables -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" charset="utf8" src="{% static 'assets/js/datatables.js' %}"></script>
+<script src="{% static 'assets/js/swal.js' %}"></script>
 
   <!--     Fonts and icons     -->  
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -65,8 +64,8 @@
   <link id="pagestyle" href="{% static 'assets/css/soft-ui-dashboard.css' %}" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'assets/css/datatables.css' %}">
   <link id="pagestyle_dark" href="{% static 'assets/css/dark-theme-core.css' %}" rel="stylesheet" />
-  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
-  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+  <link href="{% static 'assets/css/tabulator.css' %}" rel="stylesheet">
+  <script type="text/javascript" src="{% static 'assets/js/tabulator.js' %}"></script>
   <script src="{% static 'assets/js/datatables.js' %}"></script>
 
   <!-- Specific CSS goes HERE -->

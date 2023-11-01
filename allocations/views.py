@@ -23,5 +23,5 @@ class AllocationView(TemplateView):
         context["DCOMP"] = context["programs"].filter(code="DComp").first()
         context["BCE"] = context["programs"].filter(code="BCE").first()
 
-        context["intake"] = Intake.objects.latest("created_at")
+        context["intake"] = Intake.objects.latest("created_at") or None
         return context

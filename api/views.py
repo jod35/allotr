@@ -188,8 +188,10 @@ class ListAllocationView(APIView):
         course_list = Course.objects.all()
         programs = Program.objects.all()
         allocations = LecturerCourse.objects.filter()
-
+        enrollments = Enrollment.objects.all()
         allocation_for_courses = []
+
+
 
         for course in course_list:
             for allocation in allocations:
@@ -206,6 +208,8 @@ class ListAllocationView(APIView):
                     }
 
                     allocation_for_courses.append(alloc)
+
+            print(enrollments)
 
         return Response(data=allocation_for_courses, status=status.HTTP_200_OK)
 

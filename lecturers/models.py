@@ -2,7 +2,7 @@ from courses.models import Course
 from departments.models import Department
 from django.db import models
 from intakes.models import Intake
-
+from programs.models import Enrollment
 
 # Create your models here.
 class Lecturer(models.Model):
@@ -31,3 +31,5 @@ class LecturerCourse(models.Model):
 
     def __str__(self):
         return f"{self.lecturer} - {self.intake})"
+
+
