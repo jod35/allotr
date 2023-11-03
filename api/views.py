@@ -211,11 +211,9 @@ class CoursesInProgramListView(GenericAPIView):
                             if (course in program.courses.all())
                         ])
                     }
-
-                    print(alloc)
-
                     courses_alloc.append(alloc)
 
+        print(courses_alloc)
 
 
 

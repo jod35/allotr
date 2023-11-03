@@ -19,6 +19,18 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+        
+        {% if user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin:index' %}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-dark text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa fa-2x fa-arrows" aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Super Admin</span>
+          </a>
+        </li>
+        {% endif %}
+          
         <li class="nav-item">
           <a class="nav-link" href="{% url 'allocation_list' %}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-dark text-center me-2 d-flex align-items-center justify-content-center">
