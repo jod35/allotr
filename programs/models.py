@@ -43,4 +43,4 @@ class Enrollment(models.Model):
     students_enrolled = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return f"<{self.program} {self.intake.term} {self.intake.academic_year}"
+        return f"{self.program.code} {self.intake.term} {self.intake.academic_year}"

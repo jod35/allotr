@@ -14,42 +14,42 @@
                 <button class="btn btn-sm active" id="bcs-tab" @click="fetchCourseData(`{{BCS.id}}`)"
                   data-bs-toggle="tab" data-bs-target="#bcs" type="button" role="tab" aria-controls="bcs"
                   aria-selected="true">
-                  {{ BCS.code }}  
+                  {{ BCS.code }}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bse-tab" @click="fetchCourseData(`{{BSE.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bse" type="button" role="tab" aria-controls="bse" aria-selected="false">
+                <button class="btn btn-sm" id="bse-tab" data-bs-toggle="tab" data-bs-target="#bse" type="button"
+                  role="tab" aria-controls="bse" aria-selected="false">
                   {{BSE.code}}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bcsf-tab" @click="fetchCourseData(`{{BCSF.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bcsf" type="button" role="tab" aria-controls="bcsf" aria-selected="false">
+                <button class="btn btn-sm" id="bcsf-tab" data-bs-toggle="tab" data-bs-target="#bcsf" type="button"
+                  role="tab" aria-controls="bcsf" aria-selected="false">
                   {{BCSF.code}}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bist-tab" @click="fetchCourseData(`{{BIST.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bist" type="button" role="tab" aria-controls="bist" aria-selected="false">
+                <button class="btn btn-sm" id="bist-tab" data-bs-toggle="tab" data-bs-target="#bist" type="button"
+                  role="tab" aria-controls="bist" aria-selected="false">
                   {{BIST.code}}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="dcomp-tab" @click="fetchCourseData(`{{DCOMP.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#dcomp" type="button" role="tab" aria-controls="dcomp" aria-selected="false">
+                <button class="btn btn-sm" id="dcomp-tab" data-bs-toggle="tab" data-bs-target="#dcomp" type="button"
+                  role="tab" aria-controls="dcomp" aria-selected="false">
                   {{DCOMP.code}}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="bce-tab" @click="fetchCourseData(`{{BCE.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#bce" type="button" role="tab" aria-controls="bce" aria-selected="false">
+                <button class="btn btn-sm" id="bce-tab" data-bs-toggle="tab" data-bs-target="#bce" type="button"
+                  role="tab" aria-controls="bce" aria-selected="false">
                   {{BCE.code}}
                 </button>
               </li>
               <li class="nav-item mt-4" role="presentation">
-                <button class="btn btn-sm" id="summary-tab" @click="fetchCourseData(`{{BCE.id}}`)" data-bs-toggle="tab"
-                  data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">
+                <button class="btn btn-sm" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button"
+                  role="tab" aria-controls="summary" aria-selected="false">
                   Summary
                 </button>
               </li>
@@ -173,7 +173,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -187,7 +192,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -201,7 +211,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -215,7 +230,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -229,7 +249,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -243,7 +268,12 @@
         layout: "fitDataStretch",
         responsiveLayout: "hide",
         columns: [
-
+          { title: "Code", field: "code", sorter: "string", width: 70 },
+          { title: "Title", field: "title", sorter: "string", width: 300 },
+          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+          { title: "Intake", field: "intake", sorter: "string", width: 100 },
+          { title: "Matching", field: "matching", sorter: "string", width: 300 },
+          { title: "students", field: "students", sorter: "string", width: 100 }
         ],
       });
 
@@ -257,7 +287,8 @@
             title: item.course.title,
             lecturer: item.lecturer,
             intake: item.intake,
-            matching: item.matching.join(',   ')
+            matching: item.matching.join(',   '),
+            students: item.students
           }));
 
           var table7 = new Tabulator("#summary-table", {
@@ -267,14 +298,40 @@
             paginationSize: 12,
             layout: "fitColumns",
             columns: [
-              { title: "Code", field: "code", sorter: "string", width: 100},
-              { title: "Title", field: "title", sorter: "string", width: 300},
-              { title: "Lecturer", field: "lecturer", sorter: "string", width: 200},
-              { title: "Intake", field: "intake", sorter: "string", width: 100},
-              { title: "Matching", field: "matching", sorter: "string", width: 300},
-          ]
+              { title: "Code", field: "code", sorter: "string", width: 70 },
+              { title: "Title", field: "title", sorter: "string", width: 300 },
+              { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+              { title: "Intake", field: "intake", sorter: "string", width: 100 },
+              { title: "Matching", field: "matching", sorter: "string", width: 300 },
+              { title: "students", field: "students", sorter: "string", width: 100 }
+            ]
           })
+
+          document.getElementById("filter-field").addEventListener("change", updateFilter);
+          document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+          //Clear filters on "Clear Filters" button click
+          document.getElementById("filter-clear").addEventListener("click", function () {
+            fieldEl.value = "";
+            valueEl.value = "";
+
+            table.clearFilter();
+          });
+
+          //Trigger setFilter function with correct parameters
+          function updateFilter() {
+            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+            var typeVal = "like";
+
+
+            if (filterVal) {
+              table7.setFilter(filterVal, typeVal, valueEl.value);
+            }
+          }
         });
+      //Update filters on value change
+
+
     },
     data() {
       return {

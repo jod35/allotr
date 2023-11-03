@@ -177,22 +177,63 @@ class ProgramCourseListView(GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class CoursesInProgramListView(ListAPIView):
+class CoursesInProgramListView(GenericAPIView):
     serializer_class = CoursesInProgramSerializer
-    queryset = Course.objects.select_related()
+    queryset = Course.objects.all()
+
+
+    def get(self,request,program_id):
+        program = Program.objects.filter(id=program_id).first()
+
+        courses = program.courses.all()
+        intake = Intake.objects.latest("created_at")
+        allocations = LecturerCourse.objects.all().filter(intake=intake).all()
+        enrollments = Enrollment.objects.all().filter(intake=intake).all().filter(program=program)
+        programs = Program.objects.all()
+        print(courses)
+        courses_alloc = []
+        for course in courses:
+            for allocation in allocations:
+                if course in allocation.courses.all():
+
+                    alloc = {
+                        "code":course.code,
+                        "course": f"{course.title}",
+                        "lecturer": f"{allocation.lecturer.first_name} {allocation.lecturer.last_name}",
+                        "matching": [
+                            program.code
+                            for program in programs
+                            if (course in program.courses.all())
+                        ],
+                        "intake": allocation.intake.name,
+                        "students":sum([
+                            enrollment.students_enrolled for enrollment in enrollments
+                            if (course in program.courses.all())
+                        ])
+                    }
+
+                    print(alloc)
+
+                    courses_alloc.append(alloc)
+
+
+
+
+        return Response(data=courses_alloc,status=status.HTTP_200_OK)
+
+
 
 
 class ListAllocationView(APIView):
     def get(self, request):
-        allocations = LecturerCourse.objects.all()
+        intake = Intake.objects.latest("created_at")
+        allocations = LecturerCourse.objects.all().filter(intake=intake).all()
+        enrollments = Enrollment.objects.all().filter(intake=intake).all()
         course_list = Course.objects.all()
         programs = Program.objects.all()
         allocations = LecturerCourse.objects.filter()
         enrollments = Enrollment.objects.all()
         allocation_for_courses = []
-
-
-
         for course in course_list:
             for allocation in allocations:
                 if course in allocation.courses.all():
@@ -205,11 +246,13 @@ class ListAllocationView(APIView):
                             if (course in program.courses.all())
                         ],
                         "intake": allocation.intake.name,
+                        "students":sum([
+                            enrollment.students_enrolled for enrollment in enrollments
+                            if (course in enrollment.program.courses.all())
+                        ])
                     }
 
                     allocation_for_courses.append(alloc)
-
-            print(enrollments)
 
         return Response(data=allocation_for_courses, status=status.HTTP_200_OK)
 

@@ -1,0 +1,72 @@
+0 Python To Pseudocode convertor
+1 // Define data structures to represent the entities involved      
+2 university_settings<-{}  // Dictionary to hold university settings
+3 schools<-{}             // Dictionary to hold schools
+4 departments<-{}         // Dictionary to hold departments
+5 lecturers<-{}           // Dictionary to hold lecturer information
+6 programs<-{}            // Dictionary to hold program details     
+7 courses<-{}             // Dictionary to hold course information  
+8 student_enrollments<-{}  // Dictionary to hold student enrollments
+9
+10 // Define functions to perform course allocation
+11 FUNCTION  create_university_setting(name):
+12     RETURNS // What gets sent back?
+13     university_settings[name]<-{}
+14 ENDFUNCTION
+15
+16 FUNCTION  create_school(university, name):
+17     RETURNS // What gets sent back?
+18     IF university in university_settings
+19         THEN
+20         university_settings[university][name]<-{}
+21     ENDIF
+22 ENDFUNCTION
+23
+24 FUNCTION  create_department(university, school, name):
+25     RETURNS // What gets sent back?
+26     IF university in university_settings and school in university_settings[university]
+27         THEN
+28         university_settings[university][school][name]<-{}
+29         departments[name]<-{}
+30     ENDIF
+31 ENDFUNCTION
+32
+33 FUNCTION  create_lecturer(name, department):
+34     RETURNS // What gets sent back?
+35     IF department in departments
+36         THEN
+37         lecturers[name]<-department
+38     ENDIF
+39 ENDFUNCTION
+40
+41 FUNCTION  create_program(name, department):
+42     RETURNS // What gets sent back?
+43     IF department in departments
+44         THEN
+45         programs[name]<-department
+46     ENDIF
+47 ENDFUNCTION
+48
+49 FUNCTION  create_allocation(course_name, program, lecturer, semester, students):
+50     RETURNS // What gets sent back?
+51     IF program in programs and lecturer in lecturers
+52         THEN
+53         course_info<-{
+54             "program": program,
+55             "lecturer": lecturer,
+56             "semester": semester,
+57             "students": students
+58         }
+59         courses[course_name]<-course_info
+60     ENDIF
+61 ENDFUNCTION
+62
+63 // Example usage
+64 create_university_setting("My University")
+65 create_school("My University", "School of Science")
+66 create_department("My University", "School of Science", "Physics")
+67 create_lecturer("Dr. Smith", "Physics")
+68 create_program("Physics Bachelor", "Physics")
+69 create_allocation("Physics 101", "Physics Bachelor", "Dr. Smith", "Spring 2023", ["Student1", "Student2"])
+70
+71 // Course allocation is complete with these functions.

@@ -13,8 +13,16 @@ class AllocationView(TemplateView):
 
     def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
-        context["allocations"] = LecturerCourse.objects.all()
-        context["programs"] = Program.objects.all()
+        context["intake"] = Intake.objects.latest("created_at")
+        context["programs"]=Program.objects.all()
+        programs = Program.objects.all().filter(name="Bachelor of Science in Computer Science").first()
+        allocations = LecturerCourse.objects.all().filter(
+            intake = context['intake']
+        )
+
+        # if program in allocations
+        
+        context["intakes"] = Intake.objects.all()
 
         context["BSE"] = context["programs"].filter(code="BSE").first()
         context["BIST"] = context["programs"].filter(code="BIST").first()
@@ -22,6 +30,9 @@ class AllocationView(TemplateView):
         context["BCS"] = context["programs"].filter(code="BCS").first()
         context["DCOMP"] = context["programs"].filter(code="DComp").first()
         context["BCE"] = context["programs"].filter(code="BCE").first()
+        context['allocations'] = allocations
 
-        context["intake"] = Intake.objects.latest("created_at") or None
+        print(context["allocations"])
+
         return context
+ 
