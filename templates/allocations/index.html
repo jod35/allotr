@@ -163,119 +163,42 @@
       var valueEl = document.getElementById("filter-value");
 
       const baseurl = `${window.location.origin}/api`;
-      var table1 = new Tabulator("#bcs-table", {
-        ajaxURL: `${baseurl}/courses-in-program/3/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
 
-      var table2 = new Tabulator("#bse-table", {
-        ajaxURL: `${baseurl}/courses-in-program/15/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
 
-      var table3 = new Tabulator("#bcsf-table", {
-        ajaxURL: `${baseurl}/courses-in-program/6/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
+      const createTable = (url, tableID) => {
+        var table = new Tabulator(tableID, {
+          ajaxURL: url,
+          autoColumns: true,
+          formatter: customFormatter,
+          minHeight: 300,
+          pagination: true,
+          paginationSize: 12,
+          layout: "fitColumns",
+          responsiveLayout: "hide",
+          columns: [
+            { title: "Code", field: "code", sorter: "string", width: 70 },
+            { title: "Title", field: "title", sorter: "string", width: 300 },
+            { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
+            { title: "Intake", field: "intake", sorter: "string", width: 100 },
+            { title: "Matching", field: "matching", sorter: "string", width: 300 },
+            { title: "students", field: "students", sorter: "string", width: 100 }
+          ],
+        });
 
-      var table4 = new Tabulator("#bist-table", {
-        ajaxURL: `${baseurl}/courses-in-program/12/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
 
-      var table5 = new Tabulator("#dcomp-table", {
-        ajaxURL: `${baseurl}/courses-in-program/17/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
+        return table;
+      }
 
-      var table6 = new Tabulator("#bce-table", {
-        ajaxURL: `${baseurl}/courses-in-program/4/`,
-        autoColumns: true,
-        formatter: customFormatter,
-        minHeight: 300,
-        pagination: true,
-        paginationSize: 12,
-        layout: "fitColumns",
-        responsiveLayout: "hide",
-        columns: [
-          { title: "Code", field: "code", sorter: "string", width: 70 },
-          { title: "Title", field: "title", sorter: "string", width: 300 },
-          { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-          { title: "Intake", field: "intake", sorter: "string", width: 100 },
-          { title: "Matching", field: "matching", sorter: "string", width: 300 },
-          { title: "students", field: "students", sorter: "string", width: 100 }
-        ],
-      });
+      var table2 = createTable(`${baseurl}/courses-in-program/15/`,"#bse-table" );
+
+      var table3 = createTable(`${baseurl}/courses-in-program/6/`,"#bcsf-table");
+
+      var table4 = createTable(`${baseurl}/courses-in-program/12/`, "#bist-table");
+
+      var table5 = createTable(`${baseurl}/courses-in-program/17/`,"#dcomp-table");
+
+      var table6 = createTable(`${baseurl}/courses-in-program/4/`,"#bce-table");
+
 
       fetch(`${this.url}/list_allocations/`)
         .then((res) => res.json())

@@ -8,4 +8,4 @@ class Allocation(models.Model):
     enrollments = models.ManyToManyField(Enrollment,related_name='enrollment')
 
     def __str__(self) -> str:
-        return f"{self.lecturer.first_name} {self.lecturer.last_name}"
+        return f"{self.lecturer.first_name} {self.lecturer.last_name}" 

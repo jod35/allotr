@@ -190,7 +190,6 @@ class CoursesInProgramListView(GenericAPIView):
         allocations = LecturerCourse.objects.all().filter(intake=intake).all()
         enrollments = Enrollment.objects.all().filter(intake=intake).all().filter(program=program)
         programs = Program.objects.all()
-        print(courses)
         courses_alloc = []
         for course in courses:
             for allocation in allocations:
@@ -212,11 +211,6 @@ class CoursesInProgramListView(GenericAPIView):
                         ])
                     }
                     courses_alloc.append(alloc)
-
-        print(courses_alloc)
-
-
-
         return Response(data=courses_alloc,status=status.HTTP_200_OK)
 
 
