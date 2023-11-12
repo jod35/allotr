@@ -1,7 +1,7 @@
 from courses.models import Course
 from intakes.models import Intake
 from lecturers.models import LecturerCourse, Lecturer
-from programs.models import Enrollment, Program
+from programs.models import Enrollment, Program, ProgramStructure
 from departments.models import Department
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
@@ -20,6 +20,7 @@ from .serializers import (
     DepartmentProgramSerializer,
     LecturerListSerializer,
     LecturerDetailSerializer,
+    ProgramStructureSerializer,
 )
 
 # Create your views here.
@@ -181,39 +182,14 @@ class CoursesInProgramListView(GenericAPIView):
     serializer_class = CoursesInProgramSerializer
     queryset = Course.objects.all()
 
-
-    def get(self,request,program_id):
+    def get(self, request, program_id):
         program = Program.objects.filter(id=program_id).first()
+        structures = ProgramStructure.objects.filter(program=program).all()
+        print(structures)
 
-        courses = program.courses.all()
-        intake = Intake.objects.latest("created_at")
-        allocations = LecturerCourse.objects.all().filter(intake=intake).all()
-        enrollments = Enrollment.objects.all().filter(intake=intake).all().filter(program=program)
-        programs = Program.objects.all()
-        courses_alloc = []
-        for course in courses:
-            for allocation in allocations:
-                if course in allocation.courses.all():
+        result = ProgramStructureSerializer(instance=structures, many=True).data
 
-                    alloc = {
-                        "code":course.code,
-                        "course": f"{course.title}",
-                        "lecturer": f"{allocation.lecturer.first_name} {allocation.lecturer.last_name}",
-                        "matching": [
-                            program.code
-                            for program in programs
-                            if (course in program.courses.all())
-                        ],
-                        "intake": allocation.intake.name,
-                        "students":sum([
-                            enrollment.students_enrolled for enrollment in enrollments
-                            if (course in program.courses.all())
-                        ])
-                    }
-                    courses_alloc.append(alloc)
-        return Response(data=courses_alloc,status=status.HTTP_200_OK)
-
-
+        return Response(data=result, status=status.HTTP_200_OK)
 
 
 class ListAllocationView(APIView):
@@ -238,10 +214,13 @@ class ListAllocationView(APIView):
                             if (course in program.courses.all())
                         ],
                         "intake": allocation.intake.name,
-                        "students":sum([
-                            enrollment.students_enrolled for enrollment in enrollments
-                            if (course in enrollment.program.courses.all())
-                        ])
+                        "students": sum(
+                            [
+                                enrollment.students_enrolled
+                                for enrollment in enrollments
+                                if (course in enrollment.program.courses.all())
+                            ]
+                        ),
                     }
 
                     allocation_for_courses.append(alloc)

@@ -6,7 +6,7 @@
 <div class="container-fluid py-4" id="app">
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4">
+      <div class=" mb-4">
         <div class="card-body px-0 pt-0 pb-2">
           <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -165,45 +165,63 @@
       const baseurl = `${window.location.origin}/api`;
 
 
-      const createTable = (url, tableID) => {
+      const createTable = (url = null, tableID, data = null) => {
         var table = new Tabulator(tableID, {
           ajaxURL: url,
-          autoColumns: true,
-          formatter: customFormatter,
           minHeight: 300,
           pagination: true,
           paginationSize: 12,
-          layout: "fitColumns",
-          responsiveLayout: "hide",
+          layout: "fitDataFill",
           columns: [
-            { title: "Code", field: "code", sorter: "string", width: 70 },
-            { title: "Title", field: "title", sorter: "string", width: 300 },
-            { title: "Lecturer", field: "lecturer", sorter: "string", width: 150 },
-            { title: "Intake", field: "intake", sorter: "string", width: 100 },
-            { title: "Matching", field: "matching", sorter: "string", width: 300 },
-            { title: "students", field: "students", sorter: "string", width: 100 }
+            { title: "Name", field: "name", sorter: "string", width: 150 },
+            { title: "Semester", field: "enrollment.intake.name", sorter: "string", width: 200 },
           ],
-        });
+          rowFormatter: function (row) {
+            //create and style holder elements
+            var holderEl = document.createElement("div");
+            var tableEl = document.createElement("div");
+
+            holderEl.style.boxSizing = "border-box";
+            holderEl.style.padding = "10px 30px 10px 10px";
+            holderEl.style.borderTop = "1px solid #333";
+            holderEl.style.borderBotom = "1px solid #333";
+
+
+            tableEl.style.border = "1px solid #333";
+
+            holderEl.appendChild(tableEl);
+
+            row.getElement().appendChild(holderEl);
+
+            var subTable = new Tabulator(tableEl, {
+              layout: "fitColumns",
+              data: row.getData().courses,
+              columns: [
+                { title: "code", field: "code", sorter: "date" },
+                { title: "Title", field: "title" },
+              ]
+            })
+          },
+        })
 
 
         return table;
       }
 
-      var table2 = createTable(`${baseurl}/courses-in-program/15/`,"#bse-table" );
-
-      var table3 = createTable(`${baseurl}/courses-in-program/6/`,"#bcsf-table");
-
+      var table1 = createTable(`${baseurl}/courses-in-program/3/`, "#bcs-table");
+      var table2 = createTable(`${baseurl}/courses-in-program/15/`, "#bse-table");
+      var table3 = createTable(`${baseurl}/courses-in-program/6/`, "#bcsf-table");
       var table4 = createTable(`${baseurl}/courses-in-program/12/`, "#bist-table");
-
-      var table5 = createTable(`${baseurl}/courses-in-program/17/`,"#dcomp-table");
-
-      var table6 = createTable(`${baseurl}/courses-in-program/4/`,"#bce-table");
+      var table5 = createTable(`${baseurl}/courses-in-program/17/`, "#dcomp-table");
+      var table6 = createTable(`${baseurl}/courses-in-program/4/`, "#bce-table");
 
 
       fetch(`${this.url}/list_allocations/`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data)
+
+          console.log(data.enrollment);
 
           const rows = data.map(item => ({
             code: item.course.code,
@@ -213,6 +231,7 @@
             matching: item.matching.join(',   '),
             students: item.students
           }));
+
 
           var table7 = new Tabulator("#summary-table", {
             data: rows,
@@ -272,7 +291,7 @@
       async fetchCourseData(id) {
         this.id = id;
         const response = await fetch(
-          `${window.location.origin}/api/courses-in-program/${id}/`
+          `${window.location.origin}/api/courses-in-program/3/`
         );
 
         const data = await response.json();

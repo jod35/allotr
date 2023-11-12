@@ -11,6 +11,5 @@ urlpatterns = [
     # The home page
     path("", views.index, name="home"),
     path("profile/", views.profile_page, name="profile"),
-    path('reports/',views.TotalStudentsAllocationView.as_view())
-
+    path("reports/", views.TotalStudentsAllocationView.as_view()),
 ]

@@ -90,15 +90,21 @@
                                                 {{ form.degree_level|as_crispy_field }}
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{ form.school|as_crispy_field }}
+                                            </div>
+                                            <div class="col">
+                                                {{ form.department|as_crispy_field }}
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             {{ form.details|as_crispy_field }}
                                         </div>
-                                        <div class="form-group">
-                                            {{ form.department|as_crispy_field }}
-                                        </div>
+                                      
                                         <div class="modal-footer">
 
-                                            <button type="button" class="btn btn-sm btn-dark" @click="createProgram()">
+                                            <button type="submit" class="btn btn-sm btn-dark">
                                                 Save
                                             </button>
                                             <button type="button" @click="resetState()" class="btn btn-sm  btn-link"

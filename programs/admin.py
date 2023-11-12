@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Enrollment, Program
+from .models import Enrollment, Program, ProgramStructure
 
 # Register your models here.
 
@@ -14,3 +14,6 @@ class ProgramAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Enrollment)
+
+
+admin.site.register(ProgramStructure)

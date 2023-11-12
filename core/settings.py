@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     "django_select2",
     "corsheaders",
     "drf_yasg",
-    "slick_reporting"
+    "slick_reporting",
 ]
 
 ALLOWED_HOSTS = ["*"]

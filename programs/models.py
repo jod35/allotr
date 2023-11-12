@@ -44,3 +44,13 @@ class Enrollment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.program.code} {self.intake.term} {self.intake.academic_year}"
+
+
+class ProgramStructure(models.Model):
+    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course, related_name="structures")
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} {self.enrollment}"

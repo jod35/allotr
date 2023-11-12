@@ -5,7 +5,7 @@ program = {
 }
 
 
-def create_program_structure(program):
+def create_program_structure(program, **kwargs):
     semesters_per_year = 2
 
     total_semesters = 0
@@ -26,8 +26,6 @@ def create_program_structure(program):
             program_semesters.append(new_term)
 
         new_recess_term = {}
-        
-
 
         for count in range(0, len(program_semesters), 2):
             new_recess_term["type"] = "recess_term"
@@ -39,4 +37,4 @@ def create_program_structure(program):
 
 p = create_program_structure(program)
 
-print(p['program_structure']['semesters'])
+print(p["program_structure"]["semesters"])

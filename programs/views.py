@@ -1,24 +1,23 @@
 import json
 from typing import Any
 
-from departments.models import Department
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.http import HttpRequest, JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpRequest, JsonResponse,HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
+from django.views import View
 
 from .forms import ProgramCourseUpdateForm, ProgramCreateForm
 from .models import Program
-from schools.models import School
 
 # Create your views here.
 
 
-class ProgramListView(ListView):
+class ProgramListView(LoginRequiredMixin,View):
     template_name = "programs/index.html"
     queryset = Program.objects.all()
     context_object_name = "programs"
@@ -31,26 +30,33 @@ class ProgramListView(ListView):
         context["form"] = ProgramCreateForm()
 
         return context
+    
+    def get(self,request:HttpRequest):
+        try:
+            return render(request,self.template_name,{'form':self.form_class()})
 
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return HttpResponse(content=str(e))
+        
+    def post(self, request: HttpRequest):
+        try:
+            form = self.form_class(data=request.POST)
 
-@login_required
-def create_program(request: HttpRequest):
-    data = json.loads(request.body)
-    school = School.objects.get(pk=1)
+            if form.is_valid():
+                form.save()
 
-    new_program = Program(
-        name=data.get("name"),
-        code=data.get("code"),
-        years_of_study=data.get("years_of_study"),
-        details=data.get("details"),
-        degree_level=data.get("degree_level"),
-        department=Department.objects.get(id=data.get("department_id")),
-        school=school,
-    )
-
-    new_program.save()
-
-    return JsonResponse({"message": "Program created successfuly"})
+                program = form.instance
+                return redirect(
+                    reverse("program_structure", kwargs={"program_id": program.id})
+                )
+            
+            messages.error(request,message=form.errors)
+            return render(request , self.template_name, {'form':self.form_class()})
+        
+        except Exception as e:
+            raise Exception(e)
 
 
 class ProgramDetailView(LoginRequiredMixin, DetailView):
@@ -114,3 +120,31 @@ def delete_program(request: HttpRequest, program_id):
     messages.success(request, "Program updated successfully")
 
     return JsonResponse({"message": "School deleted"})
+
+
+class ProgramCourseStructureView(View):
+    template_name = "programs/structures.html"
+
+    def get(self, request, program_id):
+
+        program = get_object_or_404(Program,id=program_id)
+
+
+        return render(request, self.template_name, {'program':program})
+
+
+[
+    {
+        "structure": {
+            "name": "Year 1 sem 1",
+            "enrollment": "Sep 2023",
+            "courses": {
+                "code": "CS 101",
+                "title": "Computer Applications And Systems",
+                "lecturer": "Kivumbi Timothy",
+                "matching": "BIST,BSE,BCS,BCE",
+                "students": 2,
+            },
+        }
+    }
+]
