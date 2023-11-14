@@ -227,33 +227,17 @@ JAZZMIN_SETTINGS = {
     "copyright": "Allotr",
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
-    "search_model": ["auth.User", "courses.Course"],
+    "search_model": ["courses.Course"],
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
     "user_avatar": None,
     ############
     # Top Menu #
     ############
     # Links to put along the top menu
-    "topmenu_links": [
-        # Url that gets reversed (Permissions can be added)
-        # external url that opens in a new window (Permissions can be added)
-        # model admin to link to (Permissions checked against model)
-        {"model": "auth.User"},
-        # App with dropdown menu to all its models pages (Permissions checked against models)
-        {"app": "books"},
-    ],
     #############
     # User Menu #
     #############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
-    "usermenu_links": [
-        {
-            "name": "Support",
-            "url": "https://github.com/farridav/django-jazzmin/issues",
-            "new_window": True,
-        },
-        {"model": "auth.user"},
-    ],
     #############
     # Side Menu #
     #############
@@ -270,7 +254,6 @@ JAZZMIN_SETTINGS = {
     # for the full list of 5.13.0 free icon classes
     "icons": {
         "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
     },
     # Icons that are used when one is not manually specified
@@ -303,7 +286,6 @@ JAZZMIN_SETTINGS = {
     "changeform_format": "horizontal_tabs",
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {
-        "auth.user": "collapsible",
         "auth.group": "vertical_tabs",
     },
     # Add a language dropdown into the admin

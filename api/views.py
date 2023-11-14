@@ -7,6 +7,7 @@ from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import render, get_object_or_404
 
 from .serializers import (
     AllocationSerializer,
@@ -253,3 +254,20 @@ class LecturerDetailView(GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StructureView(GenericAPIView):
+    serializer_class = ProgramStructureSerializer
+
+    def get(self, request, program_id):
+        try:
+            program = get_object_or_404(Program, id=program_id)
+            structures = ProgramStructure.objects.all()
+            serializer = ProgramStructureSerializer(instance=structures, many=True)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            raise Response(
+                data={"something happened"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

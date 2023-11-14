@@ -148,3 +148,9 @@ class ProgramStructureSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProgramStructure
         fields = ["name", "program", "enrollment", "courses"]
+
+
+class StructureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProgramStructure
+        fields = ["program", "enrollment", "courses", "name"]

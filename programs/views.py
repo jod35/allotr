@@ -8,11 +8,11 @@ from django.core.paginator import Paginator
 from django.http import HttpRequest, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 from django.views import View
 
 from .forms import ProgramCourseUpdateForm, ProgramStructureForm, ProgramCreateForm
-from .models import Program, ProgramStructure
+from .models import Program
 
 # Create your views here.
 
@@ -132,14 +132,42 @@ class ProgramCourseStructureView(View):
 
         form = ProgramStructureForm()
 
-        for year in range(program.years_of_study):
-            new_semester = ProgramStructure(program=program)
-
-            new_semester.save()
-
         context = {"form": form, "program": program}
 
         return render(request, self.template_name, context)
+
+    def post(self, request, program_id):
+        try:
+            program = get_object_or_404(Program, id=program_id)
+
+            print(request.POST)
+
+            form = self.form_class(data=request.POST)
+
+            if form.is_valid():
+                print(form.is_valid())
+
+                # program instance has to be saved first
+                structure = form.save(commit=False)
+
+                structure.program = program
+
+                structure.save()
+
+                courses = form.cleaned_data.get("courses")
+
+                structure.courses.clear()
+
+                for course in courses:
+                    structure.courses.add(course)
+
+                return redirect(
+                    reverse("program_structure", kwargs={"program_id": program_id})
+                )
+
+            return render(request, self.template_name, {"form": self.form_class()})
+        except Exception as e:
+            return HttpResponse(content=str(e))
 
 
 [

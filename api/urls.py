@@ -74,4 +74,9 @@ urlpatterns = [
         views.LecturerDetailView.as_view(),
         name="lecturer_api_detail",
     ),
+    path(
+        "structures/<int:program_id>/",
+        views.StructureView.as_view(),
+        name="structure_view",
+    ),
 ]
