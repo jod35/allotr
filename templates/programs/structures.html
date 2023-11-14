@@ -1,71 +1,346 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
-{% block content %}
 
-{% block styles %}
-{{form.media.css}}
+{% block title %}
+    Course Structure
+{% endblock title %}
+    
+{% block stylesheets %}
+{{ form.media.css }}
 <style>
 
 </style>
-{% endblock styles %}
-
-<div class="container card mb4 mt-4">
-    <h3>{{program.name}}</h3>
-    <br>
-    <button button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
-        Program Structure</button>
-    <div class="mt-4">
-
-        {% for Structure in Structure %}
-        {{Structure.name}}
-        {% endfor %}
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create the Course Structure for this course</h5>
-                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+{% endblock stylesheets %}
+{% block content %}
+<div class="container-fluid py-4" id="app">
+    <div class="row">
+        <div class="col-12">
+            <div class=" mb-4">
+                <div class="card-header pb-0">
+                    <h3>{{program.name}} ({{program.code}})</h3>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                        <button type="button" class="mt-4 btn btn-sm bg-gradient-dark" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Add Course Structure 
                         </button>
-                    </div>
-                    <form action="" method="post">
-                        <div class="modal-body" style="overflow-y: scroll; height:400px;">
-                            {% csrf_token %}
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <p class="loading text-center" style="display: none;"><img
+                                    src="{% static 'assets/img/loading.gif' %}" width="50"></p>
                             <div class="row">
-                                <div class="col">
-                                    {{form.name|as_crispy_field}}
+                                <div class="col-md-3">
+                                    <select id="filter-field" class="form-select">
+                                        <option></option>
+                                        <option value="code">Code</option>
+                                        <option value="title">Title</option>
+                                    </select>
                                 </div>
-                                <div class="col">
-                                    {{form.enrollment|as_crispy_field}}
+                                <div class="col-md-4">
+                                    <input id="filter-value" class="form-control" type="text"
+                                        placeholder="Value to filter">
+                                </div>
+                                <div class="col-md-3">
+                                    <button id="filter-clear" class="btn btn-sm btn-dark"><i class="fa fa-filter"
+                                            aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                {{form.program|as_crispy_field}}
+                            <div class="table-responsive p-0" id="example-table">
+
                             </div>
-                            <div class="form-group">
-                                {{form.courses|as_crispy_field}}
+                            <div class="modal modal-lg fade " id="exampleModal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Create Course Structure</h5>
+                                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="" method="post">
+                                            <div class="modal-body" style="overflow-y: scroll; height:400px;">
+                                                {% csrf_token %}
+                                                {{ form|crispy }}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm bg-gradient-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-sm bg-gradient-dark">Save
+                                                    changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-sm btn-dark">Save changes</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+</div>
+</div>
+
+{% include "includes/footer.html" %}
+</div>
+
 {% endblock content %}
 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}
-{{form.media.js}}
-
+{{ form.media.js }}
 <script>
-$('.select2-container').css("width","100%");
-</script>
+    // create a vue app inside this template
+    const app = Vue.createApp({
+        data() {
+            return {
+                url: `${window.location.origin}`,
+                id: "",
+                name: "",
+                code: "",
+                years_of_study: "",
+                degree_level: "",
+                details: ""
+            };
+        },
+        delimiters: ["[[", "]]"],
+        mounted() {
+            const loading = document.querySelector('.loading');
 
+            //Define variables for input elements
+            var fieldEl = document.getElementById("filter-field");
+            var typeEl = document.getElementById("filter-type");
+            var valueEl = document.getElementById("filter-value");
+
+
+
+            loading.style.display = "block";
+
+            fetch(`${this.url}/api/programcourses`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.log(response.status)
+                        console.log(response.statusText)
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setTimeout(() => {
+                        loading.style.display = 'none';
+                        console.log(data)
+                        // transform api data into a format 
+                        const rows = data.map(item => ({
+                            ID: item.id,
+                            code: item.code,
+                            title: item.title,
+                            course_description: item.course_description,
+                            created_at: this.formatReadableDate(item.created_at)
+                        }));
+
+                        console.log(rows)
+
+                        var openIcon = function (value, data, cell, row, options) { //plain text value
+                            return "<i class='fa fa-search'></i>"
+                        };
+
+                        function link(cell, formatterParams) {
+                            var url = cell.getValue();
+                            return "<a href='/taskEditor/" + url + "'>" + url + "</a>";
+                        }
+
+
+                        var table = new Tabulator("#example-table", {
+                            data: rows, //assign data to table
+                            autoColumns: true, //create columns from data field names
+                            layout: "fitColumns",      //fit columns to width of table
+                            responsiveLayout: "hide",  //hide columns that don't fit on the table
+                            addRowPos: "top",          //when adding a new row, add it to the top of the table
+                            history: true,             //allow undo and redo actions on the table
+                            pagination: "local",       //paginate the data
+                            paginationSize: 10,         //allow 7 rows per page of data
+                            paginationCounter: "rows", //display count of paginated rows in footer
+                            movableColumns: true,
+                            columns: [                 //define the table columns
+                                { title: "ID", field: "id", formatter: "html", hozAlign: "center" },
+                                { title: "code", field: "code", editor: "input" },
+                                { title: "title", field: "title" },
+                            ],
+                        });
+
+
+                        //Update filters on value change
+                        document.getElementById("filter-field").addEventListener("change", updateFilter);
+                        document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+                        //Clear filters on "Clear Filters" button click
+                        document.getElementById("filter-clear").addEventListener("click", function () {
+                            fieldEl.value = "";
+                            valueEl.value = "";
+
+                            table.clearFilter();
+                        });
+
+                        //Trigger setFilter function with correct parameters
+                        function updateFilter() {
+                            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+                            var typeVal = "like";
+                            console.log(filterVal)
+                            console.log(typeVal)
+                            console.log(valueEl.value)
+
+                            if (filterVal) {
+                                table.setFilter(filterVal, typeVal, valueEl.value);
+                            }
+                        }
+
+                        //display update modal for row when row is clicked
+                        table.on("rowClick", (e, id, data, row) => {
+
+                            //display update modal
+                            $('#modal-default').modal('show');
+
+                            // update state variables depending on which row is clicked
+                            this.setProgramData(
+                                id._row.data.ID,
+                                id._row.data.name,
+                                id._row.data.code,
+                                id._row.data.years_of_study,
+                                id._row.data.degree_level,
+                                id._row.data.department_id,
+                                id._row.data.details
+                            )
+                        })
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        },
+        methods: {
+            formatReadableDate(dateString) {
+                const date = new Date(dateString);
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                };
+                return date.toLocaleDateString('en-US', options);
+            },
+            redirect(id) {
+                window.location.href = `${this.url}/programs/${this.id}`
+            },
+            formatDegreeLevel(degree_level) {
+                if (degree_level === "B") return 'Bachelors'
+                else if (degree_level === "D") return 'Diploma'
+                else if (degree_level === "PGd") return 'Postgraduate Diploma'
+                else if (degree_level === "M") return 'Masters'
+                else return 'Invalid degree level'
+            },
+            // update the state of details, name etc on a program
+            setProgramData(
+                id,
+                name,
+                code,
+                years_of_study,
+                degree_level,
+                department_id,
+                details
+            ) {
+                this.id = id;
+                this.name = name;
+                this.code = code;
+                this.years_of_study = years_of_study;
+                this.degree_level = degree_level;
+                this.details = details;
+            },
+            resetState() {
+                this.name = "";
+                this.Program_head = "";
+                this.contact_email = "";
+                this.description = "";
+            },
+            async createProgram() {
+                const createForm = document.getElementById("create-form");
+
+                const tokenField = document.querySelector(
+                    'input[name="csrfmiddlewaretoken"]'
+                );
+
+                let csrfToken = tokenField.value;
+                const formData = new FormData(createForm);
+
+                let name = formData.get("name");
+                let code = formData.get("code");
+                let years_of_study = formData.get("years_of_study");
+                let degree_level = formData.get("degree_level");
+                let details = formData.get("details");
+                let department_id = formData.get("department");
+
+                const response = await fetch("/programs/create/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "Application/Json",
+                        "X-CSRFToken": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    body: JSON.stringify({
+                        name,
+                        code,
+                        years_of_study,
+                        degree_level,
+                        details,
+                        department_id,
+                    }),
+                });
+
+                createForm.reset();
+
+
+            },
+            async updateProgram() {
+                const updateForm = document.getElementById("update-form");
+                const tokenField = document.querySelector(
+                    'input[name="csrfmiddlewaretoken"]'
+                );
+
+                let csrfToken = tokenField.value;
+
+                console.log(updateForm);
+
+                const updateData = new FormData(updateForm);
+
+                let body = {
+                    name: updateData.get("name"),
+                    code: updateData.get("code"),
+                    degree_level: updateData.get("degree_level"),
+                    years_of_study: updateData.get("years_of_study"),
+                    details: updateData.get("details"),
+                };
+
+                const response = await fetch(`/programs/update/${this.id}/`, {
+                    headers: {
+                        "Content-Type": "Application/Json",
+                        "X-CSRFToken": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(body),
+                });
+
+                const data = await response.json();
+
+                window.location.reload();
+            },
+        }
+    });
+
+    app.mount('#app'); 
+</script>
 {% endblock javascripts %}

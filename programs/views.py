@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.http import HttpRequest, JsonResponse,HttpResponse
+from django.http import HttpRequest, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
@@ -17,7 +17,7 @@ from .models import Program, ProgramStructure
 # Create your views here.
 
 
-class ProgramListView(LoginRequiredMixin,View):
+class ProgramListView(LoginRequiredMixin, View):
     template_name = "programs/index.html"
     queryset = Program.objects.all()
     context_object_name = "programs"
@@ -30,16 +30,17 @@ class ProgramListView(LoginRequiredMixin,View):
         context["form"] = ProgramCreateForm()
 
         return context
-    
-    def get(self,request:HttpRequest):
+
+    def get(self, request: HttpRequest):
         try:
-            return render(request,self.template_name,{'form':self.form_class()})
+            return render(request, self.template_name, {"form": self.form_class()})
 
         except Exception as e:
             import traceback
+
             traceback.print_exc()
             return HttpResponse(content=str(e))
-        
+
     def post(self, request: HttpRequest):
         try:
             form = self.form_class(data=request.POST)
@@ -51,10 +52,10 @@ class ProgramListView(LoginRequiredMixin,View):
                 return redirect(
                     reverse("program_structure", kwargs={"program_id": program.id})
                 )
-            
-            messages.error(request,message=form.errors)
-            return render(request , self.template_name, {'form':self.form_class()})
-        
+
+            messages.error(request, message=form.errors)
+            return render(request, self.template_name, {"form": self.form_class()})
+
         except Exception as e:
             raise Exception(e)
 
@@ -127,22 +128,16 @@ class ProgramCourseStructureView(View):
     form_class = ProgramStructureForm
 
     def get(self, request, program_id):
-
-        program = get_object_or_404(Program,id=program_id)
+        program = get_object_or_404(Program, id=program_id)
 
         form = ProgramStructureForm()
 
         for year in range(program.years_of_study):
-            new_semester = ProgramStructure(
-                program=program
-            )
+            new_semester = ProgramStructure(program=program)
 
             new_semester.save()
 
-        context ={
-            'form':form,
-            'program':program
-        }
+        context = {"form": form, "program": program}
 
         return render(request, self.template_name, context)
 

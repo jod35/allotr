@@ -1,7 +1,7 @@
 from django import forms
 from django_select2 import forms as s2forms
 
-from .models import Program,ProgramStructure
+from .models import Program, ProgramStructure
 
 
 class ProgramCourseWidget(s2forms.ModelSelect2MultipleWidget):
@@ -38,17 +38,24 @@ class ProgramCourseUpdateForm(forms.ModelForm):
 
         widgets = {"courses": ProgramCourseWidget}
 
-class CourseWidget(s2forms.ModelSelect2MultipleWidget):
-    search_fields =[
-        "title__icontains",
-        "code__icontains"
+
+class EnrollmentWidget(s2forms.ModelSelect2Widget):
+    search_fields = [
+        "intake__name__icontains",
+        "intake__academic_year__icontains",
     ]
+
+
+class CourseWidget(s2forms.ModelSelect2MultipleWidget):
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.attrs = {"style": "width: 100%"}
+
+    search_fields = ["title__icontains", "code__icontains"]
 
 
 class ProgramStructureForm(forms.ModelForm):
     class Meta:
         model = ProgramStructure
-        fields = "__all__"
-        widgets ={
-            "courses": CourseWidget
-        }
+        fields = ["name", "courses", "enrollment"]
+        widgets = {"courses": CourseWidget, "enrollments": EnrollmentWidget}

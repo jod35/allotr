@@ -1,4 +1,7 @@
 .form-group > .select2-container{ width: 100% !important; }
+.select2-search__field .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    width: 100%!important;
+  }
 #ProgramCreateModal,#deleteModal,#exampleModalLabel {
     z-index: 100000!important;
   }
