@@ -1,3 +1,4 @@
+.form-group > .select2-container{ width: 100% !important; }
 #ProgramCreateModal,#deleteModal,#exampleModalLabel {
     z-index: 100000!important;
   }

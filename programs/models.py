@@ -47,9 +47,9 @@ class Enrollment(models.Model):
 
 
 class ProgramStructure(models.Model):
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE,null=True,related_name='structures')
     courses = models.ManyToManyField(Course, related_name="structures")
-    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE,null=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):

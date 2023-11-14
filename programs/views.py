@@ -11,8 +11,8 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views import View
 
-from .forms import ProgramCourseUpdateForm, ProgramCreateForm
-from .models import Program
+from .forms import ProgramCourseUpdateForm, ProgramStructureForm, ProgramCreateForm
+from .models import Program, ProgramStructure
 
 # Create your views here.
 
@@ -124,13 +124,27 @@ def delete_program(request: HttpRequest, program_id):
 
 class ProgramCourseStructureView(View):
     template_name = "programs/structures.html"
+    form_class = ProgramStructureForm
 
     def get(self, request, program_id):
 
         program = get_object_or_404(Program,id=program_id)
 
+        form = ProgramStructureForm()
 
-        return render(request, self.template_name, {'program':program})
+        for year in range(program.years_of_study):
+            new_semester = ProgramStructure(
+                program=program
+            )
+
+            new_semester.save()
+
+        context ={
+            'form':form,
+            'program':program
+        }
+
+        return render(request, self.template_name, context)
 
 
 [
